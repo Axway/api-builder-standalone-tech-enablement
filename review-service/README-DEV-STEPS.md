@@ -2,11 +2,10 @@
 The generation of an API Builder applications is a simple process with the help of the API Builder CLI tool.
 
 This document provides a step-by-step tutorial on how to run an API Builder service within a api-builder-plugin-dc-mongo connector. These steps include:
+##### a.How to use this in your own project starting from zero to hero
+##### b.How to use start this source code 
 
-#####a.How to use this in your own project starting from zero to hero
-#####b.How to use start this source code 
-
-#How to use start this source code 
+# How to use start this source code 
 
 clone this repo and navigate to the folder ./preview-service and run in the terminal:
 
@@ -40,12 +39,12 @@ db.reviews.insert({
 	review: "Very good gsm - 5 star rating"
 })
 ```
-####and finally run: 
+#### and finally run: 
 ```sh
 npm start
 ```
 
-#How to use this in your own project starting from zero to hero
+# How to use this in your own project starting from zero to hero
 ## Create your API Builder project
 
 * Add your api-builder-plugin-dc-mongo connector
@@ -241,4 +240,3 @@ Once you have scaffold project, install Mongo connector and run successfully you
 1. Select the Flow icon for one of the generated endpoints for the Mongo connector; for example, for the Find all reviews endpoint. The API Orchestration page with all loaded connectors, nodes, and so forth is displayed.
 
 __NOTE:__ Refer to API Builder Flows and Manage Nodes for detailed information.
-
