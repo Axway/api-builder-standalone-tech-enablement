@@ -57,11 +57,7 @@ CREATE TABLE products(
 
 * You could start/stop the container via the Container ID
 ```sh
-docker start <ID>
-
-or
-
-docker stop <ID>
+docker start/stop <container-ID>
 ```
 ## How to create own service with MySql container DB
 
