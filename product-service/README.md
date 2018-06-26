@@ -1,10 +1,10 @@
 # product-service
 
 ## Table of content
-*	[Introduction](introduction)
-*	[Prerequisites](prerequisites)
-*	[How to run the demo product-service](how-to-run-the-demo-product-service)
-*	[How to create own mysql container with DB](how-to-create-own-mysql-container-with-db)
+*	[Introduction](#introduction)
+*	[Prerequisites](#prerequisites)
+*	[How to run the demo product-service](#how-to-run-the-demo-product-service)
+*	[How to create own mysql container with DB](#how-to-create-own-mysql-container-with-db)
 
 ## Introduction
 This document provides information on how to configure and run an API Builder service within a MySql container with DB.
@@ -16,30 +16,30 @@ Prior to setting up a project with a connector, refer to:
 * [API Builder Project](https://wiki.appcelerator.org/display/AB4/API+Builder+Project) - Provides detailed information about API Builder projects and services.
 
 ## How to run the product-service demo
-1. Clone the repository 
+* Clone the repository 
 ```sh
 git clone https://github.com/Axway/api-builder-standalone-tech-enablement.git
 ```
 
-1. Navigate to the product-service demo folder
+* Navigate to the product-service demo folder
 ```sh
 cd ./api-builder-standalone-tech-enablement
 cd ./product-service
 ```
 
-1. Install all dependencies
+* Install all dependencies
 ```sh
 npm install --no-optional
 ```
 
-1. Pull Mysql Docker Image via Docker Hub. Start MySql in container and open the ports of physical machine.
+* Pull Mysql Docker Image via Docker Hub. Start MySql in container and open the ports of physical machine.
 ```sh
 docker pull mysql
 docker run -p 3306:3306 --name mysql-container -e MYSQL_ROOT_PASSWORD=password -d mysql:5
 docker exec -it mysql-container mysql -uroot -ppassword
 ```
 
-1. Then create a DB and a Table
+* Then create a DB and a Table
 ```sh
 DROP DATABASE IF EXISTS productdb;
 
@@ -55,7 +55,7 @@ CREATE TABLE products(
 );
 ```
 
-1. You could start/stop the container via the Container ID
+* You could start/stop the container via the Container ID
 ```sh
 docker start <ID>
 
@@ -177,36 +177,36 @@ All the variables in your configuration files taken from `process.env.<VARIABLE_
 The following table lists the configuration files, their location, and their example content. The connector configuration is shown to inform you that you will have to provide an additional set of environment variables when using an API Builder service with connectors.
 
 ### Step 3: Run MySql via Docker
-1. Run latest version of Docker
-1. Pull Mysql Docker Image via Docker Hub
+* Run latest version of Docker
+* Pull Mysql Docker Image via Docker Hub
 
 ```sh
 docker pull mysql
 ```
 
-1. Start MySql in container and open the ports of physical machine
+* Start MySql in container and open the ports of physical machine
 ```sh
 docker run -p 3306:3306 --name <container-name> -e MYSQL_ROOT_PASSWORD=<my-password> -d mysql:5
 ```
 
 __NOTE:__ `MYSQL_ROOT_PASSWORD` variable is mandatory and specifies the password that will be set for the MySQL `root` superuser account. In the above example, it was set to `<my-password>`. The `<container-name>` is the name of your container i.e. mysql-db, mysql-container, etc.
 
-1. Set user and passward, execute the following command
+* Set user and passward, execute the following command
 ```sh
 docker exec -it <container-name> mysql -uroot -p<my-password>
 ```
 
-1. Create DB
+* Create DB
 ```sh
 CREATE DATABASE productdb;
 ```
 
-1. Use the newly created DB
+* Use the newly created DB
 ```sh
 USE productdb;
 ```
 
-1. Create table
+* Create table
 ```sh
 CREATE TABLE products(
     ID INT NOT NULL AUTO_INCREMENT,
@@ -216,21 +216,17 @@ CREATE TABLE products(
 );
 ```
 
-1. Using the below command you can see listof the running containers and theirs IDs
+* Using the below command you can see listof the running containers and theirs IDs
 ```sh
 docker ps
 ```
 
-1. You could start/stop the container via the Container ID
+* You could start/stop the container via the Container ID
 ```sh
-docker start <ID>
-
-or
-
-docker stop <ID>
+docker start/stop <container-ID>
 ```
 
-1. Go to the root of your project (`<your-project>/config/mysql.default.js`) and set database to `<your-db-name>`. The user and password are using Env Variables `process.env.MYSQL_USER` and `process.env.MYSQL_PASSWORD`, the values will be taken runtime. Please find below a sample:
+* Go to the root of your project (`<your-project>/config/mysql.default.js`) and set database to `<your-db-name>`. The user and password are using Env Variables `process.env.MYSQL_USER` and `process.env.MYSQL_PASSWORD`, the values will be taken runtime. Please find below a sample:
 ```js
 module.exports = {
     connectors: {
