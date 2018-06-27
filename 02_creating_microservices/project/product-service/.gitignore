@@ -1,5 +1,5 @@
 node_modules
 logs
 coverage
-nyc_output
 .nyc_output
+package-lock.json
