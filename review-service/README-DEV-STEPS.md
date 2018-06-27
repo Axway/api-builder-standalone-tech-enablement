@@ -6,44 +6,54 @@ This document provides a step-by-step tutorial on how to run an API Builder serv
 ##### b.How to use start this source code 
 
 # How to use start this source code 
+### Prerequisites
 
-clone this repo and navigate to the folder ./preview-service and run in the terminal:
-
-```sh
-npm install
-```
-Run latest version of Docker
+Run/install latest version of Docker
 Pull Mongo 3.6 > Docker Image via Docker Hub
+
+## Steps
+#### Clone this repo and navigate to the folder ./preview-service and run in the terminal:
+
+1. Setup your config file for api-builder-plugin-dc-mongo connector to look like this:
+
+```js
+module.exports = {
+	connectors: {
+		mongo: {
+			connector: '@axway/api-builder-plugin-dc-mongo',
+			url: `mongodb://${process.env.USER}:${process.env.PASSWORD}@${process.env.DBLINK}`,
+			
+			// Create models based on the schema that can be used in your API.
+			//
+			// Use this with care, API Builder determines the schema for the auto generated
+			// models by sampling the collection. If the collection is empty then the schema
+			// cannot be determined and so the model will not be generated.
+			// This will cause issues if there are Flows/APIs depending on that model schema.
+			// Instead you should prefer explicitly creating Models in the API Builder UI.
+			generateModelsFromSchema: true,
+
+			// Whether or not to generate APIs based on the methods in generated models.
+			modelAutogen: true
+		}
+	}
+};
+
+```
 
 In terminal run:
 ```
-docker run -p 27017:27017 -d --name some-mongo -e MONGO_INITDB_ROOT_USERNAME=root -e MONGO_INITDB_ROOT_PASSWORD=password mongo
+docker build -t review-service ./
 ```
-```sh
-docker run -it --rm --link some-mongo:mongo mongo mongo --host mongo -u root -p password --authenticationDatabase admin
 ```
-1. Use the newly created DB
-```sh
-USE admin
+docker run -d --name myMongoDB -e MONGO_INITDB_ROOT_USERNAME=root -e MONGO_INITDB_ROOT_PASSWORD=password mongo
 ```
-
-2. Create table
-```sh
-db.createCollection("reviews", { capped : true, autoIndexId : true, size : 
-   6142800, max : 10000 } )
 ```
-3. Fill the table
-```sh
-db.reviews.insert({
-	sku: "iphone",
-	review: "Very good gsm - 5 star rating"
-})
+docker run --name myApp --link myMongoDB -p 8080:8080 -e USER=root -e PASSWORD=password -e DBLINK=myMongoDB:27017/admin -d review-service
 ```
-#### and finally run: 
-```sh
-npm start
+access the database from the terminal
 ```
-
+docker run -it --rm --link myMongoDB:mongo mongo mongo --host mongo -u root -p password --authenticationDatabase admin
+```
 # How to use this in your own project starting from zero to hero
 ## Create your API Builder project
 

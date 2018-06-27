@@ -2,7 +2,7 @@ module.exports = {
 	connectors: {
 		mongo: {
 			connector: '@axway/api-builder-plugin-dc-mongo',
-			url: 'mongodb://root:password@localhost/admin',
+			url: `mongodb://${process.env.USER}:${process.env.PASSWORD}@${process.env.DBLINK}`,
 			
 			// Create models based on the schema that can be used in your API.
 			//
@@ -14,7 +14,7 @@ module.exports = {
 			generateModelsFromSchema: true,
 
 			// Whether or not to generate APIs based on the methods in generated models.
-			modelAutogen: false
+			modelAutogen: true
 		}
 	}
 };
