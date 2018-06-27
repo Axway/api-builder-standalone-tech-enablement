@@ -46,7 +46,7 @@ We're using the _europe-west2-a_ zone (London), a full list of the available zon
 
 ### Creating a cluster
 
-A Kubernetes cluster is a managed group of uniform VM instances for running Kubernetes. These are the VMs that our application will be running on. Creating your cluster in the UI is the simplest option, (https://console.cloud.google.com/kubernetes/list?project=api-builder-v4-te](https://console.cloud.google.com/kubernetes/list?project=api-builder-v4-te).
+A Kubernetes cluster is a managed group of uniform VM instances for running Kubernetes. These are the VMs that our application will be running on. Creating your cluster in the UI is the simplest option, [https://console.cloud.google.com/kubernetes/list?project=api-builder-v4-te](https://console.cloud.google.com/kubernetes/list?project=api-builder-v4-te).
 
 ![Create Cluster](./images/create_cluster_02.png)
 
@@ -101,13 +101,13 @@ kube-dns               ClusterIP   10.31.240.10    <none>        53/UDP,53/TCP  
 kubernetes-dashboard   ClusterIP   10.31.250.203   <none>        443/TCP         2h
 ```
 
-## Configuring Helm (https://helm.sh/)[https://helm.sh/]
+## Configuring Helm ([https://helm.sh/](https://helm.sh/))
 
 Helm is "the package manager for Kubernetes". A Helm _chart_ allows you to define, install and upgrade complex Kubernetes applications. We'll investigate Helm later but we need to install Helm.
 
-To install Helm on your platform see the installation instructions (https://github.com/kubernetes/helm#install)[https://github.com/kubernetes/helm#install].
+To install Helm on your platform see the installation instructions [https://github.com/kubernetes/helm#install](https://github.com/kubernetes/helm#install).
 
-Helm will install a service called _Tiller_ in you cluster. On GKE this requires a service account with necessary role, for detail see (https://docs.helm.sh/using_helm/#gke)[https://docs.helm.sh/using_helm/#gke].
+Helm will install a service called _Tiller_ in you cluster. On GKE this requires a service account with necessary role, for detail see [https://docs.helm.sh/using_helm/#gke](https://docs.helm.sh/using_helm/#gke).
 
 
 ```bash
