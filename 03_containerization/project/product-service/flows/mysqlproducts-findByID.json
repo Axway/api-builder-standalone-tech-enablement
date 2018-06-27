@@ -1,0 +1,107 @@
+{
+  "schemaVersion": "3",
+  "info": {
+    "name": "mysqlproducts-findByID"
+  },
+  "parameter": {
+    "properties": {
+      "params": {
+        "type": "object",
+        "description": "The parameters from the endpoint.",
+        "properties": {
+          "ID": {
+            "description": "The mysql/products ID",
+            "type": "string"
+          }
+        },
+        "required": [
+          "ID"
+        ]
+      },
+      "request": {
+        "type": "object",
+        "description": "The HTTP request."
+      },
+      "config": {
+        "type": "object",
+        "description": "The service's configuration"
+      },
+      "env": {
+        "type": "object",
+        "description": "The host OS environment"
+      }
+    },
+    "additionalProperties": false,
+    "required": [
+      "params",
+      "request",
+      "config",
+      "env"
+    ]
+  },
+  "start": "model.findByID",
+  "nodes": {
+    "model.findByID": {
+      "type": "nodehandler://api-builder-flow-invoke/model/mysql/products",
+      "method": "findByID",
+      "name": "Find products",
+      "parameters": [
+        {
+          "name": "ID",
+          "value": "$.params.ID"
+        }
+      ],
+      "outputs": {
+        "next": {
+          "context": "$.model",
+          "routes": [
+            "response.success"
+          ]
+        },
+        "notfound": {
+          "routes": [
+            "response.error.notfound"
+          ]
+        }
+      }
+    },
+    "response.success": {
+      "type": "nodehandler://axway-flow/http",
+      "name": "Set success response",
+      "method": "setresponse",
+      "parameters": [
+        {
+          "name": "status",
+          "value": "200",
+          "type": "number"
+        },
+        {
+          "name": "body",
+          "value": "$.model"
+        }
+      ],
+      "outputs": {
+        "next": {
+          "context": "$.response"
+        }
+      }
+    },
+    "response.error.notfound": {
+      "type": "nodehandler://axway-flow/http",
+      "name": "Set not found response",
+      "method": "setresponse",
+      "parameters": [
+        {
+          "name": "status",
+          "value": "404",
+          "type": "number"
+        }
+      ],
+      "outputs": {
+        "next": {
+          "context": "$.response"
+        }
+      }
+    }
+  }
+}

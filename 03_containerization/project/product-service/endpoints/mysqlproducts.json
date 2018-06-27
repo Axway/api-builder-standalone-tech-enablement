@@ -1,0 +1,93 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "mysql/products",
+    "description": "MySql ProductDB",
+    "version": "1.0.0"
+  },
+  "basePath": "/endpoints",
+  "paths": {
+    "/products": {
+      "get": {
+        "responses": {
+          "200": {
+            "description": "The find all succeeded, and the results are available.",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "schema:///model/mysql/products-full"
+              }
+            }
+          },
+          "401": {
+            "description": "This request requires user authentication, as configured by the server."
+          },
+          "404": {
+            "description": "No results were found."
+          },
+          "500": {
+            "description": "Something went wrong during the request; check out the logs on your server."
+          }
+        },
+        "description": "Find all mysql/products",
+        "operationId": "Find All mysql/product",
+        "consumes": [],
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "mysql/products"
+        ],
+        "x-flow": "mysqlproducts-findAll"
+      }
+    },
+    "/products/{ID}": {
+      "get": {
+        "responses": {
+          "200": {
+            "description": "The find succeeded, and the results are available.",
+            "schema": {
+              "$ref": "schema:///model/mysql/products-full"
+            }
+          },
+          "400": {
+            "description": "Bad request."
+          },
+          "401": {
+            "description": "This request requires user authentication, as configured by the server."
+          },
+          "404": {
+            "description": "No results were found."
+          },
+          "500": {
+            "description": "Something went wrong during the request; check out the logs on your server."
+          }
+        },
+        "description": "Find one mysql/products",
+        "operationId": "Find By ID mysql/product",
+        "consumes": [],
+        "parameters": [
+          {
+            "name": "ID",
+            "in": "path",
+            "description": "The mysql/products ID",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "mysql/products"
+        ],
+        "x-flow": "mysqlproducts-findByID"
+      }
+    },
+    "/products/distinct/{field}": {},
+    "/products/findAndModify": {},
+    "/products/count": {},
+    "/products/upsert": {},
+    "/products/query": {}
+  }
+}
