@@ -1,0 +1,17 @@
+[
+	{
+	  "ID": 1,
+	  "sku": "API Builder",
+	  "name": "product-service"
+	},
+	{
+	  "ID": 2,
+	  "sku": "API Builder",
+	  "name": "review-service"
+	},
+	{
+	  "ID": 3,
+	  "sku": "API Builder",
+	  "name": "aggregation-service"
+	}
+  ]
