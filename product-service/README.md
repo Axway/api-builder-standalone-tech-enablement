@@ -15,7 +15,9 @@ Prior to setting up a project with a connector, refer to:
 * [API Builder Getting Started Guide](https://wiki.appcelerator.org/display/AB4/API+Builder+Getting+Started+Guide) - Provides detailed instructions for installing API Builder and creating an API Builder project.
 * [API Builder Project](https://wiki.appcelerator.org/display/AB4/API+Builder+Project) - Provides detailed information about API Builder projects and services.
 
-## How to run the product-service demo
+## How to run the product-service 
+
+### Get and run the service
 * Clone the repository 
 ```sh
 git clone https://github.com/Axway/api-builder-standalone-tech-enablement.git
@@ -32,6 +34,7 @@ cd ./product-service
 npm install --no-optional
 ```
 
+### Create mysql container with DB
 * Pull Mysql Docker Image via Docker Hub. Start MySql in container and open the ports of physical machine.
 ```sh
 docker pull mysql
@@ -55,10 +58,66 @@ CREATE TABLE products(
 );
 ```
 
+__NOTE:__ you could execute the `productdb.sql` file.
+
 * You could start/stop the container via the Container ID
 ```sh
 docker start/stop <container-ID>
 ```
+
+### Dockerize the API Builder Service
+API Builder applications come with a with an example Docker file. When a service is generated with the API Builder CLI, the generated service has Docker file in its root directory.
+
+This file is just one possible Docker file that can be used for the Docker image creation. You can tailor the Docker file to your specific needs.
+
+* The Docker image can be created with the following command:
+```sh
+docker build -t <IMAGE_NAME> ./
+```
+
+* Now, you can run as many containers as you want out of the created Docker image. To check for the presence of the newly created image, run the following command:
+```sh
+docker image ls
+```
+
+* Navigate to the `<your-project>/conf/mysql.default.js` and change the `host` to the `<container-name` in this case: `mysql-container`
+```js
+module.exports = {
+	connectors: {
+		mysql: {
+			connector: '@axway/api-builder-plugin-dc-mysql',
+			connectionPooling: true,
+			connectionLimit: 10,
+            host: 'mysql-container', //'localhost',
+			port: 3306,
+			database: 'productdb',
+			user: process.env.MYSQL_USER,
+			password: process.env.MYSQL_PASSWORD,
+
+			// Create models based on your schema that can be used in your API.
+			generateModelsFromSchema: true,
+
+			// Whether or not to generate APIs based on the methods in generated models.
+			modelAutogen: false
+		}
+	}
+};
+```
+
+* Run the docker container via the already builded `<IMAGE_NAME>`. Set the Env Variables with the `-e` prefix i.e. `-e MYSQL_PASSWORD=password` and need to link the service container to the DB container using `--link` prefix i.e. `--link mysql-container:mysql-container`
+
+```sh
+docker run --name service-container -e MYSQL_USER=root -e MYSQL_PASSWORD=password --link mysql-container:mysql-container -p 8080:8080 service-img
+```
+
+* Now, you could execute `curl` command to be sure that the service is running successfully, the DB is reached and return real data. Set up the `apikey` from the `conf/default.js` and path to the endpoint.
+
+```sh
+curl -u jEeLFb2xjLQNxKBJBf89tEl+aL8+nj1X http://localhost:8080/api/endpoints/products
+```
+
+__NOTE:__ if you haven't any records in the DB yet, the response will be empty array i.e. `[]`
+
 ## How to create own service with MySql container DB
 
 This document provides a step-by-step tutorial on how to run an API Builder service within a mysql container with DB. These steps include:
