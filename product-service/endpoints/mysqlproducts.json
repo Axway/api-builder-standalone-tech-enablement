@@ -2,7 +2,7 @@
   "swagger": "2.0",
   "info": {
     "title": "mysql/products",
-    "description": "MySql ProductDB API",
+    "description": "MySql ProductDB",
     "version": "1.0.0"
   },
   "basePath": "/endpoints",
