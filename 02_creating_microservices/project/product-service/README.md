@@ -1,4 +1,4 @@
-# product-service
+# Product Service
 
 ## Table of content
 *	[Introduction](#introduction)
@@ -7,8 +7,9 @@
 *	[How to create own mysql container with DB](#how-to-create-own-mysql-container-with-db)
 
 ## Introduction
-This document provides information on how to configure and run an API Builder service within a MySql container with DB.
-
+> This service is part of the API Builder demo services. These services are not production ready and are intended for demonstration purposes only.
+> This document provides information on how to configure and run an API Builder service within a MySql container with DB.
+ 
 ## Prerequisites
 Prior to setting up a project with a connector, refer to:
 
