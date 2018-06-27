@@ -2,7 +2,7 @@ module.exports = {
 	connectors: {
 		mongo: {
 			connector: '@axway/api-builder-plugin-dc-mongo',
-			url: `mongodb://${process.env.USER}:${process.env.PASSWORD}@${process.env.DBLINK}`,
+			url: `mongodb://${process.env.MONGO_INITDB_ROOT_USERNAME}:${process.env.MONGO_INITDB_ROOT_PASSWORD}@${process.env.DBLINK}`,
 			
 			// Create models based on the schema that can be used in your API.
 			//

@@ -2,17 +2,16 @@
 The generation of an API Builder applications is a simple process with the help of the API Builder CLI tool.
 
 This document provides a step-by-step tutorial on how to run an API Builder service within a api-builder-plugin-dc-mongo connector. These steps include:
-##### a.How to use this in your own project starting from zero to hero
-##### b.How to use start this source code 
+##### a.How to use start this source code 
+##### b.How to use this in your own project starting from zero to hero
 
 # How to use start this source code 
 ### Prerequisites
 
 Run/install latest version of Docker
-Pull Mongo 3.6 > Docker Image via Docker Hub
 
 ## Steps
-#### Clone this repo and navigate to the folder ./preview-service and run in the terminal:
+#### Clone this repo and navigate to the folder ./02_creating_microservices/project/review-service and run in the terminal:
 
 1. Setup your config file for api-builder-plugin-dc-mongo connector to look like this:
 
@@ -21,7 +20,7 @@ module.exports = {
 	connectors: {
 		mongo: {
 			connector: '@axway/api-builder-plugin-dc-mongo',
-			url: `mongodb://${process.env.USER}:${process.env.PASSWORD}@${process.env.DBLINK}`,
+			url: `mongodb://${process.env.MONGO_INITDB_ROOT_USERNAME}:${process.env.MONGO_INITDB_ROOT_PASSWORD}@${process.env.DBLINK}`,
 			
 			// Create models based on the schema that can be used in your API.
 			//
@@ -45,15 +44,9 @@ In terminal run:
 docker build -t review-service ./
 ```
 ```
-docker run -d --name myMongoDB -e MONGO_INITDB_ROOT_USERNAME=root -e MONGO_INITDB_ROOT_PASSWORD=password mongo
+docker run --name myApp --link myMongoDB -p 8080:8080 -e MONGO_INITDB_ROOT_USERNAME=root -e MONGO_INITDB_ROOT_PASSWORD=password -e DBLINK=myMongoDB:27017/admin -d review-service
 ```
-```
-docker run --name myApp --link myMongoDB -p 8080:8080 -e USER=root -e PASSWORD=password -e DBLINK=myMongoDB:27017/admin -d review-service
-```
-access the database from the terminal
-```
-docker run -it --rm --link myMongoDB:mongo mongo mongo --host mongo -u root -p password --authenticationDatabase admin
-```
+
 # How to use this in your own project starting from zero to hero
 ## Create your API Builder project
 
@@ -220,7 +213,7 @@ module.exports = {
 	connectors: {
 		mongo: {
 			connector: '@axway/api-builder-plugin-dc-mongo',
-			url: 'mongodb://root:password@localhost/admin',
+			url: `mongodb://${process.env.MONGO_INITDB_ROOT_USERNAME}:${process.env.MONGO_INITDB_ROOT_PASSWORD}@localhost/admin`,
 			
 			// Create models based on the schema that can be used in your API.
 			//

@@ -10,6 +10,6 @@ WORKDIR /app
  
 # Install service dependencies relevant for production builds skipping all development dependencies.
 RUN npm install --production --no-optional --registry=http://registry.ecd.axway.int:8081/artifactory/api/npm/registry-npm
- 
+
 # Starts the service
 CMD ["node", "."]
