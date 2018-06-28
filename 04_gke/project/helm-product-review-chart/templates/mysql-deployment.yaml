@@ -1,0 +1,43 @@
+{{if eq .Values.kubernetes.version "1.9"}}
+apiVersion: apps/v1
+{{ else }}
+apiVersion: apps/v1beta2
+{{end}}
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}-mysql
+  namespace: {{ .Values.namespace }}
+  labels:
+    app: mysql
+    chart: {{ .Chart.Name }}-{{ .Chart.Version }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  replicas: {{ .Values.mysql.replicaCount }}
+  selector:
+    matchLabels:
+      app: mysql
+      release: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app: "mysql"
+        release: {{ .Release.Name }}
+    spec:
+      containers:
+        - name: mysql
+          imagePullPolicy: {{ .Values.pullPolicy }}
+          image: {{ .Values.mysql.image }}
+          ports:
+          - containerPort: 3306
+            protocol: TCP
+          readinessProbe:
+            tcpSocket:
+              port: 3306
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          livenessProbe:
+            tcpSocket:
+              port: 3306
+            initialDelaySeconds: 20
+            periodSeconds: 20

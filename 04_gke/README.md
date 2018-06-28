@@ -23,7 +23,7 @@ For the demo our pods will just contain a single service. If we were deploying a
 
 ![K8s Topology](./images/api-builder-topology-k8s.svg)
 
-To simplify/automate the deployment well use Helm.
+To simplify/automate the deployment we'll use Helm.
 
 ## Helm
 Helm is "the package manager for Kubernetes". A Helm _chart_ allows you to define, install and upgrade complex Kubernetes applications. 
@@ -44,15 +44,15 @@ This YAML file describes a ServiceAccount, this is deployed using `kubectl`
 $ kubectl create -f resource.yaml
 ```
 
-However as your deployment gets larger and more complex this becomes quite hard to manage and automate. This is the problem Helm solves. It allows you to create your resource yaml files as templates. Then to deploy your application it delivers these templates and the values for the templates to a service called Tiller. This service then applies all the changes.
+However as your deployment gets larger and more complex this becomes quite hard to manage and automate. This is the problem Helm solves. It allows you to create logical groupings of your resource yaml files. These are known as _Charts_. Then to deploy your application it delivers the _chart_ and the values for the templates to a service running in your cluster called _Tiller_. Tiller then applies all the changes.
 
-The templates are grouped together as a _Chart_. The chart consists of the templates and the values to embed in the templates. For each of our microservices (and, for this demo, datastores) we will be need to deploy the pods and replicas using a _Deployement_ and also a _Service_ per deployment.
+The templates in a chart can be parameterized, this means charts can be distributed and easily customized - only the _values.yaml_ file needs to be edited. For our demonstration, each of our microservices (and, for this demo, datastores too) will be deployed as pods with replicas using a _Deployement_ and also a _Service_ per deployment so that they can communicate.
 
 > TODO: CHARTS
 > TODO: VALUES
 
 
-## Deploying to Google Kubernetes Engine (GKE)
+## Google Kubernetes Engine (GKE)
 
 There are an multipe cloud plaforms that provide support for Kubernetes orchestration, such as Amazon EKS, Azure Kubernetes Serivce and Google Kubernetes Engine. In this section we will look at how to deploy your application to the Google Kubernettes Engine (GKE). While some of the steps outlined here are GKE specific, in general the same topics will apply to all vendors.
 
@@ -183,5 +183,22 @@ heapster               ClusterIP   10.31.251.150   <none>        80/TCP         
 kube-dns               ClusterIP   10.31.240.10    <none>        53/UDP,53/TCP   2h
 kubernetes-dashboard   ClusterIP   10.31.250.203   <none>        443/TCP         2h
 tiller-deploy          ClusterIP   10.31.253.1     <none>        44134/TCP       2h
+```
+
+
+
+## Building the images
+See [https://cloud.google.com/container-registry/docs/pushing-and-pulling](https://cloud.google.com/container-registry/docs/pushing-and-pulling).
+
+```bash
+docker build -t axway/api-builder-v4-demo-mysql project/mysql
+docker tag axway/api-builder-v4-demo-mysql gcr.io/rd-api-builder/axway/api-builder-v4-demo-mysql
+docker push gcr.io/rd-api-builder/axway/api-builder-v4-demo-mysql
+
+```
+
+## Installing the Demo
+```bash
+helm install --name demo project/helm-product-review-chart
 ```
 
