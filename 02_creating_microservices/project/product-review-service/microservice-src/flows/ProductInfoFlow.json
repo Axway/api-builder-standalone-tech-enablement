@@ -1,8 +1,8 @@
 {
 	"schemaVersion": "3",
 	"info": {
-		"name": "Greet flow",
-		"description": "Greets a user",
+		"name": "Product Info",
+		"description": "Gets information about products",
 		"author": "support@axway.com",
 		"license": "ISC"
 	},
@@ -43,7 +43,7 @@
 			"env"
 		]
 	},
-	"start": "condition.1",
+	"start": "paralleldots.1",
 	"nodes": {
 		"response.success": {
 			"type": "nodehandler://axway-flow/http",
@@ -57,7 +57,8 @@
 				},
 				{
 					"name": "body",
-					"value": "$.greeting"
+					"type": "jsonpath",
+					"value": "$.response"
 				}
 			],
 			"outputs": {
@@ -83,55 +84,38 @@
 				}
 			}
 		},
-		"doT.1": {
-			"type": "nodehandler://@axway/api-builder-plugin-fn-dot/doT",
-			"name": "Format Greeting",
-			"method": "formatStr",
+		"paralleldots.1": {
+			"type": "nodehandler://@axway/api-builder-plugin-fn-swagger/paralleldots",
+			"name": "GetTaxonomy",
+			"method": "GetTaxonomy",
 			"parameters": [
 				{
-					"name": "data",
-					"value": "$"
-				},
-				{
-					"name": "template",
-					"value": "\"{{=it.config.helloworld.salutation}} {{=it.params.username}}\"",
-					"type": "string"
+					"name": "text",
+					"type": "string",
+					"value": "\"Sometimes a camping chair just doesn't cut it. Raise your relaxation game to the next level with this Adventuridge Hammock and Stand. With its integrated drinks holder, storage pockets and detachable pillow you'll never want to get up! The hammock is easily assembled and comes with a carry bag for easy storage and transportation, making this the perfect item to take camping, or even just out in the garden to read a book.\""
 				}
 			],
 			"outputs": {
-				"next": {
-					"context": "$.greeting",
+				"200": {
+					"context": "$.response",
 					"routes": [
 						"response.success"
 					]
 				},
-				"error": {
+				"400": {
 					"context": "$.error",
 					"routes": [
 						"response.error"
 					]
-				}
-			}
-		},
-		"condition.1": {
-			"type": "nodehandler://axway-flow/condition",
-			"name": "Check Username",
-			"method": "exists",
-			"parameters": [
-				{
-					"name": "source",
-					"value": "$.params.username"
-				}
-			],
-			"outputs": {
-				"true": {
-					"context": "$.exists",
+				},
+				"401": {
+					"context": "$.error",
 					"routes": [
-						"doT.1"
+						"response.error"
 					]
 				},
-				"false": {
-					"context": "$.exists",
+				"500": {
+					"context": "$.error",
 					"routes": [
 						"response.error"
 					]

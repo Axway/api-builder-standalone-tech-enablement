@@ -4,25 +4,17 @@
 	},
 	"swagger": "2.0",
 	"info": {
-		"description": "Greeting functions",
+		"description": "Product info functions",
 		"version": "1.0.0",
-		"title": "Greeting API"
+		"title": "Product Info API"
 	},
 	"paths": {
 		"/greet": {
 			"get": {
-				"x-flow": "GreetFlow",
+				"x-flow": "ProductInfoFlow",
 				"description": "",
-				"operationId": "Greet",
-				"parameters": [
-					{
-						"description": "The username",
-						"in": "query",
-						"name": "username",
-						"required": true,
-						"type": "string"
-					}
-				],
+				"operationId": "ProductInfo",
+				"parameters": [],
 				"produces": [
 					"application/json"
 				],
@@ -40,10 +32,7 @@
 						}
 					}
 				},
-				"summary": "Greet a user",
-				"tags": [
-					"helloworld"
-				]
+				"summary": "Gets product info"
 			}
 		}
 	}
