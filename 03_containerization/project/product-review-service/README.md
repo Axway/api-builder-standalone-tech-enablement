@@ -1,7 +1,9 @@
+WIP
+
 # Product-Review Microservice Dockerisation
 
-THIS CHAPTER IS WIP:
-* Update content according to the service
+THIS CHAPTER IS BASED ON THE DEMO SERVICES BUT IS IN WIP:
+* Update content according to the product-review service
 * Add the architecture diagram with Docker involved
 
 
