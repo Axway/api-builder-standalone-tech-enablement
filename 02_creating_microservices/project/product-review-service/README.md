@@ -16,7 +16,7 @@ The service aggregates information from the following services:
 
 ## Architecture Diagram
 
-TODO
+![Stoplight](./images/architecture.png)
 
 ## How to Try?
 
@@ -35,6 +35,8 @@ See the startup guide
 As long as you know your business logic many alternative ways exist to create your API specification. This also depends on the specification format you prefer. However, API Buider works with Swagger 2.0 so this format will be used for the case of the demo.
 
 One of the available tools out there is Stoplight. It can be used to define the API and export the swagger specification. Sample screenshot is shown bellow.
+
+![Stoplight](./images/stoplight.png)
 
 ### Step 3 - Import the specification to API Builder service
 
