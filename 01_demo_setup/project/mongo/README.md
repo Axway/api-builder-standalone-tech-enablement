@@ -13,9 +13,9 @@ Install latest version of Docker
 docker build -t mongodb ./
 ```
 ```
-docker run -d --name myMongoDB -e MONGO_INITDB_ROOT_USERNAME=root -e MONGO_INITDB_ROOT_PASSWORD=password mongodb
+docker run -d --name myMongoDB -p 27017:27017 -e MONGO_INITDB_ROOT_USERNAME=root -e MONGO_INITDB_ROOT_PASSWORD=password -e MONGO_INITDB_DATABASE=admin mongodb
 ```
 Access the database from the terminal
 ```
-docker run -it --rm --link myMongoDB:mongodb mongo mongo --host mongo -u root -p password --authenticationDatabase admin
+docker run -it --rm --link myMongoDB:mongodb mongo mongo --host myMongoDB -u root -p password --authenticationDatabase admin
 ```

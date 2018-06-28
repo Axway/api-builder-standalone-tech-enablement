@@ -47,6 +47,11 @@ docker build -t review-service ./
 docker run --name myApp --link myMongoDB -p 8080:8080 -e MONGO_INITDB_ROOT_USERNAME=root -e MONGO_INITDB_ROOT_PASSWORD=password -e DBLINK=myMongoDB:27017/admin -d review-service
 ```
 
+check if your containers are connected and the API endpoints for mongo are created:
+```sh
+curl -X GET -u CI5Uaei7o3AqI/J85trGCkYEjY/R7Q0v: "http://localhost:8080/api/mongo/review"
+```
+
 # How to use this in your own project starting from zero to hero
 ## Create your API Builder project
 
