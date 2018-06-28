@@ -1,17 +1,20 @@
 [
 	{
-	  "ID": 1,
+	  "id": 1,
 	  "sku": "API Builder",
-	  "name": "product-service"
+		"name": "product-service",
+		"description": "This service is part of the API Builder demo services."
 	},
 	{
-	  "ID": 2,
+	  "id": 2,
 	  "sku": "API Builder",
-	  "name": "review-service"
+		"name": "review-service",
+		"description": "This service is part of the API Builder demo services."
 	},
 	{
-	  "ID": 3,
+	  "id": 3,
 	  "sku": "API Builder",
-	  "name": "aggregation-service"
+		"name": "aggregation-service",
+		"description": "This service is part of the API Builder demo services."
 	}
-  ]
+]

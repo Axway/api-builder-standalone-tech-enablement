@@ -3,8 +3,9 @@ CREATE DATABASE productdb;
 USE productdb;
 
 CREATE TABLE products(
-    ID INT NOT NULL AUTO_INCREMENT,
+    id INT NOT NULL AUTO_INCREMENT,
     sku nvarchar(255),
     name nvarchar(255),
-    PRIMARY KEY(ID)
+    description nvarchar(255),
+    PRIMARY KEY(id)
 );
