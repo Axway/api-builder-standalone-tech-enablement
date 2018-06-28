@@ -29,13 +29,13 @@ Previously, API Builder needed appc CLI to download connectors from Appcelerator
 
 API Builder now has a new flow-node that can connect out to external services asynchronously via HTTP.
 
-![REST flow-node](/images/rest-client.png)
+![REST flow-node](/00_whats_new/images/rest-client.png)
 
 ## Swagger flow-node
 
 API Builder now has a new flow-node that can load Swagger 2.0 documents as flow-nodes and make them available to the flow editor.  This greatly simplifies orchestrating east-west communication to sibling services in a service mesh.
 
-![Swagger flow-node](/images/swagger-flow-node.png)
+![Swagger flow-node](/00_whats_new/images/swagger-flow-node.png)
 
 ## Flows have autocomplete
 
