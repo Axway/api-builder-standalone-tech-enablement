@@ -1,40 +1,91 @@
-# Deploying to Google Kubernetes Engine
+# Kubernetes ([https://kubernetes.io](https://kubernetes.io))
+
+The goal of this section is to show how to deploy your services to Kubernetes. Kubernetes is a container orchestration system that automates deployment, scaling, management, etc of containerized applications.
+
+The concepts we will be dealing with are:
+- [Pods](https://kubernetes.io/docs/concepts/workloads/pods/pod/) are the smallest deployable units that can be created and managed. Each pod is a group of one or more containers.
+- [Deployments](https://kubernetes.io/docs/concepts/workloads/controllers/deployment/) allow you to declaritively define the relationship between ReplicaSets and Pods.
+- [Services](https://kubernetes.io/docs/concepts/services-networking/service/) are an abstraction which defines a logical set of Pods and a policy by which to access them.
+
+> This is only a small subset of the features Kubernetes provides but sufficient for our demonstration.
+
+## Product Review Service
+
+The scenario we're using for this demostration comprises of 3 microservices and 2 datasources. 
+
+![Topology](./images/api-builder-topology.svg)
+
+> For this demostration we will also be hosting the databases in the Kubernetes cluster but in a real world situation these likely be hosted elsewhere.
+
+> TODO: ADD DESCRIPTION OF CONFIG SETTNIGS
+
+For the demo our pods will just contain a single service. If we were deploying a sidecar such as Istio then we'd also have Envoy in the pods. The `product-review-service` is the only microservice that will be accessible outside of the cluster. So perhaps a more accurate visualization of this is:
+
+![K8s Topology](./images/api-builder-topology-k8s.svg)
+
+To simplify/automate the deployment well use Helm.
+
+## Helm
+Helm is "the package manager for Kubernetes". A Helm _chart_ allows you to define, install and upgrade complex Kubernetes applications. 
+
+To deploy/configure something in Kubernetes you create a YAML file describing the resource being deployed. For example:
+
+```yaml
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: tiller
+  namespace: kube-system
+```
+
+This YAML file describes a ServiceAccount, this is deployed using `kubectl`
+
+```bash
+$ kubectl create -f resource.yaml
+```
+
+However as your deployment gets larger and more complex this becomes quite hard to manage and automate. This is the problem Helm solves. It allows you to create your resource yaml files as templates. Then to deploy your application it delivers these templates and the values for the templates to a service called Tiller. This service then applies all the changes.
+
+The templates are grouped together as a _Chart_. The chart consists of the templates and the values to embed in the templates. For each of our microservices (and, for this demo, datastores) we will be need to deploy the pods and replicas using a _Deployement_ and also a _Service_ per deployment.
+
+> TODO: CHARTS
+> TODO: VALUES
+
+
+## Deploying to Google Kubernetes Engine (GKE)
 
 There are an multipe cloud plaforms that provide support for Kubernetes orchestration, such as Amazon EKS, Azure Kubernetes Serivce and Google Kubernetes Engine. In this section we will look at how to deploy your application to the Google Kubernettes Engine (GKE). While some of the steps outlined here are GKE specific, in general the same topics will apply to all vendors.
 
+### Setting up Google Kubernetes Engine (GKE)
 
-## Setting up Google Kubernetes Engine (GKE)
-
-This is just an overview of the steps to configure you machine to access GKE, however this is not a complete how-to guide. So for more information please consult the documentation [https://cloud.google.com/kubernetes-engine](https://cloud.google.com/kubernetes-engine).
+> This is a brief overview of the steps to configure you machine to access GKE, however this is not an in-depth how-to guide. So for more information please consult the documentation [https://cloud.google.com/kubernetes-engine](https://cloud.google.com/kubernetes-engine).
 
 GKE runs on the Google Cloud Platform (GCP), so the first step is to install the Google Cloud SDK (`gcloud`). This will be platform dependent, see [https://cloud.google.com/sdk/install](https://cloud.google.com/sdk/install).
 
-### Create a project
+#### Create a project
 
 GCP resources are organized hierarchically. Starting from the bottom of the hierarchy, projects are the first level, and they contain other resources. All resources must belong to exactly one project. See [https://cloud.google.com/resource-manager/docs/cloud-platform-resource-hierarchy](https://cloud.google.com/resource-manager/docs/cloud-platform-resource-hierarchy) for more detail.
 
 GCP/GKE has a rich UI and a lot of the tasks descibed here can also be achieved via the UI. To create a project you can go to [https://console.cloud.google.com/projectcreate](https://console.cloud.google.com/projectcreate). 
 
-However as we installed the Google Cloud SDK (gcloud) we can also do it from the command line.
+It can also be done from the command line using Google Cloud SDK (gcloud) we can also do it from the command line.
 
 ```bash
-$ gcloud projects create api-builder-v4-te
-Create in progress for [https://cloudresourcemanager.googleapis.com/v1/projects/api-builder-v4-te].
-Waiting for [operations/cp.5974774110346936774] to finish...done.      
+gcloud projects create rd-api-builder
 ```
 
 You can view your projects:
 
 ```bash
 $ gcloud projects list
-PROJECT_ID         NAME               PROJECT_NUMBER
-api-builder-v4-te  api-builder-v4-te  808803406091
+PROJECT_ID      NAME            PROJECT_NUMBER
+rd-api-builder  RD-API-BUILDER  599994285848
 ```
 
 To make working with the gcloud cli simpler you can set defaults for your project and compute zones, rather than having to specify them on each command.
 
 ```bash
-$ gcloud config set project api-builder-v4-te
+$ gcloud config set project rd-api-builder
 Updated property [core/project].
 
 $ gcloud config set compute/zone europe-west2-a
@@ -44,30 +95,30 @@ Updated property [compute/zone].
 We're using the _europe-west2-a_ zone (London), a full list of the available zones/regions can be found [https://cloud.google.com/compute/docs/regions-zones/](https://cloud.google.com/compute/docs/regions-zones/).
 
 
-### Creating a cluster
+#### Creating a cluster
 
-A Kubernetes cluster is a managed group of uniform VM instances for running Kubernetes. These are the VMs that our application will be running on. Creating your cluster in the UI is the simplest option, [https://console.cloud.google.com/kubernetes/list?project=api-builder-v4-te](https://console.cloud.google.com/kubernetes/list?project=api-builder-v4-te).
+A Kubernetes cluster is a managed group of uniform VM instances for running Kubernetes. These are the VMs that our application will be running on. Creating your cluster in the UI is the simplest option, [https://console.cloud.google.com/kubernetes/list](https://console.cloud.google.com/kubernetes/list).
 
 ![Create Cluster](./images/create_cluster_02.png)
 
 However you can also create it from command line:
 
 ```bash
-gcloud beta container clusters create product-review-cluster \
-    --num-nodes "5" \
-    --username "admin" \
-    --cluster-version "1.8.10-gke.0" \
-    --machine-type "n1-standard-1" \
-    --image-type "COS" \
-    --disk-type "pd-standard" \
-    --disk-size "100" \
-    --scopes "https://www.googleapis.com/auth/compute","https://www.googleapis.com/auth/devstorage.read_only","https://www.googleapis.com/auth/logging.write","https://www.googleapis.com/auth/monitoring","https://www.googleapis.com/auth/servicecontrol","https://www.googleapis.com/auth/service.management.readonly","https://www.googleapis.com/auth/trace.append" \
-    --enable-cloud-logging \
-    --enable-cloud-monitoring \
-    --network "default" \
-    --subnetwork "default" \
-    --addons HorizontalPodAutoscaling,HttpLoadBalancing,KubernetesDashboard \
-    --no-enable-autoupgrade \
+gcloud beta container clusters create "product-review-cluster" 
+    --username "admin"
+    --cluster-version "1.9.7-gke.3"
+    --machine-type "n1-standard-1"
+    --image-type "COS"
+    --disk-type "pd-standard"
+    --disk-size "100"
+    --scopes "https://www.googleapis.com/auth/compute","https://www.googleapis.com/auth/devstorage.read_only","https://www.googleapis.com/auth/logging.write","https://www.googleapis.com/auth/monitoring","https://www.googleapis.com/auth/servicecontrol","https://www.googleapis.com/auth/service.management.readonly","https://www.googleapis.com/auth/trace.append"
+    --num-nodes "5"
+    --enable-cloud-logging
+    --enable-cloud-monitoring
+    --network "default"
+    --subnetwork "default"
+    --addons HorizontalPodAutoscaling,HttpLoadBalancing,KubernetesDashboard
+    --no-enable-autoupgrade
     --enable-autorepair
 ```
 
@@ -75,8 +126,8 @@ You can list the available clusters:
 
 ```bash
 $ gcloud beta container clusters list
-NAME                    LOCATION        MASTER_VERSION  MASTER_IP     MACHINE_TYPE   NODE_VERSION  NUM_NODES  STATUS
-product-review-cluster  europe-west2-a  1.8.10-gke.0    35.230.133.8  n1-standard-1  1.8.10-gke.0  5          RUNNING
+NAME                    LOCATION        MASTER_VERSION  MASTER_IP      MACHINE_TYPE   NODE_VERSION  NUM_NODES  STATUS
+product-review-cluster  europe-west2-a  1.9.7-gke.3     35.189.68.218  n1-standard-1  1.9.7-gke.3   5          RUNNING
 ```
 
 Or view them in the UI:
@@ -101,13 +152,11 @@ kube-dns               ClusterIP   10.31.240.10    <none>        53/UDP,53/TCP  
 kubernetes-dashboard   ClusterIP   10.31.250.203   <none>        443/TCP         2h
 ```
 
-## Configuring Helm ([https://helm.sh/](https://helm.sh/))
-
-Helm is "the package manager for Kubernetes". A Helm _chart_ allows you to define, install and upgrade complex Kubernetes applications. We'll investigate Helm later but we need to install Helm.
+### Configuring Helm ([https://helm.sh/](https://helm.sh/))
 
 To install Helm on your platform see the installation instructions [https://github.com/kubernetes/helm#install](https://github.com/kubernetes/helm#install).
 
-Helm will install a service called _Tiller_ in you cluster. On GKE this requires a service account with necessary role, for detail see [https://docs.helm.sh/using_helm/#gke](https://docs.helm.sh/using_helm/#gke).
+As mentioned earlier, Helm requires a service called _Tiller_ to be installed into your cluster to deploy _Charts_. On GKE this requires a service account with necessary role, for detail see [https://docs.helm.sh/using_helm/#gke](https://docs.helm.sh/using_helm/#gke).
 
 
 ```bash
@@ -136,12 +185,3 @@ kubernetes-dashboard   ClusterIP   10.31.250.203   <none>        443/TCP        
 tiller-deploy          ClusterIP   10.31.253.1     <none>        44134/TCP       2h
 ```
 
-## APPLICATION OVERVIEW
-
-pic of wherre deploying
-some overview of the config
-some helm charts
-deploy it
-configure ingress
-ssl
-etc
