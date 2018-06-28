@@ -1,13 +1,17 @@
 # API Builder Standalone - What's new
 
 * No dependency to appc
-* New CLI (api-builder)
+* New CLI (@axway/api-builder)
 * Revised logging format to stream to stdout
 * Revised configuration to have only `default` and `local` sets of configuration files
 * Changes to load data connectors as npm modules (plugins)
 * Added new asynchronous HTTP rest client plugin to the flow
 * Added new asynchronous Swagger plugin to the flow
 * Flows now have input parameters and autocomplete
+
+## Standalone
+
+API Builder is now standalone and no longer requires `appc`, or the Appcelerator cloud.  API Builder is a **free** NodeJS / ExpressJS application to help companies rapidly build microservices using reusable components, and then build these services into containers to deploy into any container platform.  API Builder is not a container itself.
 
 ## Logging
 
@@ -25,13 +29,13 @@ Previously, API Builder needed appc CLI to download connectors from Appcelerator
 
 API Builder now has a new flow-node that can connect out to external services asynchronously via HTTP.
 
-![REST flow-node](/images/rest-client.png)
+![REST flow-node](./images/rest-client.png)
 
 ## Swagger flow-node
 
 API Builder now has a new flow-node that can load Swagger 2.0 documents as flow-nodes and make them available to the flow editor.  This greatly simplifies orchestrating east-west communication to sibling services in a service mesh.
 
-![Swagger flow-node](/images/swagger-flow-node.png)
+![Swagger flow-node](./images/swagger-flow-node.png)
 
 ## Flows have autocomplete
 
