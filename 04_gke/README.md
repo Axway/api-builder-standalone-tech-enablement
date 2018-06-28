@@ -186,16 +186,24 @@ tiller-deploy          ClusterIP   10.31.253.1     <none>        44134/TCP      
 ```
 
 
-
 ## Building the images
-See [https://cloud.google.com/container-registry/docs/pushing-and-pulling](https://cloud.google.com/container-registry/docs/pushing-and-pulling).
+
+Your DevOps process would be responsible for building and publishing the Docker images, but in this case we'll build the images locally.
 
 ```bash
 docker build -t axway/api-builder-v4-demo-mysql project/mysql
+docker build -t axway/api-builder-v4-demo-mongo project/mongo
+```
+
+For GKE we are going to push the images to the Google Container Registy (GCR). See [https://cloud.google.com/container-registry/docs/pushing-and-pulling](https://cloud.google.com/container-registry/docs/pushing-and-pulling).
+
+```bash
 docker tag axway/api-builder-v4-demo-mysql gcr.io/rd-api-builder/axway/api-builder-v4-demo-mysql
 docker push gcr.io/rd-api-builder/axway/api-builder-v4-demo-mysql
-
+docker tag axway/api-builder-v4-demo-mongo gcr.io/rd-api-builder/axway/api-builder-v4-demo-mongo
+docker push gcr.io/rd-api-builder/axway/api-builder-v4-demo-mongo
 ```
+
 
 ## Installing the Demo
 ```bash

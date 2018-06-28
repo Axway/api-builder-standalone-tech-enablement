@@ -5,39 +5,39 @@ apiVersion: apps/v1beta2
 {{end}}
 kind: Deployment
 metadata:
-  name: {{ .Release.Name }}-mysql
+  name: {{ .Release.Name }}-mongo
   namespace: {{ .Values.namespace }}
   labels:
-    app: mysql
+    app: mongo
     chart: {{ .Chart.Name }}-{{ .Chart.Version }}
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
 spec:
-  replicas: {{ .Values.mysql.replicaCount }}
+  replicas: {{ .Values.mongo.replicaCount }}
   selector:
     matchLabels:
-      app: mysql
+      app: mongo
       release: {{ .Release.Name }}
   template:
     metadata:
       labels:
-        app: mysql
+        app: mongo
         release: {{ .Release.Name }}
     spec:
       containers:
-        - name: mysql
+        - name: mongo
           imagePullPolicy: {{ .Values.pullPolicy }}
-          image: {{ .Values.mysql.image }}
+          image: {{ .Values.mongo.image }}
           ports:
-          - containerPort: 3306
+          - containerPort: 27017
             protocol: TCP
           readinessProbe:
             tcpSocket:
-              port: 3306
+              port: 27017
             initialDelaySeconds: 5
             periodSeconds: 10
           livenessProbe:
             tcpSocket:
-              port: 3306
+              port: 27017
             initialDelaySeconds: 20
             periodSeconds: 20

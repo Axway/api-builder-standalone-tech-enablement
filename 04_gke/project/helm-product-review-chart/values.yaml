@@ -13,3 +13,8 @@ pullPolicy: Always
 mysql:
   replicaCount: 1
   image: gcr.io/rd-api-builder/axway/api-builder-v4-demo-mysql
+
+# Mongo Configuration
+mongo:
+  replicaCount: 1
+  image: gcr.io/rd-api-builder/axway/api-builder-v4-demo-mongo
