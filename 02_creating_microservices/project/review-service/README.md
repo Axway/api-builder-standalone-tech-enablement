@@ -1,132 +1,142 @@
+# Review Service
+
+## Table of content
+*	[Introduction](#introduction)
+*	[Prerequisites](#prerequisites)
+*	[How to run the demo review-service](#how-to-run-the-demo-review-service)
+*	[How to create own mongo container with DB](#how-to-create-own-mongo-container-with-db)
+
 ## Introduction
-The generation of an API Builder applications is a simple process with the help of the API Builder CLI tool.
+> This service is part of the API Builder demo services. These services are not production ready and are intended for demonstration purposes only.
+> This document provides information on how to configure and run an API Builder service within a Mongo container with DB.
+ 
+## Prerequisites
+Prior to setting up a project with a connector, refer to:
 
-This document provides a step-by-step tutorial on how to run an API Builder service within a api-builder-plugin-dc-mongo connector. These steps include:
-##### a.How to use start this source code 
-##### b.How to use this in your own project starting from zero to hero
+* [API Builder Getting Started Guide](https://wiki.appcelerator.org/display/AB4/API+Builder+Getting+Started+Guide) - Provides detailed instructions for installing API Builder and creating an API Builder project.
+* [API Builder Project](https://wiki.appcelerator.org/display/AB4/API+Builder+Project) - Provides detailed information about API Builder projects and services.
 
-# How to use start this source code 
-### Prerequisites
+## How to run the review-service 
 
-Run/install latest version of Docker
-
-## Steps
-#### Clone this repo and navigate to the folder ./02_creating_microservices/project/review-service and run in the terminal:
-
-1. Setup your config file for api-builder-plugin-dc-mongo connector to look like this:
-
-```js
-module.exports = {
-	connectors: {
-		mongo: {
-			connector: '@axway/api-builder-plugin-dc-mongo',
-			url: `mongodb://${process.env.MONGO_INITDB_ROOT_USERNAME}:${process.env.MONGO_INITDB_ROOT_PASSWORD}@${process.env.DBLINK}`,
-			
-			// Create models based on the schema that can be used in your API.
-			//
-			// Use this with care, API Builder determines the schema for the auto generated
-			// models by sampling the collection. If the collection is empty then the schema
-			// cannot be determined and so the model will not be generated.
-			// This will cause issues if there are Flows/APIs depending on that model schema.
-			// Instead you should prefer explicitly creating Models in the API Builder UI.
-			generateModelsFromSchema: true,
-
-			// Whether or not to generate APIs based on the methods in generated models.
-			modelAutogen: true
-		}
-	}
-};
-
-```
-
-In terminal run:
-```
-docker build -t review-service ./
-```
-```
-docker run --name myApp --link myMongoDB -p 8080:8080 -e MONGO_INITDB_ROOT_USERNAME=root -e MONGO_INITDB_ROOT_PASSWORD=password -e DBLINK=myMongoDB:27017/admin -d review-service
-```
-
-check if your containers are connected and the API endpoints for mongo are created:
+### Get and run the service
+* Clone the repository 
 ```sh
-curl -X GET -u CI5Uaei7o3AqI/J85trGCkYEjY/R7Q0v: "http://localhost:8080/api/mongo/review"
+git clone https://github.com/Axway/api-builder-standalone-tech-enablement.git
 ```
 
-# How to use this in your own project starting from zero to hero
-## Create your API Builder project
+* Navigate to the review-service demo folder
+```sh
+cd ./api-builder-standalone-tech-enablement
+cd ./02_creating_microservices/project/review-service
+```
 
-* Add your api-builder-plugin-dc-mongo connector
+* Install all dependencies
+```sh
+npm install --no-optional
+```
+
+### Create mongo container with DB
+* Pull Mongo Docker Image via Docker Hub. Start Mongo in container and open the ports of physical machine.
+```sh
+docker pull mongo
+docker run -p 27017:27017 -d --name some-mongo -e MONGO_INITDB_ROOT_USERNAME=root -e MONGO_INITDB_ROOT_PASSWORD=password mongo
+docker run -it --rm --link some-mongo:mongo mongo mongo --host mongo -u root -p password --authenticationDatabase admin
+```
+
+* Then create a DB and a Table
+```sh
+use admin
+
+db.createCollection("review", { capped : true, autoIndexId : true, size : 
+   6142800, max : 10000 } )
+
+db.reviews.insert({
+	sku: "iphone",
+	review: "Very good gsm - 5 star rating"
+})
+```
+
+
+* You could start/stop the container via the Container ID
+```sh
+docker start/stop <container-ID>
+```
+
+## How to create own service with Mongo container DB
+
+This document provides a step-by-step tutorial on how to run an API Builder service within a mongo container with DB. These steps include:
+
+### Create your API Builder project
+
+* Add your connector
 
 * Run your service
 
 * These steps and their required prerequisites are described in the following sections.
 
-## Prerequisites
+### Prerequisites
+
 You should have `NPM` latest version and `Node.js` latest version (^8) installed.
 Tools to be installed in advance:
 
-* Install the API Builder Command Line Interface (CLI) globally using `npm`. It is a node module published in npm public repository, please find additional information on official API Builder Getting Started Guide.
-
-```sh
-[sudo] npm install -g @axway/api-builder
-```
-
-* Docker - The installation of Docker depends on the specific operating system, please read the details on the following page Read the official guide for Docker installation.
+* Install the __API Builder Command Line Interface (CLI)__ globally using `npm`. It is a node module published in npm public repository, please find additional information on official API Builder Getting Started Guide.
+* __Docker__ - The installation of Docker depends on the specific operating system, please read the details on the following page Read the official guide for Docker installation.
 Research for the B.I tools and 3rd party data store i.e. Splunk, Elastic etc.
 
-## Step 1: Create your API Builder project
+### Step 1: Create your API Builder project
+If you already have a generated service, you can proceed to __Step 2__.
 Install the API Builder Command Line Interface (CLI) globally using npm.
 
 ```sh
 [sudo] npm install -g @axway/api-builder
 ```
 
-Once API Builder CLI is installed, you can use it to create a new project.  In the following example, the CLI will create and initialize the ./review-service new project directory.
+Once API Builder CLI is installed, you can use it to create a new project.  In the following example, the CLI will create and initialize the ./myproject new project directory.
 
 ```sh
-api-builder init review-service
+api-builder init <my-project>
 ```
 
 Then, install the project's dependencies and start the API Builder project.
 
 ```sh
-cd ./review-service
+cd ./<my-project>
 npm install --no-optional
 npm start
 ```
 
 Once your project is running, point your browser to http://localhost:8080/console to access the API Builder user interface (UI) console.
 
-__NOTE:__ Refer to the API Builder Getting Started Guide for detailed information.
+__NOTE:__ Refer to the [API Builder Getting Started Guide](https://wiki.appcelerator.org/display/AB4/API+Builder+Getting+Started+Guide) for detailed information.
 
-## Step 2: Add your connector
+### Step 2: Add your connector
 Now, you have tested that your service is running directly on your machine.
 
-In case, you need to stop the service, use Ctrl + C in your terminal where the service is running.
+In case, you need to stop the service, use `Ctrl + C` in your terminal where the service is running.
 
 To add a Connector:
 
 1. Install the Connector
-2. Configure the Connector
-3. Use the Connector
+1. Configure the Connector
+1. Use the Connector
 
-### Step 2a: Install the Connector
-For an example we will demonstrate you how to install and configure __api-builder-plugin-dc-mongo__.
+#### Step 2a: Install the Connector
+For an example we will demonstrate you how to install and configure Mongo DC.
 
-This is an API Builder data connector for MonGo.
+This is an API Builder data connector for Mongo.
 
 ```sh
 npm install @axway/api-builder-plugin-dc-mongo
 ```
 
-__NOTE:__ using `npm install @axway/api-builder-plugin-dc-mongo@latest` will pick up the latest available connector version.
+__NOTE:__ using `@latest` will pick up the latest available connector version.
 
-A configuration file is generated for you and placed into the conf directory of your API Builder project. By default in the connection string for mongo we use a host of localhost user of root and a password of password to connect.
+A configuration file is generated for you and placed into the conf directory of your API Builder project. By default we use a host of localhost, a user of root and a password of password to connect.
 
-### Step 2b: Configure the Connector
-Once you've configured your mongo configuration files located under <project>/conf you can start up your API Builder project and visit the console (normally found under localhost:8080/console). Your connector will be listed under the Connectors section of the console.
+#### Step 2b: Configure the Connector
+Once you've configured your mongo configuration files located under `<my-project>/conf` you can start up your API Builder project and visit the console (normally found under `localhost:8080/console`). Your connector will be listed under the Connectors section of the console.
 
-Your Mongo tables will be listed uner the Models section of the console. You can now click on the gear icon to the right of the table names and generate flow based apis.
+Your Mongo tables will be listed under the Models section of the console. You can now click on the gear icon to the right of the table names and generate flow based apis.
 
 You can also reference the connector in a custom model.
 
@@ -156,63 +166,62 @@ const Account = Arrow.Model.extend('account', {
 });
 ```
 
-### Step 2c: Use the Connector
-The configuration files that can contain environment variables are placed in the `<SERVICE_FOLDER>/conf` folder.
+#### Step 2c: Use the Connector
+The configuration files that can contain environment variables are placed in the `<my-project>/conf` folder.
 
 All the variables in your configuration files taken from `process.env.<VARIABLE_NAME>` can be provided when running the Docker container.
 
 The following table lists the configuration files, their location, and their example content. The connector configuration is shown to inform you that you will have to provide an additional set of environment variables when using an API Builder service with connectors.
 
-## Step 3: Run Mongo via Docker
-3.1. Run latest version of Docker
-3.2. Pull Mongo 3.6 > Docker Image via Docker Hub
+### Step 3: Run Mongo via Docker
+* Run latest version of Docker
+* Pull Mongo Docker Image via Docker Hub
 
 ```sh
 docker pull mongo
 ```
 
-3.3. Start Mongo in container and open the ports of physical machine
+* Start Mongo in container and open the ports of physical machine
 ```sh
 docker run -p 27017:27017 -d --name some-mongo -e MONGO_INITDB_ROOT_USERNAME=root -e MONGO_INITDB_ROOT_PASSWORD=password mongo
 ```
 
-3.4. To access the database through the terminal, execute the following command
+* Set user and passward, and access the database:
 ```sh
 docker run -it --rm --link some-mongo:mongo mongo mongo --host mongo -u root -p password --authenticationDatabase admin
 ```
-3.5. Use the newly created DB
+
+* Create DB
 ```sh
-USE admin
+use admin
 ```
 
-3.6 Create table
+* Create table and fill it in
 ```sh
-db.createCollection("reviews", { capped : true, autoIndexId : true, size : 
+USE admin
+
+db.createCollection("review", { capped : true, autoIndexId : true, size : 
    6142800, max : 10000 } )
-```
-3.7. Fill the table
-```sh
-db.reviews.insert({
+
+db.review.insert({
 	sku: "iphone",
 	review: "Very good gsm - 5 star rating"
 })
+
+export MONGO_INITDB_ROOT_USERNAME=root export MONGO_INITDB_ROOT_PASSWORD=password && npm start
 ```
 
-3.8. Using the below command you can see list of all containers and theirs IDs
+* Using the below command you can see list of all containers and theirs IDs
 ```sh
 docker ps -a
 ```
 
-3.9. You could start/stop the container via the Container ID
+* You could start/stop the container via the Container ID / Name
 ```sh
-docker start <ID>
-
-or
-
-docker stop <ID>
+docker start/stop <container-ID>
 ```
 
-3.10. Go to the root of your project (`<your-project>/config/mongo.default.js`) and set up the connection string for mongo with some params like user,password and localhost. Please find below a sample:
+* Go to the root of your project (`<your-project>/config/mongo.default.js`) and set your `url` connection string needed by mongo to connect and authentificate to the database. Please find below a sample:
 ```js
 module.exports = {
 	connectors: {
@@ -234,17 +243,21 @@ module.exports = {
 		}
 	}
 };
-
 ```
 
-__NOTE:__ Now you are ready to start your service via `npm start`. Once your project is running, point your browser to http://localhost:8080/console to access the API Builder user interface (UI) console.
+#### Step 4: Run your service
+Now you are ready to start your service via
+```sh
+npm start
+```
 
-## Step 4: Run your service
-Once you have scaffold project, install Mongo connector and run successfully your service, you will be able to point your browser to http://localhost:8080/console to access the API Builder user interface (UI) console. Then you could navigate thru the components. 
+Once your project is running, point your browser to http://localhost:8080/console to access the API Builder user interface (UI) console. 
+
+Then you could navigate thru the components. 
 1. Navigate to the Connectors tab. A list of the available connectors is displayed.
 1. Now, navigate to the Models tab. Click the Tools icon for the Mongo connector and select Generate endpoints to create the Mongo endpoints.
 1. Navigate to the API Doc & Test tab. A list of the API Endpoints is displayed.
-1. Select reviews to display the list of the generated endpoints for the Mongo connector.
-1. Select the Flow icon for one of the generated endpoints for the Mongo connector; for example, for the Find all reviews endpoint. The API Orchestration page with all loaded connectors, nodes, and so forth is displayed.
+1. Select mongo/review to display the list of the generated endpoints for the Mongo connector.
+1. Select the Flow icon for one of the generated endpoints for the Mongo connector; for example, for the Find all mongo review endpoints. The API Orchestration page with all loaded connectors, nodes, and so forth is displayed.
 
-__NOTE:__ Refer to API Builder Flows and Manage Nodes for detailed information.
+__NOTE:__ Refer to __API Builder Flows__ and __Manage Nodes__ for detailed information.
