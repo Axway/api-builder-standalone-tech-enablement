@@ -1,5 +1,11 @@
 # Product-Review Microservice Dockerisation
 
+THIS CHAPTER IS WIP:
+* Update content according to the service
+* Add the architecture diagram with Docker involved
+
+
+
 This service aggregates information from internal services - Product API and Review API - and publicly available API.
 
 The following environment variables need to be configured to work with the Product and Review services.
@@ -12,14 +18,6 @@ The following environment variables need to be configured to work with the Produ
 | REVIEW_API_HOST   | The host running the review-service.     |
 | REVIEW_API_PORT   | The port the review app is listening on. |
 | REVIEW_API_APIKEY | The review-service apikey.               |
-
-## Dependencies
-### Internal 
-- product-service (image: axway/api-builder-demo-weather-service)
-- review-service (image: axway/api-builder-demo-weather-service)
-
-### External
-* The API used for getting keywords from product descriptions Parallel Dots
 
 ## Docker Build
 ```
