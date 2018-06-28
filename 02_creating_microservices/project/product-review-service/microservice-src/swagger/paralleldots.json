@@ -1,0 +1,95 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "Parallel Dots",
+    "description": "Sentiment API",
+    "version": "1.0.0"
+  },
+  "host": "apis.paralleldots.com",
+  "basePath": "/v3",
+  "schemes": [
+    "https"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/taxonomy": {
+      "post": {
+        "responses": {
+          "200": {
+            "description": "Success.",
+            "schema": {
+              "type": "array",
+              "hits": {
+                "$ref": "#/definitions/schema.taxonomy"
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Authorization Required"
+          },
+          "500": {
+            "description": "Server Error"
+          }
+        },
+        "description": "Gets top 3 categories that matches the input text",
+        "operationId": "GetTaxonomy",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "text",
+            "type": "string"
+          }
+        ],
+        "produces": [
+          "application/json"
+        ]
+      }
+    }
+  },
+  "securityDefinitions": {
+    "apiKey": {
+      "type": "apiKey",
+      "name": "api_key",
+      "in": "query",
+      "description": "Require authorized access to API"
+    }
+  },
+  "security": [],
+  "definitions": {
+    "schema.taxonomy": {
+      "type": "object",
+      "description": "Taxonomy info",
+      "properties": {
+        "code": {
+          "type": "int"
+        },
+        "taxonomy": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "ref": "#/definitions/schema.tag"
+          }
+        }
+      },
+      "additionalProperties": true
+    },
+    "schema.tag": {
+      "type": "object",
+      "description": "Tag info",
+      "properties": {
+        "tag": {
+          "type": "string"
+        },
+        "confidence_score": {
+          "type": "double"
+        },
+        "additionalProperties": true
+      }
+    }
+  }
+}
