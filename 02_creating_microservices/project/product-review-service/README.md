@@ -50,4 +50,4 @@ This will relaod your application and you will have API with a single endpoint t
 
 In the API Builder administration select the endpoint for which you want a flow. Clicking on the Create Flow will open the flow editor where the Flow can be designed.
 
-And that is bsically everything now we have a fully working API that could be tried out as explaned in the section How to Try?
+And that is basically everything now we have a fully working API that could be tried out as explaned in the section How to Try?
