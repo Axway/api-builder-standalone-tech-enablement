@@ -18,7 +18,7 @@ The customer:
 
 ## Architecture
 
-![GitHub Logo](/images/architecture.png)
+![Architecture](/images/architecture.png)
 
 ## Guide
 
