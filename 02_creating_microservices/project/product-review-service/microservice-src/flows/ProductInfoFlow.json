@@ -1,0 +1,126 @@
+{
+	"schemaVersion": "3",
+	"info": {
+		"name": "Product Info",
+		"description": "Gets information about products",
+		"author": "support@axway.com",
+		"license": "ISC"
+	},
+	"parameter": {
+		"properties": {
+			"params": {
+				"type": "object",
+				"description": "The parameters from the endpoint.",
+				"properties": {
+					"username": {
+						"type": "string",
+						"description": "The username"
+					}
+				},
+				"additionalProperties": false,
+				"required": [
+					"username"
+				]
+			},
+			"request": {
+				"type": "object",
+				"description": "The HTTP request."
+			},
+			"config": {
+				"type": "object",
+				"description": "The service's configuration"
+			},
+			"env": {
+				"type": "object",
+				"description": "The host OS environment"
+			}
+		},
+		"additionalProperties": false,
+		"required": [
+			"params",
+			"request",
+			"config",
+			"env"
+		]
+	},
+	"start": "paralleldots.1",
+	"nodes": {
+		"response.success": {
+			"type": "nodehandler://axway-flow/http",
+			"name": "Success (HTTP 200)",
+			"method": "setresponse",
+			"parameters": [
+				{
+					"name": "status",
+					"value": "200",
+					"type": "number"
+				},
+				{
+					"name": "body",
+					"type": "jsonpath",
+					"value": "$.response"
+				}
+			],
+			"outputs": {
+				"next": {
+					"context": "$.response"
+				}
+			}
+		},
+		"response.error": {
+			"type": "nodehandler://axway-flow/http",
+			"name": "Bad Request (HTTP 400)",
+			"method": "setresponse",
+			"parameters": [
+				{
+					"name": "status",
+					"value": "400",
+					"type": "number"
+				}
+			],
+			"outputs": {
+				"next": {
+					"context": "$.response"
+				}
+			}
+		},
+		"paralleldots.1": {
+			"type": "nodehandler://@axway/api-builder-plugin-fn-swagger/paralleldots",
+			"name": "GetTaxonomy",
+			"method": "GetTaxonomy",
+			"parameters": [
+				{
+					"name": "text",
+					"type": "string",
+					"value": "\"Sometimes a camping chair just doesn't cut it. Raise your relaxation game to the next level with this Adventuridge Hammock and Stand. With its integrated drinks holder, storage pockets and detachable pillow you'll never want to get up! The hammock is easily assembled and comes with a carry bag for easy storage and transportation, making this the perfect item to take camping, or even just out in the garden to read a book.\""
+				}
+			],
+			"outputs": {
+				"200": {
+					"context": "$.response",
+					"routes": [
+						"response.success"
+					]
+				},
+				"400": {
+					"context": "$.error",
+					"routes": [
+						"response.error"
+					]
+				},
+				"401": {
+					"context": "$.error",
+					"routes": [
+						"response.error"
+					]
+				},
+				"500": {
+					"context": "$.error",
+					"routes": [
+						"response.error"
+					]
+				}
+			}
+		}
+	}
+}

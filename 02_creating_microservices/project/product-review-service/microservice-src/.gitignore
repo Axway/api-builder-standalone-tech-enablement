@@ -1,0 +1,6 @@
+node_modules
+logs
+coverage
+nyc_output
+local.js
+*.local.js
