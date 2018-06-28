@@ -269,3 +269,12 @@ Then you could navigate thru the components.
 1. Select the Flow icon for one of the generated endpoints for the MySQL connector; for example, for the Find all mysqlPersons endpoint. The API Orchestration page with all loaded connectors, nodes, and so forth is displayed.
 
 __NOTE:__ Refer to __API Builder Flows__ and __Manage Nodes__ for detailed information.
+
+
+* Now, you could execute `curl` command to be sure that the service is running successfully, the DB is reached and return real data. Set up the `apikey` from the `conf/default.js` and path to the endpoint.
+
+```sh
+curl -u jEeLFb2xjLQNxKBJBf89tEl+aL8+nj1X http://localhost:8080/api/endpoints/products
+```
+
+__NOTE:__ if you haven't any records in the DB yet, the response will be empty array i.e. `[]`

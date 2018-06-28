@@ -9,13 +9,13 @@
         "type": "object",
         "description": "The parameters from the endpoint.",
         "properties": {
-          "ID": {
+          "id": {
             "description": "The mysql/products ID",
             "type": "string"
           }
         },
         "required": [
-          "ID"
+          "id"
         ]
       },
       "request": {
@@ -47,8 +47,8 @@
       "name": "Find products",
       "parameters": [
         {
-          "name": "ID",
-          "value": "$.params.ID"
+          "name": "id",
+          "value": "$.params.id"
         }
       ],
       "outputs": {
