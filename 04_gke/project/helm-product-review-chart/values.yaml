@@ -18,3 +18,11 @@ mysql:
 mongo:
   replicaCount: 1
   image: gcr.io/rd-api-builder/axway/api-builder-v4-demo-mongo
+
+# Review-Service Configuration
+review:
+  replicaCount: 1
+  image: gcr.io/rd-api-builder/axway/api-builder-v4-demo-review
+  mongo:
+    user: admin
+    password: password

@@ -193,15 +193,18 @@ Your DevOps process would be responsible for building and publishing the Docker 
 ```bash
 docker build -t axway/api-builder-v4-demo-mysql project/mysql
 docker build -t axway/api-builder-v4-demo-mongo project/mongo
+docker build -t axway/api-builder-v4-demo-review project/review-service
 ```
 
 For GKE we are going to push the images to the Google Container Registy (GCR). See [https://cloud.google.com/container-registry/docs/pushing-and-pulling](https://cloud.google.com/container-registry/docs/pushing-and-pulling).
 
 ```bash
 docker tag axway/api-builder-v4-demo-mysql gcr.io/rd-api-builder/axway/api-builder-v4-demo-mysql
-docker push gcr.io/rd-api-builder/axway/api-builder-v4-demo-mysql
 docker tag axway/api-builder-v4-demo-mongo gcr.io/rd-api-builder/axway/api-builder-v4-demo-mongo
+docker tag axway/api-builder-v4-demo-review gcr.io/rd-api-builder/axway/api-builder-v4-demo-review
+docker push gcr.io/rd-api-builder/axway/api-builder-v4-demo-mysql
 docker push gcr.io/rd-api-builder/axway/api-builder-v4-demo-mongo
+docker push gcr.io/rd-api-builder/axway/api-builder-v4-demo-review
 ```
 
 

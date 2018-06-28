@@ -1,0 +1,52 @@
+{{if eq .Values.kubernetes.version "1.9"}}
+apiVersion: apps/v1
+{{ else }}
+apiVersion: apps/v1beta2
+{{end}}
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}-review
+  namespace: {{ .Values.namespace }}
+  labels:
+    app: review
+    chart: {{ .Chart.Name }}-{{ .Chart.Version }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  replicas: {{ .Values.review.replicaCount }}
+  selector:
+    matchLabels:
+      app: review
+      release: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app: review
+        release: {{ .Release.Name }}
+    spec:
+      containers:
+        - name: review
+          imagePullPolicy: {{ .Values.pullPolicy }}
+          image: {{ .Values.review.image }}
+          env:
+            - name: MONGO_HOST
+              value: {{ .Release.Name }}-mongo.{{ .Values.namespace }}.svc.cluster.local
+            - name: MONGO_USERNAME
+              value: {{ .Values.review.mongo.user }}
+            - name: MONGO_PASSWORD
+              value: {{ .Values.review.mongo.password }}
+          ports:
+          - containerPort: 8080
+            protocol: TCP
+          readinessProbe:
+            httpGet:
+              path: /apibuilderPing.json
+              port: 8080
+            initialDelaySeconds: 10
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /apibuilderPing.json
+              port: 8080
+            initialDelaySeconds: 30
+            periodSeconds: 30
