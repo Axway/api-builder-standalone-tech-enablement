@@ -60,11 +60,3 @@ module.exports = {
 ```sh
 docker run --name service-container -e MYSQL_USER=root -e MYSQL_PASSWORD=password --link mysql-container:mysql-container -p 8080:8080 service-img
 ```
-
-* Now, you could execute `curl` command to be sure that the service is running successfully, the DB is reached and return real data. Set up the `apikey` from the `conf/default.js` and path to the endpoint.
-
-```sh
-curl -u jEeLFb2xjLQNxKBJBf89tEl+aL8+nj1X http://localhost:8080/api/endpoints/products
-```
-
-__NOTE:__ if you haven't any records in the DB yet, the response will be empty array i.e. `[]`
