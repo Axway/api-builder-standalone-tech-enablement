@@ -1,20 +1,28 @@
-# Product Service
+# Product Microservice
 
 ## Table of content
 *	[Introduction](#introduction)
 *	[Prerequisites](#prerequisites)
+* [Architecture and Dependencies](#architecture-and-dependencies)
 *	[How to run the demo product-service](#how-to-run-the-demo-product-service)
 *	[How to create own mysql container with DB](#how-to-create-own-mysql-container-with-db)
 
 ## Introduction
-> This service is part of the API Builder demo services. These services are not production ready and are intended for demonstration purposes only.
-> This document provides information on how to configure and run an API Builder service within a MySql container with DB.
+> This service aggregates information from internal services - Product API and publicly available API.
  
 ## Prerequisites
 Prior to setting up a project with a connector, refer to:
 
 * [API Builder Getting Started Guide](https://wiki.appcelerator.org/display/AB4/API+Builder+Getting+Started+Guide) - Provides detailed instructions for installing API Builder and creating an API Builder project.
 * [API Builder Project](https://wiki.appcelerator.org/display/AB4/API+Builder+Project) - Provides detailed information about API Builder projects and services.
+
+## Architecture and Dependencies
+
+### Internal
+- product-service
+ 
+### External
+* MySql DB - the API used for configure and run an API Builder Service within a MySql container with DB.
 
 ## How to run the product-service 
 
@@ -26,7 +34,7 @@ git clone https://github.com/Axway/api-builder-standalone-tech-enablement.git
 
 * Navigate to the product-service demo folder
 ```sh
-cd ./api-builder-standalone-tech-enablement
+cd ./api-builder-standalone-tech-enablement/02_creating_microservices/project
 cd ./product-service
 ```
 
@@ -35,38 +43,41 @@ cd ./product-service
 npm install --no-optional
 ```
 
-### Create mysql container with DB
-* Pull Mysql Docker Image via Docker Hub. Start MySql in container and open the ports of physical machine.
-```sh
-docker pull mysql
-docker run -p 3306:3306 --name mysql-container -e MYSQL_ROOT_PASSWORD=password -d mysql:5
-docker exec -it mysql-container mysql -uroot -ppassword
-```
+### Start the existing Mysql container
+Once you have already build the image from `mysql/Dockerfile` and run the container, you will be able to run the Product-Service with the `@axway/api-builder-plugin-dc-mysql`.
 
-* Then create a DB and a Table
-```sh
-DROP DATABASE IF EXISTS productdb;
+__NOTE:__ For reference please go to the MySql documentation at `01_demo_setup/project/mysql/README.md`
 
-CREATE DATABASE productdb;
-
-USE productdb;
-
-CREATE TABLE products(
-    ID INT NOT NULL AUTO_INCREMENT,
-    sku nvarchar(255),
-    name nvarchar(255),
-    PRIMARY KEY(ID)
-);
-```
-
-__NOTE:__ you could execute the `productdb.sql` file.
-
-* You could start/stop the container via the Container ID
+* If the DB container is not running, you could start/stop the container via the Container ID
 ```sh
 docker start/stop <container-ID>
 ```
 
-## How to create own service with MySql container DB
+* If you are not run yet the MySql DB container, please follow the commands below:
+```sh
+// Build MySql Image
+docker build -t <mysql-img> ./
+
+// Run the MySqlDB in container
+docker run -p 3306:3306 --name <mysql-container-name> -e MYSQL_ROOT_PASSWORD=<your-password> -d <mysql-img>
+```
+
+* Navigate to the root of the __product-service__, now you are ready to start your service via
+```sh
+MYSQL_USER=root MYSQL_PASSWORD=password npm start
+```
+
+> Once your project is running, point your browser to http://localhost:8080/console to access the API Builder user interface (UI) console. 
+
+* Now, you could execute `curl` command to be sure that the service is running successfully, the DB is reached and return real data. Set up the `apikey` from the `conf/default.js` and path to the endpoint.
+
+```sh
+curl -u jEeLFb2xjLQNxKBJBf89tEl+aL8+nj1X http://localhost:8080/api/endpoints/products
+```
+
+__NOTE:__ if you haven't any records in the DB yet, the response will be empty array i.e. `[]`
+
+## How to create own Service with MySql container DB
 
 This document provides a step-by-step tutorial on how to run an API Builder service within a mysql container with DB. These steps include:
 
@@ -254,7 +265,7 @@ module.exports = {
 ```
 
 #### Step 4: Run your service
-Now you are ready to start your service via
+Now, you are ready to start your service via
 ```sh
 MYSQL_USER=root MYSQL_PASSWORD=password npm start
 ```
