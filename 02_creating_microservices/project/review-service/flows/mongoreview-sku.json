@@ -1,0 +1,110 @@
+{
+	"schemaVersion": "3",
+	"info": {
+		"name": "mongoreview-sku"
+	},
+	"parameter": {
+		"properties": {
+			"params": {
+				"type": "object",
+				"description": "The parameters from the endpoint.",
+				"where": {
+					"type": "string",
+					"description": "Constrains values for fields. The value should be encoded JSON."
+				}
+			},
+			"request": {
+				"type": "object",
+				"description": "The HTTP request."
+			},
+			"config": {
+				"type": "object",
+				"description": "The service's configuration"
+			},
+			"env": {
+				"type": "object",
+				"description": "The host OS environment"
+			}
+		},
+		"additionalProperties": false,
+		"required": [
+			"params",
+			"request",
+			"config",
+			"env"
+		]
+	},
+	"start": "doT.1",
+	"nodes": {
+		"model.find": {
+			"type": "nodehandler://api-builder-flow-invoke/model/mongo/review",
+			"method": "query",
+			"name": "Find SKU reviews",
+			"parameters": [
+				{
+					"name": "where",
+					"type": "jsonpath",
+					"value": "$.where"
+				}
+			],
+			"outputs": {
+				"next": {
+					"context": "$.models",
+					"routes": [
+						"response.success"
+					]
+				}
+			}
+		},
+		"response.success": {
+			"type": "nodehandler://axway-flow/http",
+			"name": "Set response",
+			"method": "setresponse",
+			"parameters": [
+				{
+					"name": "status",
+					"value": "200",
+					"type": "number"
+				},
+				{
+					"name": "body",
+					"value": "$.models"
+				}
+			],
+			"outputs": {
+				"next": {
+					"context": "$.response"
+				}
+			}
+		},
+		"doT.1": {
+			"type": "nodehandler://@axway/api-builder-plugin-fn-dot/doT",
+			"name": "Format string",
+			"method": "formatStr",
+			"parameters": [
+				{
+					"name": "template",
+					"type": "string",
+					"value": "\"{\\\"sku\\\": {{=JSON.stringify(it.sku)}}}\""
+				},
+				{
+					"name": "data",
+					"type": "jsonpath",
+					"value": "$.params"
+				}
+			],
+			"outputs": {
+				"next": {
+					"routes": [
+						"model.find"
+					],
+					"context": "$.where"
+				},
+				"error": {
+					"routes": [],
+					"context": "$.error"
+				}
+			}
+		}
+	}
+}
