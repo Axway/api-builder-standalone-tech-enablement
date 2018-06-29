@@ -30,7 +30,7 @@ spec:
           image: {{ .Values.review.image }}
           env:
             - name: MONGO_HOST
-              value: {{ .Release.Name }}-mongo.{{ .Values.namespace }}.svc.cluster.local
+              value: {{ .Release.Name }}-mongo.{{ .Values.namespace }}
             - name: MONGO_USERNAME
               value: {{ .Values.review.mongo.user }}
             - name: MONGO_PASSWORD
