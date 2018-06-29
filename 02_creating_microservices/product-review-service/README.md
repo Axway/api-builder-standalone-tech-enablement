@@ -3,7 +3,7 @@
 Files for this microservice
 
 * `product-review-service-spec.json` - the microservice specification described in Swagger 2.0 standard
-* `product-review-service` - folder that contians the source code of the microservice
+* `./project/product-review-service` - folder that contians the source code of the microservice
 
 The service aggregates information from the following services:
 
