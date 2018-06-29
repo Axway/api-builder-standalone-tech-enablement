@@ -64,7 +64,7 @@ docker run -p 3306:3306 --name <mysql-container-name> -e MYSQL_ROOT_PASSWORD=<yo
 
 * Navigate to the root of the __product-service__, now you are ready to start your service via
 ```sh
-MYSQL_USER=root MYSQL_PASSWORD=password npm start
+DB_USER=root DB_PASSWORD=password npm start
 ```
 
 > Once your project is running, point your browser to http://localhost:8080/console to access the API Builder user interface (UI) console. 
@@ -240,7 +240,7 @@ docker ps
 docker start/stop <container-ID>
 ```
 
-* Go to the root of your project (`<your-project>/config/mysql.default.js`) and set database to `<your-db-name>`. The user and password are using Env Variables `process.env.MYSQL_USER` and `process.env.MYSQL_PASSWORD`, the values will be taken runtime. Please find below a sample:
+* Go to the root of your project (`<your-project>/config/mysql.default.js`) and set database to `<your-db-name>`. The user and password are using Env Variables `process.env.DB_USER` and `process.env.DB_PASSWORD`, the values will be taken runtime. Please find below a sample:
 ```js
 module.exports = {
     connectors: {
@@ -251,8 +251,8 @@ module.exports = {
             host: 'localhost',
             port: 3306,
             database: 'productdb',
-            user: process.env.MYSQL_USER,
-            password: process.env.MYSQL_PASSWORD,
+            user: process.env.DB_USER,
+            password: process.env.DB_PASSWORD,
 
             // Create models based on your schema that can be used in your API.
             generateModelsFromSchema: true,
@@ -267,7 +267,7 @@ module.exports = {
 #### Step 4: Run your service
 Now, you are ready to start your service via
 ```sh
-MYSQL_USER=root MYSQL_PASSWORD=password npm start
+DB_USER=root DB_PASSWORD=password npm start
 ```
 
 Once your project is running, point your browser to http://localhost:8080/console to access the API Builder user interface (UI) console. 
