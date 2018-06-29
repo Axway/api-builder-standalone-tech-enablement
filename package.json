@@ -1,0 +1,24 @@
+{
+  "name": "api-builder-standalone-tech-enablement",
+  "version": "1.0.0",
+  "description": "The goal of this tech enablement is to show how API Builder can be used to solve a customer's problem in the \"real-world\".",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Axway/api-builder-standalone-tech-enablement.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Axway/api-builder-standalone-tech-enablement/issues"
+  },
+  "homepage": "https://github.com/Axway/api-builder-standalone-tech-enablement#readme",
+  "dependencies": {
+    "gitbook-cli": "^2.3.2"
+  },
+  "scripts": {
+    "start": "npm run init && npm run read",
+    "init": "gitbook init",
+    "read": "gitbook serve"
+  }
+}
