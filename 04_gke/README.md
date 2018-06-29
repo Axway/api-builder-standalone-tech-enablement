@@ -187,7 +187,7 @@ Your DevOps process would be responsible for building and publishing the Docker 
 docker build -t axway/api-builder-v4-demo-mysql project/mysql
 docker build -t axway/api-builder-v4-demo-mongo project/mongo
 docker build -t axway/api-builder-v4-demo-review project/review-service
-docker build -t axway/api-builder-v4-demo-review project/product-service
+docker build -t axway/api-builder-v4-demo-product project/product-service
 docker build -t axway/api-builder-v4-demo-product-review project/product-review-service
 ```
 
