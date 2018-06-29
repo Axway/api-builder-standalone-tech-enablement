@@ -211,6 +211,10 @@ db.review.insert({
 export MONGO_INITDB_ROOT_USERNAME=root export MONGO_INITDB_ROOT_PASSWORD=password && npm start
 ```
 
+* Using the below command you can see list of all RUNNING containers and theirs IDs
+```sh
+docker ps
+```
 * Using the below command you can see list of all containers and theirs IDs
 ```sh
 docker ps -a
@@ -248,7 +252,7 @@ module.exports = {
 #### Step 4: Run your service
 Now you are ready to start your service via
 ```sh
-npm start
+export MONGO_INITDB_ROOT_USERNAME=root export MONGO_INITDB_ROOT_PASSWORD=password && npm start
 ```
 
 Once your project is running, point your browser to http://localhost:8080/console to access the API Builder user interface (UI) console. 

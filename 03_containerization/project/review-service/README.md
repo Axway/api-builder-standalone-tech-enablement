@@ -65,13 +65,18 @@ module.exports = {
 * Run the docker container via the already builded `review-service`. Set the Env Variables with the `-e` prefix i.e. `-e MONGO_INITDB_ROOT_USERNAME=root` and need to link the service container to the DB container using `--link` prefix i.e. `--link myMongoDB`
 
 ```sh
-docker run --name myApp --link myMongoDB -p 8080:8080 -e MONGO_INITDB_ROOT_USERNAME=root -e MONGO_INITDB_ROOT_PASSWORD=password -e DBLINK=myMongoDB:27017/admin -d review-service
+docker run --name myApp --link myMongoDB -p 8080:8080 -d review-service
+```
+
+* See the logs of your running app:
+```sh
+docker logs myApp --details
 ```
 
 * Now, you could execute `curl` command to be sure that the service is running successfully, the DB is reached and return real data. Set up the `apikey` from the `conf/default.js` and path to the endpoint.
 
 ```sh
-curl -u CI5Uaei7o3AqI/J85trGCkYEjY/R7Q0v http://localhost:8080/api/mongo/review
+curl -u CI5Uaei7o3AqI/J85trGCkYEjY/R7Q0v: http://localhost:8080/api/mongo/review
 ```
 
 __NOTE:__ if you haven't any records in the DB yet, the response will be empty array i.e. `[]`

@@ -1,7 +1,10 @@
 # This line defines which node.js Docker image to leverage
 # Available versions are described at https://hub.docker.com/_/node/
 FROM node:8-alpine
- 
+
+ENV MONGO_INITDB_ROOT_USERNAME=root
+ENV MONGO_INITDB_ROOT_PASSWORD=password
+ENV DBLINK=myMongoDB:27017/admin
 # Denotes to copy all files in the project to 'app' folder in the container
 COPY . /app
  
@@ -9,7 +12,7 @@ COPY . /app
 WORKDIR /app
  
 # Install service dependencies relevant for production builds skipping all development dependencies.
-RUN npm install --production --no-optional --registry=http://registry.ecd.axway.int:8081/artifactory/api/npm/registry-npm
+RUN npm install --production --no-optional
 
 # Starts the service
 CMD ["node", "."]
