@@ -47,13 +47,12 @@ docker run -it --rm --link some-mongo:mongo mongo mongo --host mongo -u root -p 
 ```sh
 use admin
 
-db.createCollection("review", { capped : true, autoIndexId : true, size : 
-   6142800, max : 10000 } )
+db.createCollection('review',{ capped : true, autoIndexId : true, size : 
+  6142800, max : 10000 });
 
-db.reviews.insert({
-	sku: "iphone",
-	review: "Very good gsm - 5 star rating"
-})
+db.review.insert({ sku: 'SKU1', reviews: [ { review: 'Best taste ever!!!', user: 'John'},{ review: 'Had better meals!!!', user: 'Jack'},{ review: 'Too spicy!!!', user: 'Jane'} ] });
+db.review.insert({ sku: 'SKU2', reviews: [ { review: 'Most popular in GB!!!', user: 'William'},{ review: 'I prefer black tea!!!', user: 'Margaret'},{ review: 'Better then coffee!!!', user: 'Ramsey'} ] });
+db.review.insert({ sku: 'SKU3', reviews: [ { review: 'Not my kinda food!!!', user: 'Elizabeth'},{ review: 'Its nice but not best!!!', user: 'Collin'},{ review: 'Too spicy!!!', user: 'Jimmy'} ] });
 ```
 
 
@@ -208,7 +207,7 @@ db.review.insert({
 	review: "Very good gsm - 5 star rating"
 })
 
-export MONGO_USERNAME=root export MONGO_PASSWORD=password && npm start
+export DB_USER=root export DB_PASSWORD=password && npm start
 ```
 
 * Using the below command you can see list of all RUNNING containers and theirs IDs
@@ -252,7 +251,7 @@ module.exports = {
 #### Step 4: Run your service
 Now you are ready to start your service via
 ```sh
-export MONGO_INITDB_ROOT_USERNAME=root export MONGO_INITDB_ROOT_PASSWORD=password && npm start
+export DB_USER=root export DB_PASSWORD=password && npm start
 ```
 
 Once your project is running, point your browser to http://localhost:8080/console to access the API Builder user interface (UI) console. 
