@@ -31,11 +31,11 @@ spec:
           env:
             - name: APIKEY
               value: {{ .Values.product.apikey }}
-            - name: MYSQL_HOST
+            - name: DB_HOST
               value: {{ .Release.Name }}-mysql.{{ .Values.namespace }}
-            - name: MYSQL_USER
+            - name: DB_USER
               value: {{ .Values.product.db.user }}
-            - name: MYSQL_PASSWORD
+            - name: DB_PASSWORD
               value: {{ .Values.product.db.password }}
           ports:
           - containerPort: 8080

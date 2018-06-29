@@ -31,11 +31,11 @@ spec:
           env:
             - name: APIKEY
               value: {{ .Values.review.apikey }}
-            - name: MONGO_HOST
+            - name: DB_HOST
               value: {{ .Release.Name }}-mongo.{{ .Values.namespace }}
-            - name: MONGO_USERNAME
+            - name: DB_USER
               value: {{ .Values.review.db.user }}
-            - name: MONGO_PASSWORD
+            - name: DB_PASSWORD
               value: {{ .Values.review.db.password }}
           ports:
           - containerPort: 8080
