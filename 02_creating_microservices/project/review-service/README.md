@@ -198,7 +198,7 @@ use admin
 
 * Create table and fill it in
 ```sh
-USE admin
+use admin
 
 db.createCollection("review", { capped : true, autoIndexId : true, size : 
    6142800, max : 10000 } )
@@ -208,7 +208,7 @@ db.review.insert({
 	review: "Very good gsm - 5 star rating"
 })
 
-export MONGO_INITDB_ROOT_USERNAME=root export MONGO_INITDB_ROOT_PASSWORD=password && npm start
+export MONGO_USERNAME=root export MONGO_PASSWORD=password && npm start
 ```
 
 * Using the below command you can see list of all RUNNING containers and theirs IDs

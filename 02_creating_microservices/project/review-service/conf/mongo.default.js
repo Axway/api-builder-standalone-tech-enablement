@@ -16,7 +16,7 @@ module.exports = {
 			generateModelsFromSchema: true,
 
 			// Whether or not to generate APIs based on the methods in generated models.
-			modelAutogen: true
+			modelAutogen: false
 		}
 	}
 };
