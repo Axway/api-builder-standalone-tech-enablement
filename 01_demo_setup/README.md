@@ -1,4 +1,6 @@
-# MySql container with DB
+# Chapter 2. Demo Setup
+
+## MySql container with DB
 > This is setup MySql container with DB
 
 Clone the repository and navigate to the `mysql` folder.
