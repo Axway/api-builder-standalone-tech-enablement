@@ -40,7 +40,7 @@
         "x-flow": "mysqlproducts-findAll"
       }
     },
-    "/products/{id}": {
+    "/products/{sku}": {
       "get": {
         "responses": {
           "200": {
@@ -62,56 +62,13 @@
             "description": "Something went wrong during the request; check out the logs on your server."
           }
         },
-        "description": "Find one mysql/products",
-        "operationId": "Find By ID mysql/product",
-        "consumes": [],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "description": "The mysql/products ID",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "produces": [
-          "application/json"
-        ],
-        "tags": [
-          "mysql/products"
-        ],
-        "x-flow": "mysqlproducts-findByID"
-      }
-    },
-    "/products/sku": {
-      "get": {
-        "responses": {
-          "200": {
-            "description": "The find succeeded, and the results are available.",
-            "schema": {
-              "$ref": "schema:///model/mysql/products-full"
-            }
-          },
-          "400": {
-            "description": "Bad request."
-          },
-          "401": {
-            "description": "This request requires user authentication, as configured by the server."
-          },
-          "404": {
-            "description": "No results were found."
-          },
-          "500": {
-            "description": "Something went wrong during the request; check out the logs on your server."
-          }
-        },
-        "description": "Find one mysql/products",
-        "operationId": "Find By SKU mysql/product",
+        "description": "Find Product By SKU",
+        "operationId": "FindBySKU",
         "consumes": [],
         "parameters": [
           {
             "name": "sku",
-            "in": "query",
+            "in": "path",
             "description": "The mysql/products SKU",
             "required": true,
             "type": "string"
@@ -122,7 +79,8 @@
         ],
         "tags": [
           "mysql/products"
-        ]
+        ],
+        "x-flow": "mysqlproducts-FindBySKU"
       }
     }
   }
