@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Release.Name }}-product-review
+  namespace: {{ .Values.namespace }}
+  labels:
+    app: product-review
+    chart: {{ .Chart.Name }}-{{ .Chart.Version }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  type: NodePort
+  ports:
+    - port: 8080
+      nodePort: 30080
+      protocol: TCP
+      name: http-product-review
+  selector:
+    app: product-review
+    release: {{ .Release.Name }}

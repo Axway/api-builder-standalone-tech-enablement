@@ -36,3 +36,11 @@ product:
   db:
     user: root
     password: password
+
+# Product-Review-Service Configuration
+productReview:
+  apikey: my-product-review-secret-apikey
+  replicaCount: 1
+  image: gcr.io/rd-api-builder/axway/api-builder-v4-demo-product-review
+  paralleldots:
+    apikey: insert-pd-apikey

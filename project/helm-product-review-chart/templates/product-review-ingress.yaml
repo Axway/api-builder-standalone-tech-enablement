@@ -1,0 +1,14 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: {{ .Release.Name }}-product-review
+  namespace: {{ .Values.namespace }}
+  labels:
+    app: product-review
+    chart: {{ .Chart.Name }}-{{ .Chart.Version }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  backend:
+    serviceName: {{ .Release.Name }}-product-review
+    servicePort: 8080

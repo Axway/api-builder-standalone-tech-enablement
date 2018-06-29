@@ -8,25 +8,22 @@ The concepts we will be dealing with are:
 - [Services](https://kubernetes.io/docs/concepts/services-networking/service/) are an abstraction which defines a logical set of Pods and a policy by which to access them.
 
 > This is only a small subset of the features Kubernetes provides but sufficient for our demonstration.
-
+ 
 ## Product Review Service
 
 The scenario we're using for this demostration comprises of 3 microservices and 2 datasources. 
 
 ![Topology](./images/api-builder-topology.svg)
 
-> For this demostration we will also be hosting the databases in the Kubernetes cluster but in a real world situation these likely be hosted elsewhere.
-
-> TODO: ADD DESCRIPTION OF CONFIG SETTNIGS
+> For this demostration we will also be hosting the databases in the Kubernetes cluster but in a real world situation these likely be hosted elsewhere (or at the very least have persistent storage and be scalable).
 
 For the demo our pods will just contain a single service. If we were deploying a sidecar such as Istio then we'd also have Envoy in the pods. The `product-review-service` is the only microservice that will be accessible outside of the cluster. So perhaps a more accurate visualization of this is:
 
 ![K8s Topology](./images/api-builder-topology-k8s.svg)
 
-To simplify/automate the deployment we'll use Helm.
-
 ## Helm
-Helm is "the package manager for Kubernetes". A Helm _chart_ allows you to define, install and upgrade complex Kubernetes applications. 
+
+To simplify/automate the deployment we'll use Helm. Helm is "the package manager for Kubernetes". A Helm _chart_ allows you to define, install and upgrade complex Kubernetes applications. 
 
 To deploy/configure something in Kubernetes you create a YAML file describing the resource being deployed. For example:
 
@@ -47,10 +44,6 @@ $ kubectl create -f resource.yaml
 However as your deployment gets larger and more complex this becomes quite hard to manage and automate. This is the problem Helm solves. It allows you to create logical groupings of your resource yaml files. These are known as _Charts_. Then to deploy your application it delivers the _chart_ and the values for the templates to a service running in your cluster called _Tiller_. Tiller then applies all the changes.
 
 The templates in a chart can be parameterized, this means charts can be distributed and easily customized - only the _values.yaml_ file needs to be edited. For our demonstration, each of our microservices (and, for this demo, datastores too) will be deployed as pods with replicas using a _Deployement_ and also a _Service_ per deployment so that they can communicate.
-
-> TODO: CHARTS
-> TODO: VALUES
-
 
 ## Google Kubernetes Engine (GKE)
 
@@ -195,6 +188,7 @@ docker build -t axway/api-builder-v4-demo-mysql project/mysql
 docker build -t axway/api-builder-v4-demo-mongo project/mongo
 docker build -t axway/api-builder-v4-demo-review project/review-service
 docker build -t axway/api-builder-v4-demo-review project/product-service
+docker build -t axway/api-builder-v4-demo-product-review project/product-review-service
 ```
 
 For GKE we are going to push the images to the Google Container Registy (GCR). See [https://cloud.google.com/container-registry/docs/pushing-and-pulling](https://cloud.google.com/container-registry/docs/pushing-and-pulling).
@@ -204,14 +198,17 @@ docker tag axway/api-builder-v4-demo-mysql gcr.io/rd-api-builder/axway/api-build
 docker tag axway/api-builder-v4-demo-mongo gcr.io/rd-api-builder/axway/api-builder-v4-demo-mongo
 docker tag axway/api-builder-v4-demo-review gcr.io/rd-api-builder/axway/api-builder-v4-demo-review
 docker tag axway/api-builder-v4-demo-product gcr.io/rd-api-builder/axway/api-builder-v4-demo-product
+docker tag axway/api-builder-v4-demo-product-review gcr.io/rd-api-builder/axway/api-builder-v4-demo-product-review
 docker push gcr.io/rd-api-builder/axway/api-builder-v4-demo-mysql
 docker push gcr.io/rd-api-builder/axway/api-builder-v4-demo-mongo
 docker push gcr.io/rd-api-builder/axway/api-builder-v4-demo-review
 docker push gcr.io/rd-api-builder/axway/api-builder-v4-demo-product
+docker push gcr.io/rd-api-builder/axway/api-builder-v4-demo-product-review
 ```
 
 
 ## Installing the Demo
+
 ```bash
 helm install --name demo project/helm-product-review-chart
 ```

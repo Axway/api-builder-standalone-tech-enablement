@@ -1,0 +1,58 @@
+{{if eq .Values.kubernetes.version "1.9"}}
+apiVersion: apps/v1
+{{ else }}
+apiVersion: apps/v1beta2
+{{end}}
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}-product-review
+  namespace: {{ .Values.namespace }}
+  labels:
+    app: product-review
+    chart: {{ .Chart.Name }}-{{ .Chart.Version }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  replicas: {{ .Values.productReview.replicaCount }}
+  selector:
+    matchLabels:
+      app: product-review
+      release: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app: product-review
+        release: {{ .Release.Name }}
+    spec:
+      containers:
+        - name: product-review
+          imagePullPolicy: {{ .Values.pullPolicy }}
+          image: {{ .Values.productReview.image }}
+          env:
+            - name: APIKEY
+              value: {{ .Values.productReview.apikey }}
+            - name: PRODUCT_HOST
+              value: {{ .Release.Name }}-product.{{ .Values.namespace }}
+            - name: PRODUCT_APIKEY
+              value: {{ .Values.product.apikey }}
+            - name: REVIEW_HOST
+              value: {{ .Release.Name }}-review.{{ .Values.namespace }}
+            - name: REVIEW_APIKEY
+              value: {{ .Values.review.apikey }}
+            - name: PD_APIKEY
+              value: {{ .Values.productReview.paralleldots.apikey }}
+          ports:
+          - containerPort: 8080
+            protocol: TCP
+          readinessProbe:
+            httpGet:
+              path: /apibuilderPing.json
+              port: 8080
+            initialDelaySeconds: 10
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /apibuilderPing.json
+              port: 8080
+            initialDelaySeconds: 30
+            periodSeconds: 30
