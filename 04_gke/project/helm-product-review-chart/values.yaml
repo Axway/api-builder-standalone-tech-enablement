@@ -24,5 +24,5 @@ review:
   replicaCount: 1
   image: gcr.io/rd-api-builder/axway/api-builder-v4-demo-review
   mongo:
-    user: admin
+    user: root
     password: password
