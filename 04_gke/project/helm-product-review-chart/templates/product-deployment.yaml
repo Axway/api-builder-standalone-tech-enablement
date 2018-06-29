@@ -5,38 +5,38 @@ apiVersion: apps/v1beta2
 {{end}}
 kind: Deployment
 metadata:
-  name: {{ .Release.Name }}-review
+  name: {{ .Release.Name }}-product
   namespace: {{ .Values.namespace }}
   labels:
-    app: review
+    app: product
     chart: {{ .Chart.Name }}-{{ .Chart.Version }}
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
 spec:
-  replicas: {{ .Values.review.replicaCount }}
+  replicas: {{ .Values.product.replicaCount }}
   selector:
     matchLabels:
-      app: review
+      app: product
       release: {{ .Release.Name }}
   template:
     metadata:
       labels:
-        app: review
+        app: product
         release: {{ .Release.Name }}
     spec:
       containers:
-        - name: review
+        - name: product
           imagePullPolicy: {{ .Values.pullPolicy }}
-          image: {{ .Values.review.image }}
+          image: {{ .Values.product.image }}
           env:
             - name: APIKEY
-              value: {{ .Values.review.apikey }}
+              value: {{ .Values.product.apikey }}
             - name: DB_HOST
-              value: {{ .Release.Name }}-mongo.{{ .Values.namespace }}
+              value: {{ .Release.Name }}-mysql.{{ .Values.namespace }}
             - name: DB_USER
-              value: {{ .Values.review.db.user }}
+              value: {{ .Values.product.db.user }}
             - name: DB_PASSWORD
-              value: {{ .Values.review.db.password }}
+              value: {{ .Values.product.db.password }}
           ports:
           - containerPort: 8080
             protocol: TCP
