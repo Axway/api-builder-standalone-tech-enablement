@@ -1,0 +1,28 @@
+# The version of Kubernetes the cluster is running
+kubernetes:
+  version: "1.9"
+
+# The cluster namespace used for the services
+namespace: api-builder
+
+# Use cached images if present
+#pullPolicy: IfNotPresent
+pullPolicy: Always
+
+# MySQL Configuration
+mysql:
+  replicaCount: 1
+  image: gcr.io/rd-api-builder/axway/api-builder-v4-demo-mysql
+
+# Mongo Configuration
+mongo:
+  replicaCount: 1
+  image: gcr.io/rd-api-builder/axway/api-builder-v4-demo-mongo
+
+# Review-Service Configuration
+review:
+  replicaCount: 1
+  image: gcr.io/rd-api-builder/axway/api-builder-v4-demo-review
+  mongo:
+    user: admin
+    password: password

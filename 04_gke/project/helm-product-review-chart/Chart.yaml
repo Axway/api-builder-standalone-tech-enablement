@@ -1,0 +1,15 @@
+apiVersion: v1
+appVersion: "1.0.0"
+name: product-info
+version: 1.0.0
+home: https://github.com/Axway/api-builder-standalone-tech-enablement/tree/master/04_gke/project
+description: The Product Info service.
+keywords:
+- product
+- review
+- sentiment
+sources:
+- https://github.com/Axway/api-builder-standalone-tech-enablement/tree/master/04_gke/project
+maintainers:
+- name: axway
+  email: support@axway.com

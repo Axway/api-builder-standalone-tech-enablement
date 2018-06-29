@@ -1,0 +1,43 @@
+{{if eq .Values.kubernetes.version "1.9"}}
+apiVersion: apps/v1
+{{ else }}
+apiVersion: apps/v1beta2
+{{end}}
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}-mongo
+  namespace: {{ .Values.namespace }}
+  labels:
+    app: mongo
+    chart: {{ .Chart.Name }}-{{ .Chart.Version }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  replicas: {{ .Values.mongo.replicaCount }}
+  selector:
+    matchLabels:
+      app: mongo
+      release: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app: mongo
+        release: {{ .Release.Name }}
+    spec:
+      containers:
+        - name: mongo
+          imagePullPolicy: {{ .Values.pullPolicy }}
+          image: {{ .Values.mongo.image }}
+          ports:
+          - containerPort: 27017
+            protocol: TCP
+          readinessProbe:
+            tcpSocket:
+              port: 27017
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          livenessProbe:
+            tcpSocket:
+              port: 27017
+            initialDelaySeconds: 20
+            periodSeconds: 20
