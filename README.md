@@ -1,3 +1,11 @@
+# Before you start
+
+There is two way of reading the provided documentaiton in this project:
+
+1) Read the README.md files and follow the navigation links
+
+2) Run `npm i && npm start` in the root of this project and [read as booklet in your browser](http://localhost:4000).
+
 # API Builder Standalone Tech Enablement
 
 The goal of this tech enablement is to show how API Builder can be used to solve a customer's problem in the "real-world".
@@ -28,14 +36,16 @@ The customer:
 
 ![Architecture](/images/architecture.png)
 
-## Table of Contents
+## What to read next:
 
-[00 What's New](./00_whats_new)
+[Chapter 00. What's New](./00_whats_new)
 
-[01 Demo Setup](./01_demo_setup)
+[Chapter 01. Demo Setup](./01_demo_setup)
 
-[02 Creating Microservices](./02_creating_microservices)
+[Chapter 02. Create microservice from a database](./02_mircoservice_from_db)
 
-[03 Containerization](./03_containerization)
+[Chapter 03. Consume External Services](./03_external_services)
 
-[04 GKE](./04_gke)
+[Chapter 04. Containerization](./04_containerization)
+
+[Chapter 05. GKE](./05_gke)

@@ -1,9 +1,6 @@
+TODO: Restructure accordingly
+
 # Product-Review Microservice
-
-Files for this microservice
-
-* `product-review-service-spec.json` - the microservice specification described in Swagger 2.0 standard
-* `./project/product-review-service` - folder that contians the source code of the microservice
 
 The service aggregates information from the following services:
 
@@ -16,7 +13,7 @@ The service aggregates information from the following services:
 
 ## Architecture Diagram
 
-![Stoplight](./images/architecture.png)
+![Stoplight](../../images/product-review-service-architecture.png)
 
 ## How to Try?
 
@@ -36,7 +33,7 @@ As long as you know your business logic many alternative ways exist to create yo
 
 One of the available tools out there is Stoplight. It can be used to define the API and export the swagger specification. Sample screenshot is shown bellow.
 
-![Stoplight](./images/stoplight.png)
+![Stoplight](../../images/stoplight.png)
 
 ### Step 3 - Import the specification to API Builder service
 
