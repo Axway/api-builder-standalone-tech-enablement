@@ -7,7 +7,7 @@ Once you have already clone the repository and navigate to the `mysql` folder, y
 docker build -t <mysql-img> ./
 ```
 
-## API Builder Environment Variables
+## MySql Environment Variables
 The docker image can be configured at runtime via environment variables. This is a list of the common variables that you will need to set to use this image.
 
 | Name                 | Description                                         | Default                          |
