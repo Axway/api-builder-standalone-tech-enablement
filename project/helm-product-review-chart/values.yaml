@@ -22,7 +22,7 @@ mongo:
 # Review-Service Configuration
 review:
   apikey: my-review-secret-apikey
-  replicaCount: 1
+  replicaCount: 2
   image: gcr.io/rd-api-builder/axway/api-builder-v4-demo-review
   db:
     user: root
@@ -31,7 +31,7 @@ review:
 # Product-Service Configuration
 product:
   apikey: my-product-secret-apikey
-  replicaCount: 1
+  replicaCount: 2
   image: gcr.io/rd-api-builder/axway/api-builder-v4-demo-product
   db:
     user: root
@@ -40,7 +40,7 @@ product:
 # Product-Review-Service Configuration
 productReview:
   apikey: my-product-review-secret-apikey
-  replicaCount: 1
+  replicaCount: 2
   image: gcr.io/rd-api-builder/axway/api-builder-v4-demo-product-review
   paralleldots:
-    apikey: insert-pd-apikey
+    apikey: pd-apikey

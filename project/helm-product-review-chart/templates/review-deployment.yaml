@@ -24,6 +24,10 @@ spec:
         app: review
         release: {{ .Release.Name }}
     spec:
+      initContainers:
+      - name: init-review
+        image: busybox
+        command: ['sh', '-c', 'until nc -w 3 -v {{ .Release.Name }}-mongo.{{ .Values.namespace }} 27017; do echo waiting for mongo; sleep 2; done;']
       containers:
         - name: review
           imagePullPolicy: {{ .Values.pullPolicy }}

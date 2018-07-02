@@ -24,6 +24,10 @@ spec:
         app: product
         release: {{ .Release.Name }}
     spec:
+      initContainers:
+      - name: init-product
+        image: busybox
+        command: ['sh', '-c', 'until nc -w 3 -v {{ .Release.Name }}-mysql.{{ .Values.namespace }} 3306; do echo waiting for mysql; sleep 2; done;']
       containers:
         - name: product
           imagePullPolicy: {{ .Values.pullPolicy }}
