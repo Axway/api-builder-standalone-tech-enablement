@@ -1,0 +1,90 @@
+{  
+    "swagger":"2.0",
+    "info":{  
+       "title":"review-service",
+       "description":"An API Builder service",
+       "version":"1.0.0"
+    },
+    "host":"localhost:8080",
+    "basePath":"/api",
+    "paths":{  
+       "/endpoints/review/sku":{  
+          "get":{  
+             "responses":{  
+                "200":{  
+                   "description":"The find succeeded, and the results are available.",
+                   "schema":{  
+                      "type":"array",
+                      "items":{  
+                         "$ref":"#/definitions/mongo_review-full"
+                      }
+                   }
+                },
+                "400":{  
+                   "description":"Bad request."
+                },
+                "401":{  
+                   "description":"This request requires user authentication, as configured by the server."
+                },
+                "404":{  
+                   "description":"No results were found."
+                },
+                "500":{  
+                   "description":"Something went wrong during the request; check out the logs on your server."
+                }
+             },
+             "description":"Find SKU a mongo/review",
+             "operationId":"Find SKU mongo/review",
+             "consumes":[  
+ 
+             ],
+             "parameters":[  
+                {  
+                   "in":"query",
+                   "name":"sku",
+                   "description":"Constrains values for fields. The value should be encoded JSON.",
+                   "required":false,
+                   "type":"string",
+                   "format":"json"
+                }
+             ],
+             "produces":[  
+                "application/json"
+             ],
+             "tags":[  
+                "mongo/review"
+             ]
+          }
+       }
+    },
+    "securityDefinitions":{  
+       "basicAuth":{  
+          "type":"basic",
+          "description":"Require authorized access to API"
+       }
+    },
+    "schemes":[  
+       "http"
+    ],
+    "definitions":{  
+       "mongo_review-full":{  
+          "type":"object",
+          "properties":{  
+             "reviews":{  
+                "type":"object",
+                "additionalProperties":true
+             },
+             "sku":{  
+                "type":"string"
+             },
+             "id":{  
+ 
+             }
+          },
+          "required":[  
+             "id"
+          ],
+          "additionalProperties":false
+       }
+    }
+ }
