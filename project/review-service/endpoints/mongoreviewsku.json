@@ -6,7 +6,7 @@
   },
   "basePath": "/endpoints",
   "paths": {
-    "/review/sku": {
+    "/review/{sku}": {
       "get": {
         "responses": {
           "200": {
@@ -36,12 +36,11 @@
         "consumes": [],
         "parameters": [
           {
-            "in": "query",
+            "in": "path",
             "name": "sku",
             "description": "Constrains values for fields. The value should be encoded JSON.",
-            "required": false,
-            "type": "string",
-            "format": "json"
+            "required": true,
+            "type": "string"
           }
         ],
         "produces": [

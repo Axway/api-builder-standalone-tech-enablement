@@ -1,7 +1,7 @@
 {
 	"swagger": "2.0",
 	"info": {
-		"title": "product-service",
+		"title": "Product API",
 		"description": "An API Builder service",
 		"version": "1.0.0"
 	},

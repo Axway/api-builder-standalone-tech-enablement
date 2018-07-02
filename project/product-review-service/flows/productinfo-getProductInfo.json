@@ -125,7 +125,7 @@
 			"outputs": {
 				"200": {
 					"routes": [
-						"paralleldots.1"
+						"review-service.1"
 					],
 					"context": "$.foundProduct"
 				},
@@ -186,7 +186,7 @@
 				{
 					"name": "template",
 					"type": "string",
-					"value": "\"{\\n\\\"sku\\\": {{=JSON.stringify(it.foundProduct.data.sku)}}, \\n\\\"name\\\": {{=JSON.stringify(it.foundProduct.data.name)}},\\n\\\"description\\\": {{=JSON.stringify(it.foundProduct.data.description)}},\\n\\\"taxonomy\\\": {{=JSON.stringify(it.apiResult.data.taxonomy)}}}\""
+					"value": "\"{\\n\\\"sku\\\": {{=JSON.stringify(it.foundProduct.data.sku)}}, \\n\\\"name\\\": {{=JSON.stringify(it.foundProduct.data.name)}},\\n\\\"description\\\": {{=JSON.stringify(it.foundProduct.data.description)}},\\n\\\"reviews\\\": {{=JSON.stringify(it.foundReviews.data)}},\\n\\\"taxonomy\\\": {{=JSON.stringify(it.apiResult.data.taxonomy)}}}\""
 				}
 			],
 			"outputs": {
@@ -199,6 +199,68 @@
 				"error": {
 					"routes": [],
 					"context": "$.error"
+				}
+			}
+		},
+		"review-service.1": {
+			"type": "nodehandler://@axway/api-builder-plugin-fn-swagger/review-service",
+			"name": "FindReviewsByProductSKU",
+			"method": "FindReviewsByProductSKU",
+			"parameters": [
+				{
+					"name": "sku",
+					"type": "jsonpath",
+					"value": "$.params.sku"
+				}
+			],
+			"outputs": {
+				"200": {
+					"context": "$.foundReviews",
+					"routes": [
+						"paralleldots.1"
+					]
+				},
+				"400": {
+					"context": "$.error",
+					"routes": [
+						"http.4"
+					]
+				},
+				"401": {
+					"context": "$.error",
+					"routes": [
+						"http.4"
+					]
+				},
+				"404": {
+					"context": "$.error",
+					"routes": [
+						"http.4"
+					]
+				},
+				"500": {
+					"context": "$.error",
+					"routes": [
+						"http.4"
+					]
+				}
+			}
+		},
+		"http.4": {
+			"type": "nodehandler://axway-flow/http",
+			"name": "Error Finding Reviews",
+			"method": "setresponse",
+			"parameters": [
+				{
+					"name": "status",
+					"type": "number",
+					"value": "400"
+				}
+			],
+			"outputs": {
+				"next": {
+					"context": "$.response",
+					"routes": []
 				}
 			}
 		}
