@@ -1,14 +1,13 @@
-# Review Service
+# Product Microservice
 
 ## Table of content
 *	[Introduction](#introduction)
 *	[Prerequisites](#prerequisites)
+* [Architecture and Dependencies](#architecture-and-dependencies)
 *	[How to run the demo review-service](#how-to-run-the-demo-review-service)
-*	[How to create own mongo container with DB](#how-to-create-own-mongo-container-with-db)
 
 ## Introduction
-> This service is part of the API Builder demo services. These services are not production ready and are intended for demonstration purposes only.
-> This document provides information on how to configure and run an API Builder service within a Mongo container with DB.
+> This service contains information from internal services - Product API and publicly available API.
  
 ## Prerequisites
 Prior to setting up a project with a connector, refer to:
@@ -16,7 +15,15 @@ Prior to setting up a project with a connector, refer to:
 * [API Builder Getting Started Guide](https://wiki.appcelerator.org/display/AB4/API+Builder+Getting+Started+Guide) - Provides detailed instructions for installing API Builder and creating an API Builder project.
 * [API Builder Project](https://wiki.appcelerator.org/display/AB4/API+Builder+Project) - Provides detailed information about API Builder projects and services.
 
-## How to run the review-service 
+## Architecture and Dependencies
+
+### Internal
+- review-service
+ 
+### External
+* Mongo DB - the API used for configure and run an API Builder Service within a Mongo container with DB.
+
+## How to run the demo review-service 
 
 ### Get and run the service
 * Clone the repository 
@@ -26,8 +33,7 @@ git clone https://github.com/Axway/api-builder-standalone-tech-enablement.git
 
 * Navigate to the review-service demo folder
 ```sh
-cd ./api-builder-standalone-tech-enablement
-cd ./02_creating_microservices/project/review-service
+cd ./project/review-service
 ```
 
 * Install all dependencies
