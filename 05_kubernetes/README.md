@@ -47,7 +47,7 @@ The templates in a chart can be parameterized, this means charts can be distribu
 
 ## Google Kubernetes Engine (GKE)
 
-There are an multipe cloud plaforms that provide support for Kubernetes orchestration, such as Amazon EKS, Azure Kubernetes Serivce and Google Kubernetes Engine. In this section we will look at how to deploy your application to the Google Kubernettes Engine (GKE). While some of the steps outlined here are GKE specific, in general the same topics will apply to all vendors.
+There are an multipe cloud plaforms that provide support for Kubernetes orchestration, such as Amazon EKS, Azure Kubernetes Serivce and Google Kubernetes Engine. In this section we will look at how to deploy your application to the Google Kubernetes Engine (GKE). While some of the steps outlined here are GKE specific, in general the same topics will apply to all vendors.
 
 ### Ingress
 
