@@ -1,6 +1,6 @@
 # Before you start
 
-There is two way of reading the provided documentaiton in this project:
+There are two ways of reading the provided documentation for this project:
 
 1) Read the README.md files and follow the navigation links
 
@@ -8,29 +8,39 @@ There is two way of reading the provided documentaiton in this project:
 
 # API Builder Standalone Tech Enablement
 
-The goal of this tech enablement is to show how API Builder can be used to solve a customer's problem in the "real-world".
+The goal of this tech enablement is to show how API Builder can be used to simplify and accelerate a customer's move to a microservices based architecture.
 
 ## Introduction
 
-The customer believes that if they go to the containers, using microservices they can quickly deliver new and interesting business value, utilising their existing assets.
+The customer has a monolithic application that no longer meets their needs. They are moving to a microservices architecture to avail of the benefits of scalability and autonomy.
 
-The customer has a 2 separate databases owned by two separate departments and wants to use API Builder to combine them and generate new and interesting business value in GKE.
+The customer has analyzed their monolith's bounded contexts and identified two service to extract, the Product Service and the Review Service. These services are owned by separate departments, using different datasources, and the customer believes that making them into microservices will empower those departments to deliver functionality more rapidly.
+
+They also know that, with microservices, they can quickly deliver new and interesting business value, utilising their existing assets.
 
 The customer:
 
 1. Has an existing product database in MySQL
 1. Has a product review database in Mongo
-1. Wants to containerize these as microservices to deliver new value
-1. Wants to use combine these into a product + review service that uses an external NLP API to auto-generate keyword tags.
-1. Wants to use GKE and helm to deploy
+1. Wants to deliver these the Product and Review APIs as microservices
+1. Wants to provide a frontend centric microservice for consuming these services. 
+1. Wants to be able to extend the frontend microservice to include an NLP API without having to re-implement the Product or Review services.
+
+API Builder will:
+1. provide the tooling for them to rapidly create data centric microservices
+1. allow them to create services in a low/code no-code environment
+1. make integrating with third-party services painless
+1. allow them to deploy their solution where-ever they require, on premise or in the cloud.
+
 
 ## Prerequisites
 
 * Docker
 * NodeJS 8.x
 * npm
-* GKE
 * @axway/api-builder
+* Google Cloud SDK - gcloud
+* helm
 
 ## Architecture
 
@@ -48,4 +58,6 @@ The customer:
 
 [Chapter 04. Containerization](./04_containerization)
 
-[Chapter 05. GKE](./05_gke)
+[Chapter 05. Kubernetes](./05_kubernetes)
+
+[Chapter 06. Amplify](./06_amplify)
