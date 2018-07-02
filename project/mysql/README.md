@@ -13,8 +13,8 @@ The docker image can be configured at runtime via environment variables. This is
 | Name                 | Description                                         | Default                          |
 |:---------------------|:----------------------------------------------------|:---------------------------------|
 | MYSQL_DATABASE	| The name of the DB.		| productdb |
-| MYSQL_USER         | The variable set MySql user.    | root |
-| MYSQL_PASSWORD | The variable set that user's password. |  password |
+| MYSQL_USER         | The variable set for MySql user.    | apibuilder |
+| MYSQL_PASSWORD | The variable set that user's password. |  apibuilder |
 | MYSQL_ROOT_PASSWORD | This variable is mandatory and specifies the password that will be set for the MySQL root superuser account.          |-u `root` -p `password` |
 
 ### Running the image
