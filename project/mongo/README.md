@@ -1,5 +1,8 @@
 # Mongo container with DB
 > This is setup Mongo container with DB
+## Dependencies
+
+You need a docker installed on your machine
 
 ## Docker Build
 Once you have already clone the repository and navigate to the `mongo` folder, you will be able to build your own Mongo Image from the provided `Dockerfile`, please use the following command:
