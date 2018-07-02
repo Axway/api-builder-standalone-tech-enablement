@@ -1,21 +1,31 @@
-# This document provides a step-by-step tutorial on how to run mongoDB > 3.6 via Docker
-### Prerequisites
+# Mongo container with DB
+> This is setup Mongo container with DB
 
-Install latest version of Docker
-
-## Steps
-#### Clone this repo and navigate to the folder ./01_demo_setup/project/mongo and run in the terminal:
-
-1. Setup your config file for api-builder-plugin-dc-mongo connector to look like this:
-
-
-```
+## Docker Build
+Once you have already clone the repository and navigate to the `mongo` folder, you will be able to build your own Mongo Image from the provided `Dockerfile`, please use the following command:
+```sh
 docker build -t mongodb ./
 ```
-```
+
+## API Builder Environment Variables
+The docker image can be configured at runtime via environment variables. This is a list of the common variables that you will need to set to use this image.
+
+| Name                 | Description                                         | Default                          |
+|:---------------------|:----------------------------------------------------|:---------------------------------|
+| MONGO_INITDB_ROOT_USERNAME         | The variable set for Mongo user.    | apibuilder |
+| MONGO_INITDB_ROOT_PASSWORD | The variable set that user's password. |  apibuilder |
+| MONGO_INITDB_DATABASE	| The name of the DB.		| admin |
+
+### Running the image
+
+Standard run
+
+```sh
 docker run -d --name myMongoDB mongodb
 ```
-Access the database from the terminal
-```
-docker run -it --rm --link myMongoDB:mongodb mongo mongo --host myMongoDB -u root -p password --authenticationDatabase admin
+
+### Testing the DB
+
+```sh
+docker run -it --rm --link myMongoDB:mongodb mongo mongo --host myMongoDB -u apibuilder -p apibuilder --authenticationDatabase admin
 ```
