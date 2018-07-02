@@ -1,0 +1,117 @@
+{
+	"swagger": "2.0",
+	"info": {
+		"title": "product-service",
+		"description": "An API Builder service",
+		"version": "1.0.0"
+	},
+	"host": "localhost:8080",
+	"basePath": "/api",
+	"paths": {
+		"/endpoints/products": {
+			"get": {
+				"responses": {
+					"200": {
+						"description": "The find all succeeded, and the results are available.",
+						"schema": {
+							"type": "array",
+							"items": {
+								"$ref": "#/definitions/mysql_products-full"
+							}
+						}
+					},
+					"401": {
+						"description": "This request requires user authentication, as configured by the server."
+					},
+					"404": {
+						"description": "No results were found."
+					},
+					"500": {
+						"description": "Something went wrong during the request; check out the logs on your server."
+					}
+				},
+				"description": "Find all mysql/products",
+				"operationId": "Find All mysql/product",
+				"consumes": [],
+				"produces": [
+					"application/json"
+				],
+				"tags": [
+					"mysql/products"
+				]
+			}
+		},
+		"/endpoints/products/{sku}": {
+			"get": {
+				"responses": {
+					"200": {
+						"description": "The find succeeded, and the results are available.",
+						"schema": {
+							"$ref": "#/definitions/mysql_products-full"
+						}
+					},
+					"400": {
+						"description": "Bad request."
+					},
+					"401": {
+						"description": "This request requires user authentication, as configured by the server."
+					},
+					"404": {
+						"description": "No results were found."
+					},
+					"500": {
+						"description": "Something went wrong during the request; check out the logs on your server."
+					}
+				},
+				"description": "Find Product By SKU",
+				"operationId": "FindBySKU",
+				"consumes": [],
+				"parameters": [
+					{
+						"name": "sku",
+						"in": "path",
+						"description": "The mysql/products SKU",
+						"required": true,
+						"type": "string"
+					}
+				],
+				"produces": [
+					"application/json"
+				],
+				"tags": [
+					"mysql/products"
+				]
+			}
+		}
+	},
+	"securityDefinitions": {
+		"basicAuth": {
+			"type": "basic",
+			"description": "Require authorized access to API"
+		}
+	},
+	"schemes": [
+		"http"
+	],
+	"definitions": {
+		"mysql_products-full": {
+			"type": "object",
+			"properties": {
+				"sku": {
+					"type": "string"
+				},
+				"name": {
+					"type": "string"
+				},
+				"description": {
+					"type": "string"
+				},
+				"id": {}
+			},
+			"required": [
+				"id"
+			],
+			"additionalProperties": false
+		}
+	}
+}

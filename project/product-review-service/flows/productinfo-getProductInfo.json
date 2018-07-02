@@ -30,24 +30,24 @@
 			"env"
 		]
 	},
-	"start": "paralleldots.1",
+	"start": "products-service.1",
 	"nodes": {
 		"paralleldots.1": {
 			"type": "nodehandler://@axway/api-builder-plugin-fn-swagger/paralleldots",
-			"name": "GetTaxonomy",
+			"name": "Get Taxonomy",
 			"method": "GetTaxonomy",
 			"parameters": [
 				{
 					"name": "text",
 					"type": "jsonpath",
-					"value": "$.params.sku"
+					"value": "$.foundProduct.data.description"
 				}
 			],
 			"outputs": {
 				"200": {
 					"context": "$.apiResult",
 					"routes": [
-						"setcontext.1"
+						"doT.1"
 					]
 				},
 				"400": {
@@ -72,7 +72,7 @@
 		},
 		"http.1": {
 			"type": "nodehandler://axway-flow/http",
-			"name": "Success",
+			"name": "Done",
 			"method": "setresponse",
 			"parameters": [
 				{
@@ -95,7 +95,7 @@
 		},
 		"http.2": {
 			"type": "nodehandler://axway-flow/http",
-			"name": "Error",
+			"name": "Error Finding Taxonomy",
 			"method": "setresponse",
 			"parameters": [
 				{
@@ -111,23 +111,94 @@
 				}
 			}
 		},
-		"setcontext.1": {
-			"type": "nodehandler://axway-flow/setcontext",
-			"name": "Filter Taxonomy",
-			"method": "setcontext",
+		"products-service.1": {
+			"type": "nodehandler://@axway/api-builder-plugin-fn-swagger/products-service",
+			"name": "Find Product By SKU",
+			"method": "FindBySKU",
 			"parameters": [
 				{
-					"name": "value",
+					"name": "sku",
 					"type": "jsonpath",
-					"value": "$.apiResult.data.taxonomy"
+					"value": "$.params.sku"
+				}
+			],
+			"outputs": {
+				"200": {
+					"routes": [
+						"paralleldots.1"
+					],
+					"context": "$.foundProduct"
+				},
+				"400": {
+					"routes": [
+						"http.3"
+					],
+					"context": "$.error"
+				},
+				"401": {
+					"routes": [
+						"http.3"
+					],
+					"context": "$.error"
+				},
+				"404": {
+					"routes": [
+						"http.3"
+					],
+					"context": "$.error"
+				},
+				"500": {
+					"routes": [
+						"http.3"
+					],
+					"context": "$.error"
+				}
+			}
+		},
+		"http.3": {
+			"type": "nodehandler://axway-flow/http",
+			"name": "Error Finding Product",
+			"method": "setresponse",
+			"parameters": [
+				{
+					"name": "status",
+					"type": "number",
+					"value": "400"
 				}
 			],
 			"outputs": {
 				"next": {
-					"context": "$.productInfo.taxonomy",
+					"context": "$.response",
+					"routes": []
+				}
+			}
+		},
+		"doT.1": {
+			"type": "nodehandler://@axway/api-builder-plugin-fn-dot/doT",
+			"name": "Create Product Info",
+			"method": "formatObj",
+			"parameters": [
+				{
+					"name": "data",
+					"type": "jsonpath",
+					"value": "$"
+				},
+				{
+					"name": "template",
+					"type": "string",
+					"value": "\"{\\n\\\"sku\\\": {{=JSON.stringify(it.foundProduct.data.sku)}}, \\n\\\"name\\\": {{=JSON.stringify(it.foundProduct.data.name)}},\\n\\\"description\\\": {{=JSON.stringify(it.foundProduct.data.description)}},\\n\\\"taxonomy\\\": {{=JSON.stringify(it.apiResult.data.taxonomy)}}}\""
+				}
+			],
+			"outputs": {
+				"next": {
 					"routes": [
 						"http.1"
-					]
+					],
+					"context": "$.productInfo"
+				},
+				"error": {
+					"routes": [],
+					"context": "$.error"
 				}
 			}
 		}
