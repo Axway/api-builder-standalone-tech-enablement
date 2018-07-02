@@ -45,13 +45,23 @@ npm install --no-optional
 ### Start the existing Mysql container
 Once you have already build the image from `mysql/Dockerfile` and run the container, you will be able to run the Product-Service with the `@axway/api-builder-plugin-dc-mysql`.
 
-__NOTE:__ For reference please go to the MySql documentation at `project/mysql/README.md`
+* List all available/running containers via:
+```sh
+// List all available containers
+docker ps -a
+
+// List all running containers
+docker ps
+```
 
 * If the DB container is not running, you could start/stop the container via the Container ID
 ```sh
 docker start/stop <container-ID>
 ```
 
+__NOTE:__ For reference please go to the MySql documentation at `project/mysql/README.md`
+
+### Docker Build & Running the image
 * If you are not build image and run the MySql DB container yet, please follow the commands below:
 ```sh
 // Build MySql Image
@@ -61,6 +71,36 @@ docker build -t <mysql-img> ./
 docker run -p 3306:3306 --name <mysql-container-name> -e MYSQL_ROOT_PASSWORD=<your-password> -d <mysql-img>
 ```
 
+### API Builder Environment Variables
+The `roduct-service/conf/mysql.default.js` contains different environment variables. This is a list of the common variables that you will need to set to use this service.
+
+| Name                 | Description                                         | Default                          |
+|:---------------------|:----------------------------------------------------|:---------------------------------|
+| DB_HOST	| The usign host.		| localhost |
+| DB_DATABASE         | The nameof the MySql DB.    | productdb |
+| DB_USER | The user. |  root |
+| DB_PASSWORD | The user's password.  | password |
+
+* The configuration file sample:
+```js
+    mysql: {
+          connector: '@axway/api-builder-plugin-dc-mysql',
+          connectionPooling: true,
+          connectionLimit: 10,
+          host: process.env.DB_HOST || 'localhost',
+          port: 3306,
+          database: process.env.DB_DATABASE || 'productdb',
+          user: process.env.DB_USER,
+          password: process.env.DB_PASSWORD,
+
+          // Create models based on your schema that can be used in your API.
+          generateModelsFromSchema: true,
+
+          // Whether or not to generate APIs based on the methods in generated models.
+          modelAutogen: false
+        }
+```
+
 * Navigate to the root of the __product-service__, now you are ready to start your service via
 ```sh
 DB_USER=root DB_PASSWORD=password npm start
@@ -68,10 +108,10 @@ DB_USER=root DB_PASSWORD=password npm start
 
 > Once your project is running, point your browser to http://localhost:8080/console to access the API Builder user interface (UI) console. 
 
-* Now, you could execute `curl` command to be sure that the service is running successfully, the DB is reached and return real data. Set up the `apikey` from the `conf/default.js` and path to the endpoint.
+
+### Testing the service
+> Now, you could execute `curl` command to be sure that the service is running successfully, the DB is reached and return real data. Set up the `apikey` from the `conf/default.js` and path to the endpoint.
 
 ```sh
 curl -u jEeLFb2xjLQNxKBJBf89tEl+aL8+nj1X http://localhost:8080/api/endpoints/products
 ```
-
-__NOTE:__ if you haven't any records in the DB yet, the response will be empty array i.e. `[]`
