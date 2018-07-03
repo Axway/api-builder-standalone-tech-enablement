@@ -47,10 +47,10 @@ Once you have already build the image from `mysql/Dockerfile` and run the contai
 
 * List all available/running containers via:
 ```sh
-// List all available containers
+# List all available containers
 docker ps -a
 
-// List all running containers
+# List all running containers
 docker ps
 ```
 
@@ -64,10 +64,10 @@ __NOTE:__ For reference please go to the MySql documentation at `project/mysql/R
 ### Docker Build & Running the image
 * If you are not build image and run the MySql DB container yet, please follow the commands below:
 ```sh
-// Build MySql Image
+# Build MySql Image
 docker build -t <mysql-img> ./
 
-// Run the MySqlDB in container
+# Run the MySqlDB in container
 docker run -p 3306:3306 --name <mysql-container-name> -e MYSQL_ROOT_PASSWORD=<your-password> -d <mysql-img>
 ```
 

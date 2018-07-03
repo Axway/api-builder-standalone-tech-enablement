@@ -54,16 +54,18 @@ Install the API Builder Command Line Interface (CLI) globally using npm.
 [sudo] npm install -g @axway/api-builder
 ```
 
-Once API Builder CLI is installed, you can use it to create a new project.  In the following example, the CLI will create and initialize the ./myproject new project directory.
+Once API Builder CLI is installed, you can use it to create a new project.  In the following example, the CLI will create and initialize the `./<dir>` new project directory.
 
 ```sh
-api-builder init <my-project>
+api-builder init <dir>
 ```
+
+__NOTE:__ `<dir>` - The directory to initialize.
 
 Then, install the project's dependencies and start the API Builder project.
 
 ```sh
-cd ./<my-project>
+cd ./<dir>
 npm install --no-optional
 npm start
 ```
@@ -99,7 +101,7 @@ To add a Connector:
 To install a data connector, navigate to the root directory of your service and use the following command; for example,to install the MySQL data connector:
 
 ```sh
-npm install @axway/api-builder-plugin-dc-mysql
+npm install @axway/api-builder-plugin-dc-<connector-name>
 ```
 
 __NOTE:__ using `@latest` will pick up the latest available connector version. You will need to configure your connector with connection details before starting your application or it will fail to start. For additional configuration details, refer to the connector.
@@ -107,24 +109,52 @@ __NOTE:__ using `@latest` will pick up the latest available connector version. Y
 A configuration file is generated for you and placed into the conf directory of your API Builder project. By default we use a host of localhost, a user of root and a password of password to connect.
 
 #### Step 2b: Configure the Connector
-When you install a connector, it will create a configuration file located in the <SERVICE_FOLDER>/conf folder that has the name of your connector. For example, mysql.default.js. You will need to edit this file and give it the required connection details such as database host and port, user, password, and database.
+When you install a connector, it will create a configuration file located in the `<SERVICE_FOLDER>/conf` folder that has the name of your connector. For example, mysql.default.js. You will need to edit this file and give it the required connection details such as database host and port, user, password, and database.
 
-The configuration files that can contain environment variables are placed in the <SERVICE_FOLDER>/conf folder.
+The configuration files that can contain environment variables are placed in the `<SERVICE_FOLDER>/conf` folder.
 
-All the variables in your configuration files taken from process.env.<VARIABLE_NAME> can be provided when running the Docker container.
+All the variables in your configuration files taken from `process.env.<VARIABLE_NAME>` can be provided when running the Docker container.
 
 The following table lists the configuration files, their location, and their example content. The connector configuration is shown to inform you that you will have to provide an additional set of environment variables when using an API Builder service with connectors.
 
 | Configuration File                 | Location                                         | Example                          |
 |:---------------------|:----------------------------------------------------|:---------------------------------|
 | Service Configuration	| __<SERVICE_FOLDER>/conf/default.js__		| 	`module.exports = {` <br><span style="padding-left:3em"> `apiKey: process.env.APIKEY`</span> <br><span style="padding-left:3em"> `port: parseInt(process.env.PORT) || 8080 `</span><br> `};` |
-| Connector Configuration | __<SERVICE_FOLDER>/conf/mysql.default.js__ | `module.exports = {`<br><span style="padding-left:3em"> `connectors: {`</span> <br> <span style="padding-left:3em"> `mysql: {`</span> <br><span style="padding-left:3em"> `connector:` </span> <br> <span style="padding-left:3em">`'@axway/api-builder-plugin-dc-mysql',` <br>`connectionPooling: true,` <br> `connectionLimit: 10,` <br> `host: process.env.MYSQL_HOST || 'localhost',` <br> `port: 3306,` <br> `database: 'mysql',` <br> `user: process.env.MYSQL_USER,` <br> `password: process.env.MYSQL_PASSWORD,` <br> `generateModelsFromSchema: true,` <br> `modelAutogen: false`<br> </span> `}`<br> `}` <br> `};` <br>|
+| | | |
+| Connector Configuration | __<SERVICE_FOLDER>/conf/mysql.default.js__ | `module.exports = {`<br><span style="padding-left:3em"> `connectors: {` </span> <br> <span style="padding-left:6em"> `mysql: {` </span> <br><span style="padding-left:9em"> `connector:` </span> <br> <span style="padding-left:12em"> `'@axway/api-builder-plugin-dc-mysql',`</span><br><span style="padding-left:12em">`connectionPooling: true,`<br><span style="padding-left:12em">`connectionLimit: 10,`<br><span style="padding-left:12em">`host: process.env.DB_HOST || 'localhost',`<br><span style="padding-left:12em">`port: 3306,`</span><br><span style="padding-left:12em">`database: process.env.DB_NAME || 'mysql',`</span><br><span style="padding-left:12em">`user: process.env.DB_USER,`</span><br><span style="padding-left:12em">`password: process.env.DB_PASSWORD,`</span><br><span style="padding-left:12em">`generateModelsFromSchema: true,`</span><br><span style="padding-left:12em">`modelAutogen: false`<br> </span> <span style="padding-left:6em">`}`</span><br> <span style="padding-left:3em">`}` </span><br> `};` <br>|
+
+###### API Builder Environment Variables
+The `<dir>/conf/<connector>.default.js` & `<dir>/conf/default.js` contains different environment variables. This is a list of the common variables that you will need to set to use this service.
+
+| Name                 | Description                                         | Default                          |
+|:---------------------|:----------------------------------------------------|:---------------------------------|
+| APIKEY | The API key for incoming requests to the service. | |
+| PORT  | The port the service will be listening on. | 8080 |
+| | | |
+| DB_HOST	| The host running the service.		| localhost |
+| DB_NAME         | The nameof the DB.    | productdb |
+| DB_USER | The DB user. |  root |
+| DB_PASSWORD | The user's password.  | password |
 
 
 
-###
+###### API Builder Models
 Your connector tables will be listed uner the Models section of the console. You can now click on the gear icon to the right of the table names and generate flow based apis.
 
+Once you've configured your MySQL configuration files located under `<dir>/conf` you can start up your API Builder project and visit the console (normally found under `localhost:8080/console`). Your connector will be listed under on the Connectors tab of the console.
+
+![Connectors](./images/Connectors-Tab.png)
+
+Your MySQL tables will be listed under the Models tab of the console.
+
+![Models](./images/Models-Tab.png)
+
+###### Using connector models in flows
+To use the connector model in a flow, select the Flow icon for one of the generated endpoints for the connector; for example, for the Find all mysqlPersons endpoint. The API Orchestration page with all loaded connectors, flow-nodes, and so forth is displayed. For additional information on using a connector model in a flow, refer to [Manage Flows](https://wiki.appcelerator.org/display/AB4/Manage+Flows).
+
+![Flow](./images/Flow.png)
+
+###### Using auto-generated model API
 You can also reference the connector in a custom model.
 
 ```js
@@ -132,7 +162,7 @@ const Account = Arrow.Model.extend('Account', {
   fields: {
     Name: { type: String, required: true }
   },
-  connector: 'mysql'
+  connector: '<connector-name>'
 });
 ```
 
@@ -144,7 +174,7 @@ const Account = Arrow.Model.extend('account', {
   fields: {
     Name: { type: String, required: false, validator: /[a-zA-Z]{3,}/ }
   },
-  connector: 'mysql',
+  connector: '<connector-name>',
   metadata: {
     'mysql': {
       table: 'accounts'
