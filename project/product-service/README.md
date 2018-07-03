@@ -77,7 +77,7 @@ The `roduct-service/conf/mysql.default.js` contains different environment variab
 | Name                 | Description                                         | Default                          |
 |:---------------------|:----------------------------------------------------|:---------------------------------|
 | DB_HOST	| The usign host.		| localhost |
-| DB_DATABASE         | The nameof the MySql DB.    | productdb |
+| DB_NAME         | The nameof the MySql DB.    | productdb |
 | DB_USER | The user. |  root |
 | DB_PASSWORD | The user's password.  | password |
 
@@ -89,7 +89,7 @@ The `roduct-service/conf/mysql.default.js` contains different environment variab
           connectionLimit: 10,
           host: process.env.DB_HOST || 'localhost',
           port: 3306,
-          database: process.env.DB_DATABASE || 'productdb',
+          database: process.env.DB_NAME || 'productdb',
           user: process.env.DB_USER,
           password: process.env.DB_PASSWORD,
 
