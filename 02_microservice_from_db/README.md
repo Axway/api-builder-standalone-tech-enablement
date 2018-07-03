@@ -123,21 +123,6 @@ The following table lists the configuration files, their location, and their exa
 | | | |
 | Connector Configuration | __<SERVICE_FOLDER>/conf/mysql.default.js__ | `module.exports = {`<br><span style="padding-left:3em"> `connectors: {` </span> <br> <span style="padding-left:6em"> `mysql: {` </span> <br><span style="padding-left:9em"> `connector:` </span> <br> <span style="padding-left:12em"> `'@axway/api-builder-plugin-dc-mysql',`</span><br><span style="padding-left:12em">`connectionPooling: true,`<br><span style="padding-left:12em">`connectionLimit: 10,`<br><span style="padding-left:12em">`host: process.env.DB_HOST || 'localhost',`<br><span style="padding-left:12em">`port: 3306,`</span><br><span style="padding-left:12em">`database: process.env.DB_NAME || 'mysql',`</span><br><span style="padding-left:12em">`user: process.env.DB_USER,`</span><br><span style="padding-left:12em">`password: process.env.DB_PASSWORD,`</span><br><span style="padding-left:12em">`generateModelsFromSchema: true,`</span><br><span style="padding-left:12em">`modelAutogen: false`<br> </span> <span style="padding-left:6em">`}`</span><br> <span style="padding-left:3em">`}` </span><br> `};` <br>|
 
-###### API Builder Environment Variables
-The `<dir>/conf/<connector>.default.js` & `<dir>/conf/default.js` contains different environment variables. This is a list of the common variables that you will need to set to use this service.
-
-| Name                 | Description                                         | Default                          |
-|:---------------------|:----------------------------------------------------|:---------------------------------|
-| APIKEY | The API key for incoming requests to the service. | |
-| PORT  | The port the service will be listening on. | 8080 |
-| | | |
-| DB_HOST	| The host running the service.		| localhost |
-| DB_NAME         | The nameof the DB.    | productdb |
-| DB_USER | The DB user. |  root |
-| DB_PASSWORD | The user's password.  | password |
-
-
-
 ###### API Builder Models
 Your connector tables will be listed uner the Models section of the console. You can now click on the gear icon to the right of the table names and generate flow based apis.
 
@@ -190,15 +175,28 @@ All the variables in your configuration files taken from `process.env.<VARIABLE_
 
 The following table lists the configuration files, their location, and their example content. The connector configuration is shown to inform you that you will have to provide an additional set of environment variables when using an API Builder service with connectors.
 
-### Step 3: Run MySql via Docker
+###### API Builder Environment Variables
+The `<dir>/conf/<connector>.default.js` & `<dir>/conf/default.js` contains different environment variables. This is a list of the common variables that you will need to set to use this service.
+
+| Name                 | Description                                         | Default                          |
+|:---------------------|:----------------------------------------------------|:---------------------------------|
+| APIKEY | The API key for incoming requests to the service. | |
+| PORT  | The port the service will be listening on. | 8080 |
+| | | |
+| DB_HOST	| The host running the service.		| localhost |
+| DB_NAME         | The nameof the DB.    | productdb |
+| DB_USER | The DB user. |  root |
+| DB_PASSWORD | The user's password.  | password |
+
+### Step 3: Run Connector via Docker
 * Run latest version of Docker
-* Pull Mysql Docker Image via Docker Hub
+* Pull Docker Image via Docker Hub
 
 ```sh
-docker pull mysql
+docker pull <docker-image>
 ```
 
-* Start MySql in container and open the ports of physical machine
+* For the demonstration purpose, decide to start MySql in container and open the ports of physical machine
 ```sh
 docker run -p 3306:3306 --name <container-name> -e MYSQL_ROOT_PASSWORD=<my-password> -d mysql:5
 ```
@@ -240,30 +238,6 @@ docker ps
 docker start/stop <container-ID>
 ```
 
-* Go to the root of your project (`<your-project>/config/mysql.default.js`) and set database to `<your-db-name>`. The user and password are using Env Variables `process.env.DB_USER` and `process.env.DB_PASSWORD`, the values will be taken runtime. Please find below a sample:
-```js
-module.exports = {
-    connectors: {
-        mysql: {
-			connector: '@axway/api-builder-plugin-dc-mysql',
-			connectionPooling: true,
-			connectionLimit: 10,
-			host: process.env.DB_HOST || 'localhost',
-			port: 3306,
-			database: process.env.DB_NAME || 'productdb',
-			user: process.env.DB_USER,
-			password: process.env.DB_PASSWORD,
-
-			// Create models based on your schema that can be used in your API.
-			generateModelsFromSchema: true,
-
-			// Whether or not to generate APIs based on the methods in generated models.
-			modelAutogen: false
-		}
-    }
-};
-```
-
 #### Step 4: Run your service
 Now, you are ready to start your service via
 ```sh
@@ -282,10 +256,10 @@ Then you could navigate thru the components.
 __NOTE:__ Refer to __API Builder Flows__ and __Manage Nodes__ for detailed information.
 
 
-* Now, you could execute `curl` command to be sure that the service is running successfully, the DB is reached and return real data. Set up the `apikey` from the `conf/default.js` and path to the endpoint.
+* Now, you could execute `curl` command to be sure that the service is running successfully, the DB is reached and return real data. Set up the `apikey` from the `<dir>/conf/default.js` and path to the endpoint.
 
 ```sh
-curl -u jEeLFb2xjLQNxKBJBf89tEl+aL8+nj1X http://localhost:8080/api/endpoints/products
+curl -u <apikey> http://localhost:8080/api/endpoints/products
 ```
 
 __NOTE:__ if you haven't any records in the DB yet, the response will be empty array i.e. `[]`
