@@ -13,6 +13,8 @@ The service collects the data with the help of 3 underlying services.
 ### External
 * **[Parallel Dots API](http://paralleldots.com)** - used to collect Taxonomy data based on Product description.
 
+![Architecture](../../images/product-review-service-architecture.png)
+
 ## Service Configuration
 The following environment variables need to be configured to weave services successfully.
 
@@ -39,6 +41,8 @@ docker build -t product-review-service-img  ./
 ```
 
 ### Running the Image
+
+> Note: Before running your container make sure that you have all set up in respect to both - internal and external service dependencies
 
 ```
 docker run --name product-review-service-ct -p 8080:8080 -e PRODUCT_PORT=<product-service port> -e PRODUCT_HOST=<product-service host> -e PRODUCT_APIKEY=<product-service apikey> -e PRODUCT_PASSWORD=<product-service password> -e REVIEW_PORT=<review-service port> -e REVIEW_HOST=<review-service host> -e REVIEW_APIKEY=<review-service apikey> -e REVIEW_PASSWORD=<review-service password> -e PD_APIKEY=<third-party apikey>  product-review-service-img
