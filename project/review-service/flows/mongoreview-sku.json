@@ -1,17 +1,13 @@
 {
 	"schemaVersion": "3",
 	"info": {
-		"name": "mongoreview-sku"
+		"name": "mongoreview - get /review/{sku}"
 	},
 	"parameter": {
 		"properties": {
 			"params": {
 				"type": "object",
-				"description": "The parameters from the endpoint.",
-				"where": {
-					"type": "string",
-					"description": "Constrains values for fields. The value should be encoded JSON."
-				}
+				"description": "The parameters from the endpoint."
 			},
 			"request": {
 				"type": "object",
@@ -36,10 +32,41 @@
 	},
 	"start": "doT.1",
 	"nodes": {
-		"model.find": {
+		"doT.1": {
+			"type": "nodehandler://@axway/api-builder-plugin-fn-dot/doT",
+			"name": "Format object",
+			"method": "formatObj",
+			"parameters": [
+				{
+					"name": "data",
+					"type": "jsonpath",
+					"value": "$.params"
+				},
+				{
+					"name": "template",
+					"type": "string",
+					"value": "\"{\\\"sku\\\": {{=JSON.stringify(it.sku)}}}\""
+				}
+			],
+			"outputs": {
+				"next": {
+					"routes": [
+						"review.1"
+					],
+					"context": "$.where"
+				},
+				"error": {
+					"routes": [
+						"http.2"
+					],
+					"context": "$.error"
+				}
+			}
+		},
+		"review.1": {
 			"type": "nodehandler://api-builder-flow-invoke/model/mongo/review",
+			"name": "query",
 			"method": "query",
-			"name": "Find SKU reviews",
 			"parameters": [
 				{
 					"name": "where",
@@ -49,59 +76,107 @@
 			],
 			"outputs": {
 				"next": {
-					"context": "$.models",
 					"routes": [
-						"response.success"
-					]
+						"condition.1"
+					],
+					"context": "$.queried"
 				}
 			}
 		},
-		"response.success": {
+		"condition.1": {
+			"type": "nodehandler://axway-flow/condition",
+			"name": "Exists",
+			"method": "exists",
+			"parameters": [
+				{
+					"name": "source",
+					"type": "jsonpath",
+					"value": "$.queried[0]"
+				}
+			],
+			"outputs": {
+				"true": {
+					"routes": [
+						"doT.2"
+					],
+					"context": "$.exists"
+				},
+				"false": {
+					"routes": [
+						"http.2"
+					],
+					"context": "$.error"
+				}
+			}
+		},
+		"http.1": {
 			"type": "nodehandler://axway-flow/http",
-			"name": "Set response",
+			"name": "Set HTTP Response",
 			"method": "setresponse",
 			"parameters": [
 				{
 					"name": "status",
-					"value": "200",
-					"type": "number"
+					"type": "number",
+					"value": "200"
 				},
 				{
 					"name": "body",
-					"value": "$.models"
+					"type": "jsonpath",
+					"value": "$.response"
 				}
 			],
 			"outputs": {
 				"next": {
-					"context": "$.response"
+					"context": "$.response",
+					"routes": []
 				}
 			}
 		},
-		"doT.1": {
+		"http.2": {
+			"type": "nodehandler://axway-flow/http",
+			"name": "Set HTTP Response",
+			"method": "setresponse",
+			"parameters": [
+				{
+					"name": "status",
+					"type": "number",
+					"value": "400"
+				}
+			],
+			"outputs": {
+				"next": {
+					"context": "$.response",
+					"routes": []
+				}
+			}
+		},
+		"doT.2": {
 			"type": "nodehandler://@axway/api-builder-plugin-fn-dot/doT",
 			"name": "Format string",
 			"method": "formatStr",
 			"parameters": [
 				{
-					"name": "template",
-					"type": "string",
-					"value": "\"{\\\"sku\\\": {{=JSON.stringify(it.sku)}}}\""
-				},
-				{
 					"name": "data",
 					"type": "jsonpath",
-					"value": "$.params"
+					"value": "$.queried[0]"
+				},
+				{
+					"name": "template",
+					"type": "string",
+					"value": "\"{\\n\\\"id\\\": {{=JSON.stringify(it.id)}},\\n\\\"sku\\\": {{=JSON.stringify(it.sku)}},\\n\\\"reviews\\\": {{=JSON.stringify(it.reviews)}}\\n}\""
 				}
 			],
 			"outputs": {
 				"next": {
 					"routes": [
-						"model.find"
+						"http.1"
 					],
-					"context": "$.where"
+					"context": "$.response"
 				},
 				"error": {
-					"routes": [],
+					"routes": [
+						"http.2"
+					],
 					"context": "$.error"
 				}
 			}

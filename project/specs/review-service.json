@@ -8,16 +8,13 @@
     "host":"localhost:8080",
     "basePath":"/api",
     "paths":{  
-       "/endpoints/review/sku":{  
+       "/endpoints/review/{sku}":{  
           "get":{  
              "responses":{  
                 "200":{  
                    "description":"The find succeeded, and the results are available.",
                    "schema":{  
-                      "type":"array",
-                      "items":{  
-                         "$ref":"#/definitions/mongo_review-full"
-                      }
+                      "$ref":"#/definitions/mongo_review-full"
                    }
                 },
                 "400":{  
@@ -33,19 +30,18 @@
                    "description":"Something went wrong during the request; check out the logs on your server."
                 }
              },
-             "description":"Find SKU a mongo/review",
-             "operationId":"Find SKU mongo/review",
+             "description":"Find Review By SKU",
+             "operationId":"FindBySKU",
              "consumes":[  
  
              ],
              "parameters":[  
                 {  
-                   "in":"query",
                    "name":"sku",
-                   "description":"Constrains values for fields. The value should be encoded JSON.",
-                   "required":false,
-                   "type":"string",
-                   "format":"json"
+                   "in":"path",
+                   "description":"The mongo/review SKU",
+                   "required":true,
+                   "type":"string"
                 }
              ],
              "produces":[  
