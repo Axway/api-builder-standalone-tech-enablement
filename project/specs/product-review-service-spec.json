@@ -1,90 +1,82 @@
 {
-    "swagger": "2.0",
-    "info": {
-        "version": "1.0",
-        "title": "ProductInfo",
-        "description": "Service for getting the aggregated info about a product like details, reviews, taxonomy"
-    },
-    "host": "localhost:8080",
-    "basePath": "/v1",
-    "schemes": [
-        "http"
-    ],
-    "paths": {
-        "/productinfo/{sku}": {
-            "get": {
-                "operationId": "getProductInfo",
-                "produces": [
-                    "application/json"
-                ],
-                "parameters": [
-                    {
-                        "name": "sku",
-                        "in": "path",
-                        "required": true,
-                        "type": "string"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "",
-                        "schema": {
-                            "type": "object",
-                            "properties": {
-                                "name": {
-                                    "type": "string",
-                                    "description": "Product name"
-                                },
-                                "sku": {
-                                    "type": "string",
-                                    "description": "Product Unique Identifier"
-                                },
-                                "description": {
-                                    "type": "string",
-                                    "description": "Product description"
-                                },
-                                "reviews": {
-                                    "type": "array",
-                                    "description": "Product reviews",
-                                    "items": {
-                                        "type": "object",
-                                        "properties": {
-                                            "": {}
-                                        }
-                                    }
-                                },
-                                "taxonomy": {
-                                    "type": "array",
-                                    "description": "Product categorization based on the description. Contains the three most relevant categories.",
-                                    "items": {
-                                        "type": "object",
-                                        "properties": {
-                                            "": {}
-                                        }
-                                    }
-                                }
-                            }
-                        },
-                        "examples": {
-                            "application/json": {
-                                "name": "eu sunt Lorem dolor esse",
-                                "sku": "labore esse mollit ut reprehenderit",
-                                "description": "occaecat voluptate u",
-                                "tags": [
-                                    "voluptate laborum nulla quis in"
-                                ],
-                                "reviews": [
-                                    {},
-                                    {},
-                                    {},
-                                    {}
-                                ]
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    },
-    "definitions": {}
+	"swagger": "2.0",
+	"info": {
+			"title": "ProductInfo",
+			"description": "Service for getting the aggregated info about a product like details, reviews, taxonomy",
+			"version": "1.0.0"
+	},
+	"host": "localhost:8080",
+	"basePath": "/api",
+	"paths": {
+			"/v1/productinfo/{sku}": {
+					"get": {
+							"responses": {
+									"200": {
+											"description": "OK",
+											"schema": {
+													"type": "object",
+													"properties": {
+															"name": {
+																	"type": "string",
+																	"description": "Product name"
+															},
+															"sku": {
+																	"type": "string",
+																	"description": "Product Unique Identifier"
+															},
+															"description": {
+																	"type": "string",
+																	"description": "Product description"
+															},
+															"reviews": {
+																	"type": "array",
+																	"description": "Product reviews",
+																	"items": {
+																			"type": "object",
+																			"properties": {
+																					"": {}
+																			}
+																	}
+															},
+															"taxonomy": {
+																	"type": "array",
+																	"description": "Product categorization based on the description. Contains the three most relevant categories.",
+																	"items": {
+																			"type": "object",
+																			"properties": {
+																					"": {}
+																			}
+																	}
+															}
+													}
+											}
+									}
+							},
+							"operationId": "getProductInfo",
+							"parameters": [
+									{
+											"name": "sku",
+											"in": "path",
+											"required": true,
+											"type": "string"
+									}
+							],
+							"produces": [
+									"application/json"
+							],
+							"schemes": [
+									"http"
+							]
+					}
+			}
+	},
+	"securityDefinitions": {
+			"basicAuth": {
+					"type": "basic",
+					"description": "Require authorized access to API"
+			}
+	},
+	"schemes": [
+			"http"
+	]
 }

@@ -12,4 +12,4 @@
 * [Example: Product Microservice](project/product-service/README.md)
 * [Example: Review Microservice](project/review-service/README.md)
 * [Example: Product-Review Microservice](project/product-review-service/README.md)
-
+* [Swagger Specifications Used in the Demo](project/specs/README.md)

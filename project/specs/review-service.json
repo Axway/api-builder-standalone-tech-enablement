@@ -1,9 +1,9 @@
-{  
-    "swagger":"2.0",
-    "info":{  
-       "title":"review-service",
-       "description":"An API Builder service",
-       "version":"1.0.0"
+{
+    "swagger": "2.0",
+    "info": {
+        "title": "review-service",
+        "description": "An API Builder service",
+        "version": "1.0.0"
     },
     "host":"localhost:8080",
     "basePath":"/api",
@@ -53,34 +53,32 @@
           }
        }
     },
-    "securityDefinitions":{  
-       "basicAuth":{  
-          "type":"basic",
-          "description":"Require authorized access to API"
-       }
+    "securityDefinitions": {
+        "basicAuth": {
+            "type": "basic",
+            "description": "Require authorized access to API"
+        }
     },
-    "schemes":[  
-       "http"
+    "schemes": [
+        "http"
     ],
-    "definitions":{  
-       "mongo_review-full":{  
-          "type":"object",
-          "properties":{  
-             "reviews":{  
-                "type":"object",
-                "additionalProperties":true
-             },
-             "sku":{  
-                "type":"string"
-             },
-             "id":{  
- 
-             }
-          },
-          "required":[  
-             "id"
-          ],
-          "additionalProperties":false
-       }
+    "definitions": {
+        "mongo_review-full": {
+            "type": "object",
+            "properties": {
+                "reviews": {
+                    "type": "object",
+                    "additionalProperties": true
+                },
+                "sku": {
+                    "type": "string"
+                },
+                "id": {}
+            },
+            "required": [
+                "id"
+            ],
+            "additionalProperties": false
+        }
     }
- }
+}

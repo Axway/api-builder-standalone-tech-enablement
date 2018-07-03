@@ -163,7 +163,7 @@
 				{
 					"name": "template",
 					"type": "string",
-					"value": "\"{\\n\\\"id\\\": {{=JSON.stringify(it.id)}},\\n\\\"sku\\\": {{=JSON.stringify(it.sku)}},\\n\\\"name\\\": {{=JSON.stringify(it.name)}},\\n\\\"description\\\": {{=JSON.stringify(it.name)}}\\n}\""
+					"value": "\"{\\n\\\"id\\\": {{=JSON.stringify(it.id)}},\\n\\\"sku\\\": {{=JSON.stringify(it.sku)}},\\n\\\"name\\\": {{=JSON.stringify(it.name)}},\\n\\\"description\\\": {{=JSON.stringify(it.description)}}\\n}\""
 				}
 			],
 			"outputs": {

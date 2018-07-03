@@ -17,7 +17,7 @@ module.exports = {
 	// access to your API using the default configuration.
 
 	// API key
-	apikey: 'IO/lU6QSMfze2W3cOsUMC0iGztPLNwL+',
+	apikey: process.env.APIKEY || 'IO/lU6QSMfze2W3cOsUMC0iGztPLNwL+',
 
 	// By default the authentication strategy is 'basic' which will use HTTP Basic Authorization where the
 	// usename is the key and the password is blank.  the other option is 'apikey' where the value of the
@@ -30,7 +30,7 @@ module.exports = {
 	baseurl: 'http://localhost',
 
 	// This is the port the service will be bound to
-	port: 8080,
+	port: parseInt(process.env.PORT) || 8080,
 
 	// Enabling this property will print out the process.env at startup time
 	printEnvVars: false,

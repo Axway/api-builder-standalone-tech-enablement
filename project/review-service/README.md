@@ -238,8 +238,8 @@ module.exports = {
 		mongo: {
 			connector: '@axway/api-builder-plugin-dc-mongo',
 			url: process.env.DB_USER ? 
-				`mongodb://${process.env.DB_USER}:${process.env.DB_PASSWORD}@${process.env.DB_HOST || 'localhost'}/${process.env.DB_DATABASE || 'admin'}` :
-				`mongodb://${process.env.DB_HOST || 'localhost'}/${process.env.DB_DATABASE || 'admin'}`,
+				`mongodb://${process.env.DB_USER}:${process.env.DB_PASSWORD}@${process.env.DB_HOST || 'localhost'}/${process.env.DB_NAME || 'admin'}` :
+				`mongodb://${process.env.DB_HOST || 'localhost'}/${process.env.DB_NAME || 'admin'}`,
 			
 			// Create models based on the schema that can be used in your API.
 			//

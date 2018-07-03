@@ -17,11 +17,11 @@ The scenario we're using for this demostration comprises of 3 microservices and 
 
 > For this demostration we will also be hosting the databases in the Kubernetes cluster but in a real world situation these likely be hosted elsewhere (or at the very least have persistent storage and be scalable).
 
-For the demo our pods will just contain a single service. If we were deploying a sidecar such as Istio then we'd also have Envoy in the pods. The `product-review-service` is the only microservice that will be accessible outside of the cluster. So perhaps a more accurate visualization of this is:
+For the demo our pods will just contain a single microservice. If we were deploying a sidecar such as Istio [https://istio.io/](https://istio.io/) then we'd also have Envoy in the pods. The `product-review-service` is the only microservice that will be accessible outside of the cluster. So from a Kubernetes entity perspective, a more accurate visualization of this is:
 
 ![K8s Topology](./images/api-builder-topology-k8s.svg)
 
-## Helm
+## Helm ([https://helm.sh](https://helm.sh))
 
 To simplify/automate the deployment we'll use Helm. Helm is "the package manager for Kubernetes". A Helm _chart_ allows you to define, install and upgrade complex Kubernetes applications. 
 
@@ -47,7 +47,56 @@ The templates in a chart can be parameterized, this means charts can be distribu
 
 ## Google Kubernetes Engine (GKE)
 
-There are an multipe cloud plaforms that provide support for Kubernetes orchestration, such as Amazon EKS, Azure Kubernetes Serivce and Google Kubernetes Engine. In this section we will look at how to deploy your application to the Google Kubernettes Engine (GKE). While some of the steps outlined here are GKE specific, in general the same topics will apply to all vendors.
+There are an multipe cloud plaforms that provide support for Kubernetes orchestration, such as Amazon EKS, Azure Kubernetes Serivce and Google Kubernetes Engine. In this section we will look at how to deploy your application to the Google Kubernetes Engine (GKE). While some of the steps outlined here are GKE specific, in general the same topics will apply to all vendors.
+
+### Ingress
+
+An Ingress manages external access to services in the cluster. Typically they provide load balancing, SSL termination, routing and policy. Kubernetes *does not* require that services be access via an Ingress however GKE does. Even if the service in a GKE cluster has type *NodePort* it is still not externally accessible in GCE/GKE. 
+
+```yaml
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: {{ .Release.Name }}-product-review
+  namespace: {{ .Values.namespace }}
+spec:
+  backend:
+    serviceName: {{ .Release.Name }}-product-review
+    servicePort: 8080
+```
+
+For GKE this configures a Google Cloud Load Balancer ([https://cloud.google.com/load-balancing/](https://cloud.google.com/load-balancing/)).
+
+![GKE Ingress](./images/ingress.png)
+
+#### SSL
+
+The Ingress controller can also be configured to use a key/cert from a Kubernetes tls secret. For detail, see [https://cloud.google.com/kubernetes-engine/docs/how-to/ingress-multi-ssl](https://cloud.google.com/kubernetes-engine/docs/how-to/ingress-multi-ssl).
+
+For the example we have a sample key and certificate for _foo.bar.com_. This is defined in [product-review-secret.yaml](../project/helm-product-review-chart/templates/product-review-secret.yaml), though in production you'd more like manage the creation of this secret more securely.
+
+The ingress definition [product-review-ingress.yaml](../project/helm-product-review-chart/templates/product-review-ingress.yaml) uses this secret:
+
+```yaml
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: {{ .Release.Name }}-product-review
+  namespace: {{ .Values.namespace }}
+  labels:
+    app: product-review
+    chart: {{ .Chart.Name }}-{{ .Chart.Version }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+  annotations:
+    kubernetes.io/ingress.allow-http: "false"
+spec:
+  tls:
+  - secretName: {{ .Release.Name }}-secret
+  backend:
+    serviceName: {{ .Release.Name }}-product-review
+    servicePort: 8080
+```
 
 ### Setting up Google Kubernetes Engine (GKE)
 
@@ -206,10 +255,26 @@ docker push gcr.io/rd-api-builder/axway/api-builder-v4-demo-product
 docker push gcr.io/rd-api-builder/axway/api-builder-v4-demo-product-review
 ```
 
-
-## Installing the Demo
+## Demo
 
 ```bash
 helm install --name demo project/helm-product-review-chart
 ```
+
+> Note, the deployment of the ingress can take up to 10 minutes. 
+
+Once everything is deployed and started you can get the external IP address of the Ingress:
+
+```bash
+$ kubectl get ing --namespace api-builder
+NAME                  HOSTS     ADDRESS       PORTS     AGE
+demo-product-review   *         35.241.12.7   80, 443   31m
+```
+
+Note even though the ingress reports it's available on port 80 we've actually disabled that using the `kubernetes.io/ingress.allow-http` annotation in the [product-review-ingress.yaml](../project/helm-product-review-chart/templates/product-review-ingress.yaml).
+
+To get the swagger definition of the service https://_ipaddress_/apidoc/swagger.json, so in this case [https://35.241.5.136/apidoc/swagger.json](https://35.241.5.136/apidoc/swagger.json).
+
+
+TODO: Add to test steps with PostMan
 
