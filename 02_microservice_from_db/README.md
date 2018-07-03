@@ -4,10 +4,10 @@
 *	[Introduction](#introduction)
 *	[Prerequisites](#prerequisites)
 *	[Architecture and Dependencies](#architecture-and-dependencies)
-*	[How to create own container with DB](#how-to-create-own-container-with-db)
+*	[How to create own service in container with DB](#how-to-create-own-service-in-container-with-db)
 
 ## Introduction
-> This document provides information on how to configure and run an API Builder Microservice within a connector from DB.
+> The goal of this section is to show how to create, configure and run an API Builder Microservice within a data connector from DB.
  
 ## Prerequisites
 Prior to setting up a project with a connector, refer to:
@@ -23,7 +23,7 @@ Prior to setting up a project with a connector, refer to:
 ### External
 * [API Builder Connectors](https://wiki.appcelerator.org/display/AB4/API+Builder+Connectors) - configure and run an API Builder Service within a connector such as Oracle, MySQL, and MongoDB.
 
-## How to create own Service with connector in container DB
+## How to create own service in container with DB
 
 This document provides a step-by-step tutorial on how to run an API Builder service within a connector in container with DB. These steps include:
 
@@ -119,11 +119,11 @@ The following table lists the configuration files, their location, and their exa
 
 | Configuration File                 | Location                                         | Example                          |
 |:---------------------|:----------------------------------------------------|:---------------------------------|
-| Service Configuration	| __<SERVICE_FOLDER>/conf/default.js__		| 	`module.exports = {` <br><span style="padding-left:3em"> `apiKey: process.env.APIKEY`</span> <br><span style="padding-left:3em"> `port: parseInt(process.env.PORT) || 8080 `</span><br> `};` |
+| Service Configuration	| __<SERVICE_FOLDER>/conf/default.js__		| 	`module.exports = {` <br><span style="padding-left:2em"> `apiKey: process.env.APIKEY`</span> <br><span style="padding-left:3em"> `port: parseInt(process.env.PORT) || 8080 `</span><br> `};` |
 | | | |
-| Connector Configuration | __<SERVICE_FOLDER>/conf/mysql.default.js__ | `module.exports = {`<br><span style="padding-left:3em"> `connectors: {` </span> <br> <span style="padding-left:6em"> `mysql: {` </span> <br><span style="padding-left:9em"> `connector:` </span> <br> <span style="padding-left:12em"> `'@axway/api-builder-plugin-dc-mysql',`</span><br><span style="padding-left:12em">`connectionPooling: true,`<br><span style="padding-left:12em">`connectionLimit: 10,`<br><span style="padding-left:12em">`host: process.env.DB_HOST || 'localhost',`<br><span style="padding-left:12em">`port: 3306,`</span><br><span style="padding-left:12em">`database: process.env.DB_NAME || 'mysql',`</span><br><span style="padding-left:12em">`user: process.env.DB_USER,`</span><br><span style="padding-left:12em">`password: process.env.DB_PASSWORD,`</span><br><span style="padding-left:12em">`generateModelsFromSchema: true,`</span><br><span style="padding-left:12em">`modelAutogen: false`<br> </span> <span style="padding-left:6em">`}`</span><br> <span style="padding-left:3em">`}` </span><br> `};` <br>|
+| Connector Configuration | __<SERVICE_FOLDER>/conf/mysql.default.js__ | `module.exports = {`<br><span style="padding-left:2em"> `connectors: {` </span> <br><span style="padding-left:4em"> `mysql: {` </span> <br><span style="padding-left:6em"> `connector:` </span> <br><span style="padding-left:8em"> `'@axway/api-builder-plugin-dc-mysql',`</span> <br><span style="padding-left:8em">`connectionPooling: true,`</span> <br><span style="padding-left:8em">`connectionLimit: 10,`</span><br><span style="padding-left:8em">`host: process.env.DB_HOST || 'localhost',`</span> <br><span style="padding-left:8em">`port: 3306,`</span> <br><span style="padding-left:8em">`database: process.env.DB_NAME || 'mysql',`</span> <br><span style="padding-left:8em">`user: process.env.DB_USER,`</span> <br><span style="padding-left:8em">`password: process.env.DB_PASSWORD,`</span> <br><span style="padding-left:8em">`generateModelsFromSchema: true,`</span> <br><span style="padding-left:8em">`modelAutogen: false`</span> <br><span style="padding-left:4em">`}`</span> <br><span style="padding-left:2em">`}`</span> <br>`};`|
 
-###### API Builder Models
+#### API Builder Models
 Your connector tables will be listed uner the Models section of the console. You can now click on the gear icon to the right of the table names and generate flow based apis.
 
 Once you've configured your MySQL configuration files located under `<dir>/conf` you can start up your API Builder project and visit the console (normally found under `localhost:8080/console`). Your connector will be listed under on the Connectors tab of the console.
@@ -134,12 +134,12 @@ Your MySQL tables will be listed under the Models tab of the console.
 
 ![Models](./images/Models-Tab.png)
 
-###### Using connector models in flows
+#### Using connector models in flows
 To use the connector model in a flow, select the Flow icon for one of the generated endpoints for the connector; for example, for the Find all mysqlPersons endpoint. The API Orchestration page with all loaded connectors, flow-nodes, and so forth is displayed. For additional information on using a connector model in a flow, refer to [Manage Flows](https://wiki.appcelerator.org/display/AB4/Manage+Flows).
 
 ![Flow](./images/Flow.png)
 
-###### Using auto-generated model API
+#### Using auto-generated model API
 You can also reference the connector in a custom model.
 
 ```js
@@ -175,7 +175,7 @@ All the variables in your configuration files taken from `process.env.<VARIABLE_
 
 The following table lists the configuration files, their location, and their example content. The connector configuration is shown to inform you that you will have to provide an additional set of environment variables when using an API Builder service with connectors.
 
-###### API Builder Environment Variables
+#### API Builder Environment Variables
 The `<dir>/conf/<connector>.default.js` & `<dir>/conf/default.js` contains different environment variables. This is a list of the common variables that you will need to set to use this service.
 
 | Name                 | Description                                         | Default                          |
