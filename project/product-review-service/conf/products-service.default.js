@@ -7,7 +7,7 @@ module.exports = {
 				"x-vendor-openapi-password": process.env.PRODUCT_PASSWORD || "",
 				'x-vendor-openapi-uri': {
 					'host': process.env.PRODUCT_HOST,
-					'port': parseInt(process.env.PRODUCT_PORT)
+					'port': parseInt(process.env.PRODUCT_PORT) || 8080
 				}				
 			}
 		}
