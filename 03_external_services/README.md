@@ -1,52 +1,39 @@
-TODO: Restructure accordingly
+# Consume External Services
 
-# Product-Review Microservice
+## Problem
+We saw how easy it is to spin up an application and weave databases in your service with the help of Data Connectors plugins. However, these are not the only datasource types. In the age of API Economy there are many third party APIs that can be used as datasource. So the question is:
 
-The service aggregates information from the following services:
+>**_How do we consume data from third-party APIs within API Builder service?_**
 
-## Internal 
-* `product-service` - API Builder microservice that gets data from MySQL database
-* `review-service` - API Builder microservice that gets data from MongoDB database
+## The API Builder Solution
+Currently API Builder offer solution that:
+* Leverage the [Swagger 2.0 standard](https://swagger.io/docs/specification/2-0/basic-structure/) for API description
+* Uses the [API Builder Swagger Flow-Node Plugin](https://www.npmjs.com/package/@axway/api-builder-plugin-fn-swagger) that is automatically listed as dependency on a newly scaffolded service.
 
-## External
-* `Taxonomy API` - Use a single endpoint to get taxonomy on the provided text. In our use case we are getting possible product classifications based on the product description (this functionality leverage Parallel Dots API)
+## How it Works?
 
-## Architecture Diagram
+It is a simple 3 steps process:
+1. Find an API and gets its Swagger description (or write your own)
+2. Place the swagger into the service `./swagger` folder together with an icon with the same name
 
-![Stoplight](../../images/product-review-service-architecture.png)
+<img src="../images/swagger-folder.png" width="250">
 
-## How to Try?
+3. Configure the service within automatically generated file in the service `./conf` folder. Direct values or environmentalized values could be provided as shown bellow: 
 
-TODO: Explain how to run already created service
+![Service Config](../images/config-file.png)
 
-## How to Build on Your Own?
+### See it in Action 
 
-This section explains how to build on your own the microservice that is available in `micorservice-src` folder.
+The API Builder Swagger Flow-Node plugin can be seen in action in [Product Review Service](../project/product-review-service). It is used in this service for communication with 3 underlying services as shown on the diagram:
 
-### Step 1 - Scaffold The Application
+![Architecture](../images/product-review-service-architecture.png)
 
-See the startup guide
+#### Internal Services (other API Builder Services)
+* **[Product Service](../product-service)** - used to collect the Product Details
+* **[Review Service](../review-service)** - used to collect the Reviews for Product
 
-### Step 2 - Create your API Spec
+#### External Services (third-party APIs)
+* **[Parallel Dots API](http://paralleldots.com)** - used to collect Taxonomy data based on Product description.
 
-As long as you know your business logic many alternative ways exist to create your API specification. This also depends on the specification format you prefer. However, API Buider works with Swagger 2.0 so this format will be used for the case of the demo.
 
-One of the available tools out there is Stoplight. It can be used to define the API and export the swagger specification. Sample screenshot is shown bellow.
-
-![Stoplight](../../images/stoplight.png)
-
-### Step 3 - Import the specification to API Builder service
-
-* Run your API Builder service
-
-* Open the API Builder administration UI
-
-* Import the swagger created on the previous step
-
-This will relaod your application and you will have API with a single endpoint that is still not activated. The reason is that associated flow for this endpoint is still not created.
-
-### Step 4 - Create a Flow to serve specific ednpoint
-
-In the API Builder administration select the endpoint for which you want a flow. Clicking on the Create Flow will open the flow editor where the Flow can be designed.
-
-And that is basically everything now we have a fully working API that could be tried out as explaned in the section How to Try?
+[Read Product Review Service documentation]((../project/product-review-service)) if you want to test it out.
