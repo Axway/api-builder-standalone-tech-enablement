@@ -4,11 +4,10 @@
 *	[Introduction](#introduction)
 *	[Prerequisites](#prerequisites)
 *	[Architecture and Dependencies](#architecture-and-dependencies)
-*	[How to run the demo product-service](#how-to-run-the-demo-product-service)
 *	[How to create own mysql container with DB](#how-to-create-own-mysql-container-with-db)
 
 ## Introduction
-> This service aggregates information from internal services - Product API and publicly available API.
+> This document provides information on how to configure and run an API Builder service within a connector.
  
 ## Prerequisites
 Prior to setting up a project with a connector, refer to:
@@ -22,11 +21,11 @@ Prior to setting up a project with a connector, refer to:
 - product-service
  
 ### External
-* MySql DB - the API used for configure and run an API Builder Service within a MySql container with DB.
+* [API Builder Connectors](https://wiki.appcelerator.org/display/AB4/API+Builder+Connectors) - configure and run an API Builder Service within a connector such as Oracle, MySQL, and MongoDB.
 
 ## How to create own Service with MySql container DB
 
-This document provides a step-by-step tutorial on how to run an API Builder service within a mysql container with DB. These steps include:
+This document provides a step-by-step tutorial on how to run an API Builder service within a connector in container with DB. These steps include:
 
 ### Create your API Builder project
 
@@ -78,6 +77,18 @@ Now, you have tested that your service is running directly on your machine.
 
 In case, you need to stop the service, use `Ctrl + C` in your terminal where the service is running.
 
+#### API Builder Connectors
+Connectors are adapters to allow you to read and write data to and from an external data source, such as Oracle, MySQL,and MongoDB.  They give your application the ability to utilize existing data sources to create Models for use within your API Builder application, either directly as API, or within flows.
+
+__NOTE:__ Refer to [API Builder Connectors](https://wiki.appcelerator.org/display/AB4/API+Builder+Connectors) for detailed information.
+
+#### Available connectors
+The following connectors are available for download directly from NPM:
+
+* @axway/api-builder-plugin-dc-mongo
+* @axway/api-builder-plugin-dc-mysql
+* @axway/api-builder-plugin-dc-oracle
+
 To add a Connector:
 
 1. Install the Connector
@@ -85,24 +96,34 @@ To add a Connector:
 1. Use the Connector
 
 #### Step 2a: Install the Connector
-For an example we will demonstrate you how to install and configure MySQL DC.
-
-The mysql library used by this connector depends on a MySQL server setting NO_BACKSLASH_ESCAPES to mitigate against SQL injection attacks.  This setting must be disabled (which is the default setting for MySQL servers).
-
-This is an API Builder data connector for MySQL.
+To install a data connector, navigate to the root directory of your service and use the following command; for example,to install the MySQL data connector:
 
 ```sh
 npm install @axway/api-builder-plugin-dc-mysql
 ```
 
-__NOTE:__ using `@latest` will pick up the latest available connector version.
+__NOTE:__ using `@latest` will pick up the latest available connector version. You will need to configure your connector with connection details before starting your application or it will fail to start. For additional configuration details, refer to the connector.
 
 A configuration file is generated for you and placed into the conf directory of your API Builder project. By default we use a host of localhost, a user of root and a password of password to connect.
 
 #### Step 2b: Configure the Connector
-Once you've configured your mysql configuration files located under `<my-project>/conf` you can start up your API Builder project and visit the console (normally found under `localhost:8080/console`). Your connector will be listed under the Connectors section of the console.
+When you install a connector, it will create a configuration file located in the <SERVICE_FOLDER>/conf folder that has the name of your connector. For example, mysql.default.js. You will need to edit this file and give it the required connection details such as database host and port, user, password, and database.
 
-Your MySQL tables will be listed uner the Models section of the console. You can now click on the gear icon to the right of the table names and generate flow based apis.
+The configuration files that can contain environment variables are placed in the <SERVICE_FOLDER>/conf folder.
+
+All the variables in your configuration files taken from process.env.<VARIABLE_NAME> can be provided when running the Docker container.
+
+The following table lists the configuration files, their location, and their example content. The connector configuration is shown to inform you that you will have to provide an additional set of environment variables when using an API Builder service with connectors.
+
+| Configuration File                 | Location                                         | Example                          |
+|:---------------------|:----------------------------------------------------|:---------------------------------|
+| Service Configuration	| __<SERVICE_FOLDER>/conf/default.js__		| 	`module.exports = {` <br><span style="padding-left:3em"> `apiKey: process.env.APIKEY`</span> <br><span style="padding-left:3em"> `port: parseInt(process.env.PORT) || 8080 `</span><br> `};` |
+| Connector Configuration | __<SERVICE_FOLDER>/conf/mysql.default.js__ | `module.exports = {`<br><span style="padding-left:3em"> `connectors: {`</span> <br> <span style="padding-left:3em"> `mysql: {`</span> <br><span style="padding-left:3em"> `connector:` </span> <br> <span style="padding-left:3em">`'@axway/api-builder-plugin-dc-mysql',` <br>`connectionPooling: true,` <br> `connectionLimit: 10,` <br> `host: process.env.MYSQL_HOST || 'localhost',` <br> `port: 3306,` <br> `database: 'mysql',` <br> `user: process.env.MYSQL_USER,` <br> `password: process.env.MYSQL_PASSWORD,` <br> `generateModelsFromSchema: true,` <br> `modelAutogen: false`<br> </span> `}`<br> `}` <br> `};` <br>|
+
+
+
+###
+Your connector tables will be listed uner the Models section of the console. You can now click on the gear icon to the right of the table names and generate flow based apis.
 
 You can also reference the connector in a custom model.
 
