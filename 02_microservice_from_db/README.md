@@ -1,13 +1,13 @@
-# Product Microservice
+# How to make Microservice from DB
 
 ## Table of content
 *	[Introduction](#introduction)
 *	[Prerequisites](#prerequisites)
 *	[Architecture and Dependencies](#architecture-and-dependencies)
-*	[How to create own mysql container with DB](#how-to-create-own-mysql-container-with-db)
+*	[How to create own container with DB](#how-to-create-own-container-with-db)
 
 ## Introduction
-> This document provides information on how to configure and run an API Builder service within a connector.
+> This document provides information on how to configure and run an API Builder Microservice within a connector from DB.
  
 ## Prerequisites
 Prior to setting up a project with a connector, refer to:
@@ -18,12 +18,12 @@ Prior to setting up a project with a connector, refer to:
 ## Architecture and Dependencies
 
 ### Internal
-- product-service
+- API Builder Service
  
 ### External
 * [API Builder Connectors](https://wiki.appcelerator.org/display/AB4/API+Builder+Connectors) - configure and run an API Builder Service within a connector such as Oracle, MySQL, and MongoDB.
 
-## How to create own Service with MySql container DB
+## How to create own Service with connector in container DB
 
 This document provides a step-by-step tutorial on how to run an API Builder service within a connector in container with DB. These steps include:
 
