@@ -50,22 +50,46 @@
 						"doT.1"
 					]
 				},
+				"304": {
+					"context": "$.error",
+					"routes": [
+						"doT.1"
+					]
+				},
 				"400": {
 					"context": "$.error",
 					"routes": [
-						"http.2"
+						"condition.2"
 					]
 				},
 				"401": {
 					"context": "$.error",
 					"routes": [
-						"http.2"
+						"condition.2"
+					]
+				},
+				"403": {
+					"context": "$.error",
+					"routes": [
+						"condition.2"
+					]
+				},
+				"406": {
+					"context": "$.error",
+					"routes": [
+						"condition.2"
+					]
+				},
+				"429": {
+					"context": "$.error",
+					"routes": [
+						"condition.2"
 					]
 				},
 				"500": {
 					"context": "$.error",
 					"routes": [
-						"http.2"
+						"condition.2"
 					]
 				}
 			}
@@ -95,13 +119,13 @@
 		},
 		"http.2": {
 			"type": "nodehandler://axway-flow/http",
-			"name": "Error Finding Taxonomy",
+			"name": "Third Party Authentication Fail",
 			"method": "setresponse",
 			"parameters": [
 				{
 					"name": "status",
 					"type": "number",
-					"value": "400"
+					"value": "401"
 				}
 			],
 			"outputs": {
@@ -131,25 +155,25 @@
 				},
 				"400": {
 					"routes": [
-						"http.3"
+						"condition.1"
 					],
 					"context": "$.error"
 				},
 				"401": {
 					"routes": [
-						"http.3"
+						"condition.1"
 					],
 					"context": "$.error"
 				},
 				"404": {
 					"routes": [
-						"http.3"
+						"condition.1"
 					],
 					"context": "$.error"
 				},
 				"500": {
 					"routes": [
-						"http.3"
+						"condition.1"
 					],
 					"context": "$.error"
 				}
@@ -157,13 +181,13 @@
 		},
 		"http.3": {
 			"type": "nodehandler://axway-flow/http",
-			"name": "Error Finding Product",
+			"name": "Product Not Found",
 			"method": "setresponse",
 			"parameters": [
 				{
 					"name": "status",
 					"type": "number",
-					"value": "400"
+					"value": "404"
 				}
 			],
 			"outputs": {
@@ -223,32 +247,117 @@
 				"400": {
 					"context": "$.error",
 					"routes": [
-						"http.4"
+						"condition.1"
 					]
 				},
 				"401": {
 					"context": "$.error",
 					"routes": [
-						"http.4"
+						"condition.1"
 					]
 				},
 				"404": {
 					"context": "$.error",
 					"routes": [
-						"http.4"
+						"condition.1"
 					]
 				},
 				"500": {
 					"context": "$.error",
 					"routes": [
-						"http.4"
+						"condition.1"
 					]
+				}
+			}
+		},
+		"condition.1": {
+			"type": "nodehandler://axway-flow/condition",
+			"name": "Equals",
+			"method": "equals",
+			"parameters": [
+				{
+					"name": "source",
+					"type": "jsonpath",
+					"value": "$.error.statusCode"
+				},
+				{
+					"name": "value",
+					"type": "number",
+					"value": "404"
+				}
+			],
+			"outputs": {
+				"true": {
+					"routes": [
+						"http.3"
+					],
+					"context": "$.equals"
+				},
+				"false": {
+					"routes": [
+						"http.5"
+					],
+					"context": "$.equals"
+				}
+			}
+		},
+		"http.5": {
+			"type": "nodehandler://axway-flow/http",
+			"name": "Database Error",
+			"method": "setresponse",
+			"parameters": [
+				{
+					"name": "status",
+					"type": "number",
+					"value": "400"
+				},
+				{
+					"name": "body",
+					"type": "string",
+					"value": "\"Check Service Databases\""
+				}
+			],
+			"outputs": {
+				"next": {
+					"context": "$.response",
+					"routes": []
+				}
+			}
+		},
+		"condition.2": {
+			"type": "nodehandler://axway-flow/condition",
+			"name": "Equals",
+			"method": "equals",
+			"parameters": [
+				{
+					"name": "source",
+					"type": "jsonpath",
+					"value": "$.error.statusCode"
+				},
+				{
+					"name": "value",
+					"type": "number",
+					"value": "401"
+				}
+			],
+			"outputs": {
+				"true": {
+					"routes": [
+						"http.2"
+					],
+					"context": "$.equals"
+				},
+				"false": {
+					"routes": [
+						"http.4"
+					],
+					"context": "$.equals"
 				}
 			}
 		},
 		"http.4": {
 			"type": "nodehandler://axway-flow/http",
-			"name": "Error Finding Reviews",
+			"name": "Third Party Error",
 			"method": "setresponse",
 			"parameters": [
 				{

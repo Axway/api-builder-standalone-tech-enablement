@@ -140,7 +140,7 @@
 				{
 					"name": "status",
 					"type": "number",
-					"value": "400"
+					"value": "404"
 				}
 			],
 			"outputs": {
