@@ -18,11 +18,7 @@
 	"private": true,
 	"dependencies": {
 		"@axway/api-builder-plugin-dc-mysql": "1.1.0",
-		"@axway/api-builder-plugin-fn-base64": "^1.0.0",
 		"@axway/api-builder-plugin-fn-dot": "^1.0.0",
-		"@axway/api-builder-plugin-fn-json": "^1.0.0",
-		"@axway/api-builder-plugin-fn-restclient": "^1.0.0",
-		"@axway/api-builder-plugin-fn-swagger": "^1.0.0",
 		"@axway/api-builder-runtime": "^4.0.0"
 	},
 	"devDependencies": {

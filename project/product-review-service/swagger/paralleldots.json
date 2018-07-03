@@ -26,12 +26,24 @@
               }
             }
           },
+          "304": {
+            "description": "There was no new data to return."
+          },
           "400": {
             "description": "Bad Request"
           },
           "401": {
             "description": "Authorization Required"
           },
+          "403": {
+            "description": "Daily/Monthy Limit Exceeded."
+          },
+          "406": {
+            "description": "Invalid Format. Parameter text should be string"
+          },
+          "429": {
+            "description": "Too Many Requests. Please try after sometime."
+          },          
           "500": {
             "description": "Server Error"
           }

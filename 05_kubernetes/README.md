@@ -21,33 +21,6 @@ For the demo our pods will just contain a single microservice. If we were deploy
 
 ![K8s Topology](./images/api-builder-topology-k8s.svg)
 
-## Helm ([https://helm.sh](https://helm.sh))
-
-To simplify/automate the deployment we'll use Helm. Helm is "the package manager for Kubernetes". A Helm _chart_ allows you to define, install and upgrade complex Kubernetes applications. 
-
-To deploy/configure something in Kubernetes you create a YAML file describing the resource being deployed. For example:
-
-```yaml
-apiVersion: v1
-kind: ServiceAccount
-metadata:
-  name: tiller
-  namespace: kube-system
-```
-
-This YAML file describes a ServiceAccount, this is deployed using `kubectl`
-
-```bash
-$ kubectl create -f resource.yaml
-```
-
-However as your deployment gets larger and more complex this becomes quite hard to manage and automate. This is the problem Helm solves. It allows you to create logical groupings of your resource yaml files. These are known as _Charts_. Then to deploy your application it delivers the _chart_ and the values for the templates to a service running in your cluster called _Tiller_. Tiller then applies all the changes.
-
-The templates in a chart can be parameterized, this means charts can be distributed and easily customized - only the _values.yaml_ file needs to be edited. For our demonstration, each of our microservices (and, for this demo, datastores too) will be deployed as pods with replicas using a _Deployement_ and also a _Service_ per deployment so that they can communicate.
-
-## Google Kubernetes Engine (GKE)
-
-There are an multipe cloud plaforms that provide support for Kubernetes orchestration, such as Amazon EKS, Azure Kubernetes Serivce and Google Kubernetes Engine. In this section we will look at how to deploy your application to the Google Kubernetes Engine (GKE). While some of the steps outlined here are GKE specific, in general the same topics will apply to all vendors.
 
 ### Ingress
 
@@ -97,6 +70,34 @@ spec:
     serviceName: {{ .Release.Name }}-product-review
     servicePort: 8080
 ```
+
+## Helm ([https://helm.sh](https://helm.sh))
+
+To simplify/automate the deployment we'll use Helm. Helm is "the package manager for Kubernetes". A Helm _chart_ allows you to define, install and upgrade complex Kubernetes applications. 
+
+To deploy/configure something in Kubernetes you create a YAML file describing the resource being deployed. For example:
+
+```yaml
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: tiller
+  namespace: kube-system
+```
+
+This YAML file describes a ServiceAccount, this is deployed using `kubectl`
+
+```bash
+$ kubectl create -f resource.yaml
+```
+
+However as your deployment gets larger and more complex this becomes quite hard to manage and automate. This is the problem Helm solves. It allows you to create logical groupings of your resource yaml files. These are known as _Charts_. Then to deploy your application it delivers the _chart_ and the values for the templates to a service running in your cluster called _Tiller_. Tiller then applies all the changes.
+
+The templates in a chart can be parameterized, this means charts can be distributed and easily customized - only the _values.yaml_ file needs to be edited. For our demonstration, each of our microservices (and, for this demo, datastores too) will be deployed as pods with replicas using a _Deployement_ and also a _Service_ per deployment so that they can communicate.
+
+## Google Kubernetes Engine (GKE)
+
+There are an multipe cloud plaforms that provide support for Kubernetes orchestration, such as Amazon EKS, Azure Kubernetes Serivce and Google Kubernetes Engine. In this section we will look at how to deploy your application to the Google Kubernetes Engine (GKE). While some of the steps outlined here are GKE specific, in general the same topics will apply to all vendors.
 
 ### Setting up Google Kubernetes Engine (GKE)
 
@@ -271,10 +272,66 @@ NAME                  HOSTS     ADDRESS       PORTS     AGE
 demo-product-review   *         35.241.12.7   80, 443   31m
 ```
 
-Note even though the ingress reports it's available on port 80 we've actually disabled that using the `kubernetes.io/ingress.allow-http` annotation in the [product-review-ingress.yaml](../project/helm-product-review-chart/templates/product-review-ingress.yaml).
+> Note even though the ingress reports it's available on port 80 we've actually disabled that using the `kubernetes.io/ingress.allow-http` annotation in the [product-review-ingress.yaml](../project/helm-product-review-chart/templates/product-review-ingress.yaml).
+
+### Review
+Looking athe GKE  UI we can see what helm has done.
+
+1. Services
+The Services tab lists the services and ingresses created. For each pod in our demo we have a service. All the services _except_ demo-product-review are "Cluster IP", they are only accessible from within the cluster. demo-product-review is of type "Node Port" - it will be externally visible.
+![Services](./images/gke_services.png)
+1. Deployments
+The deployments section shows the five deployments, two for the databases and then one deployment per microservice. Note that each of the services is run two pods, replicas for load handling.
+![Deployments](./images/gke_deployments.png)
+1. Pods and replicas
+If we drill into one of the deployments we can see more detail on the pods and replicas in the deployment.
+![Pods and Replicas](./images/gke_podsAndReplicas.png)
+1. Secrets
+To add TLS to the Ingress we had to create a secret containing the key/cert details. This is the _demo-secret_ on the configuration page.
+![Secrets](./images/gke_secrets.png)
 
 To get the swagger definition of the service https://_ipaddress_/apidoc/swagger.json, so in this case [https://35.241.5.136/apidoc/swagger.json](https://35.241.5.136/apidoc/swagger.json).
 
 
-TODO: Add to test steps with PostMan
+### Testing
 
+```bash
+$ curl -s --insecure -u my-product-review-secret-apikey: https://35.241.5.136/api/v1/productinfo/SKU1 | jq
+{
+  "sku": "SKU1",
+  "name": "Spicy World Peppercorn",
+  "description": "If we had to select just one spice to flavor our food, pepper, the master spice ,would be a wise choice.",
+  "reviews": {
+    "id": "5b3b39547beff0d358ea9964",
+    "sku": "SKU1",
+    "reviews": [
+      {
+        "review": "Best taste ever!!!",
+        "user": "John"
+      },
+      {
+        "review": "Had better meals!!!",
+        "user": "Jack"
+      },
+      {
+        "review": "Too spicy!!!",
+        "user": "Jane"
+      }
+    ]
+  },
+  "taxonomy": [
+    {
+      "confidence_score": 0.98999,
+      "tag": "food and drink/food"
+    },
+    {
+      "confidence_score": 0.973018,
+      "tag": "shopping/gifts"
+    },
+    {
+      "confidence_score": 0.972578,
+      "tag": "style and fashion/accessories"
+    }
+  ]
+}
+```
