@@ -2,12 +2,12 @@
 
 ## Table of content
 
-*	[Set up your Docker environment](#Set-up-your-Docker-environment)
-*	[Build an image and run it as one container](#Build-an-image-and-run-it-as-one-container)
-*	[Scale your app to run multiple containers](#Scale-your-app-to-run-multiple-containers)
+*	[Set up your Docker environment](#set-up-your-docker-environment)
+*	[Build an image and run it as one container](#build-an-image-and-run-it-as-one-container)
+*	[Scale your app to run multiple containers](#scale-your-app-to-run-multiple-containers)
 
-## Set up your Docker environment
-#### Prepare your Docker environment
+## Set up your environment
+
 * Install a [maintained version](https://docs.docker.com/install/) of Docker Community Edition (CE) or Enterprise Edition (EE) on a [supported platform](https://docs.docker.com/install/).
 
 #### Test Docker version
@@ -18,7 +18,53 @@ docker --version
 Docker version 17.12.0-ce, build c97c6d6
 ```
 > To avoid permission errors (and the use of __sudo__), add your user to the docker group. [Read more](https://docs.docker.com/install/linux/linux-postinstall/).
- 
+
+2. Run docker info or (docker version without --) to view even more details about your docker installation:
+
+```sh
+docker info
+
+Containers: 0
+ Running: 0
+ Paused: 0
+ Stopped: 0
+Images: 0
+Server Version: 17.12.0-ce
+Storage Driver: overlay2
+...
+```
+
+### Recap and cheat sheet
+
+```sh
+## List Docker CLI commands
+docker
+docker container --help
+
+## Display Docker version and info
+docker --version
+docker version
+docker info
+
+## Execute Docker image
+docker run apibuilder-app
+
+## List Docker images
+docker image ls
+
+## List Docker containers (running, all, all in quiet mode)
+docker container ls
+docker container ls --all
+docker container ls -aq
+```
+### Conclusion 
+Containerization makes [CI/CD](https://www.docker.com/use-cases/cicd) seamless. For example:
+* applications have no system dependencies
+* updates can be pushed to any part of a distributed application
+* resource density can be optimized.
+
+With Docker, scaling your application is a matter of spinning up new executables, not running heavy VM hosts.
+
 ## Build an image and run it as one container
 #### Define a container with Dockerfile
 
@@ -44,12 +90,16 @@ CMD ["docker-entrypoint.sh", "mongod"]
 #### 2.Build the container
 Execute the following command:
 ```sh
-docker build -t <imaga_name> ./
+docker build -t <image_name> ./
+## Execute Docker image
+docker run --name <container_name> -d <image_name>
 ```
 
 __NOTE:__ To run an actual code example check the content in:
 *  ./project/mongo or ./project/mysql for a personalized DB image
 *  ./project/product-service or ./project/review-service for a personalized API Builder image 
+
+__That’s it!__ You don’t need Mongo Database on your system, nor does building or running this image install them on your system. It doesn’t seem like you’ve really set up an environment with Mongo, but you have one.
 
 #### 3.Share your image
 To demonstrate the portability of what we just created, let’s upload our built image and run it somewhere else. After all, you need to know how to push to registries when you want to deploy containers to production.
@@ -129,6 +179,14 @@ No matter where docker run executes, it pulls your image, along with all the dep
 
 ## Scale your app to run multiple containers
 
+#### Prerequisites
+* [Docker](https://docs.docker.com/install/).
+* [Docker Compose](https://docs.docker.com/compose/overview/).
+* [Docker Machine](https://docs.docker.com/machine/overview/).
+* [Kubernetes](https://docs.docker.com/docker-for-mac/kubernetes/).
+
+__NOTE__: Kubernetes is only available in Docker for Mac 17.12 CE and higher, on the Edge channel. Kubernetes support is not included in Docker for Mac Stable releases. To find out more about Stable and Edge channels and how to switch between them, see [General configuration](https://docs.docker.com/docker-for-mac/kubernetes/#general).
+
 In a distributed application, different pieces of the app are called “services.” For example, if you imagine a video sharing site, it probably includes a service for storing application data in a database, a service for video transcoding in the background after a user uploads something, a service for the front-end, and so on.
 
 Services are really just “containers in production.” A service only runs one image, but it codifies the way that image runs—what ports it should use, how many replicas of the container should run so the service has the capacity it needs, and so on. Scaling a service changes the number of container instances running that piece of software, assigning more computing resources to the service in the process.
@@ -175,37 +233,20 @@ This docker-compose.yml file tells Docker to do the following:
 
 __NOTE:__ This __.yml__ file is prety simple and it's not exposing all the functionality/complexity that can be added in the configs like connecting to a database,services,clusters and etc. For more details visit the official documentation [Docker Hub Get Started](https://docs.docker.com/get-started/)
 
-#### 1.Run your new load-balanced app
-Before we can use the docker stack deploy command we first run:
+#### 1.Run your new load-balanced app and scale it
+You can deploy a stack on Kubernetes with docker stack deploy, the docker-compose.yml file, and the name of the stack.
+```sh
+docker stack deploy --compose-file /path/to/docker-compose.yml apibuilderapp
+docker stack services apibuilderapp
+```
+You can see the service deployed with the kubectl get services command.
+#### 2.Specify a namespace
+By default, the default namespace is used. You can specify a namespace with the --namespace flag.
+```sh
+docker stack deploy --namespace my-app --compose-file /path/to/docker-compose.yml apibuilderapp
+```
+Run ``` kubectl get services -n my-app``` to see only the services deployed in the my-app namespace.
 
-```sh
-docker swarm init
-```
-Now let’s run it. You need to give your app a name. Here, it is set to apibuilderapp:
-```sh
-docker stack deploy -c docker-compose.yml apibuilderapp
-```
-Our single service stack is running 5 container instances of our deployed image on one host. Let’s investigate.
+__NOTE__:Note: Deploying the same app in Kubernetes and swarm mode may lead to conflicts with ports and service names.
 
-Get the service ID for the one service in our application:
-
-```sh
-docker service ls
-```
-
-#### 2.Scale the app
-You can scale the app by changing the replicas value in docker-compose.yml, saving the change, and re-running the docker stack deploy command:
-```sh
-docker stack deploy -c docker-compose.yml apibuilderapp
-```
-Docker performs an in-place update, no need to tear the stack down first or kill any containers.
-
-Now, re-run docker container ls -q to see the deployed instances reconfigured. If you scaled up the replicas, more tasks, and hence, more containers, are started.
-* Take the app down with docker stack rm:
-```sh
-docker stack rm apibuilderapp
-```
-* Take down the swarm:
-```sh
-docker swarm leave --force
-```
+The mac __Kubernetes__ integration provides the Kubernetes CLI command at __/usr/local/bin/kubectl__. This location may not be in your shell’s PATH variable, so you may need to type the full path of the command or add it to the PATH. For more information about kubectl, see the __kubectl__ [official documentation](https://kubernetes.io/docs/reference/kubectl/overview/). You can test the command by listing the available nodes:
