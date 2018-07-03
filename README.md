@@ -1,14 +1,16 @@
-# Before you start
+<img src="./images/banner.png" height="340" width="750">
+
+# API Builder Standalone Tech Enablement
+
+The goal of this tech enablement is to show how API Builder can be used to simplify and accelerate a customer's move to a microservices based architecture.
+
+## Before you start
 
 There are two ways of reading the provided documentation for this project:
 
 1) Read the README.md files and follow the navigation links
 
 2) Run `npm i && npm start` in the root of this project and [read as booklet in your browser](http://localhost:4000).
-
-# API Builder Standalone Tech Enablement
-
-The goal of this tech enablement is to show how API Builder can be used to simplify and accelerate a customer's move to a microservices based architecture.
 
 ## Introduction
 
@@ -32,11 +34,10 @@ API Builder will:
 1. make integrating with third-party services painless
 1. allow them to deploy their solution where-ever they require, on premise or in the cloud.
 
-
 ## Prerequisites
 
 * Docker
-* NodeJS 8.x
+* NodeJS >= 8.9
 * npm
 * @axway/api-builder
 * Google Cloud SDK - gcloud
