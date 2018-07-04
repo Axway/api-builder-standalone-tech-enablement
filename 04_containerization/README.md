@@ -2,176 +2,89 @@
 
 ## Table of content
 
-*	[Set up your Docker environment](#set-up-your-docker-environment)
-*	[Build an image and run it as one container](#build-an-image-and-run-it-as-one-container)
+*	[What is a Docker container?](#what-is-a-docker-container)
+*	[Why would I use a Docker container?](#why-would-i-use-a-docker-container)
+*	[Set up your environment](#set-up-your-environment)
+*	[Build an image and run it as container](#build-an-image-and-run-it-as-container)
+*	[Methods of Logging in Docker](#methods-of-logging-in-docker)
+## What is a Docker container
+
+A container image is a lightweight, stand-alone, executable package of a piece of software that includes everything needed to run it: code, runtime, system tools, system libraries, settings. Available for both Linux and Windows based apps, containerized software will always run the same, regardless of the environment. Containers isolate software from its surroundings, for example differences between development and staging environments and help reduce conflicts between teams running different software on the same infrastructure.
+
+## Why would I use a Docker container
+
+* __Flexible__: Even the most complex applications can be containerized.
+* __Lightweight__: Containers leverage and share the host kernel.
+* __Interchangeable__: You can deploy updates and upgrades on-the-fly.
+* __Portable__: You can build locally, deploy to the cloud, and run anywhere.
+* __Scalable__: You can increase and automatically distribute container replicas.
+* __Stackable__: You can stack services vertically and on-the-fly.
 
 ## Set up your environment
+__NOTE__: The following demo is using API Builder CLI to create an app which later on will be dokerized and run from a container.
 
-* Install a [maintained version](https://docs.docker.com/install/) of Docker Community Edition (CE) or Enterprise Edition (EE) on a [supported platform](https://docs.docker.com/install/).
+#### Prerequisites
 
-#### Test Docker version
-1. Run __docker --version__ and ensure that you have a supported version of Docker:
-```sh
-docker --version
+Here are the technical requirements for being able to execute the steps suggested in this guide. You need to have the following installed:
 
-Docker version 17.12.0-ce, build c97c6d6
-```
-> To avoid permission errors (and the use of __sudo__), add your user to the docker group. [Read more](https://docs.docker.com/install/linux/linux-postinstall/).
-
-2. Run docker info or (docker version without --) to view even more details about your docker installation:
+1. Docker - The installation of Docker is via dedicated installer for specific operation system. [Read the official guide for how to install Docker](https://docs.docker.com/install/).
+1. API Builder CLI - It is a node module published in [npm public repository](https://www.npmjs.com/package/@axway/api-builder). Basically, it is a one line command as follows:
 
 ```sh
-docker info
-
-Containers: 0
- Running: 0
- Paused: 0
- Stopped: 0
-Images: 0
-Server Version: 17.12.0-ce
-Storage Driver: overlay2
-...
+npm install -g @axway/api-builder
 ```
 
-### Recap and cheat sheet
-
+#### 1. Build an API Builder app
 ```sh
-## List Docker CLI commands
-docker
-docker container --help
-
-## Display Docker version and info
-docker --version
-docker version
-docker info
-
-## Execute Docker image
-docker run apibuilder-app
-
-## List Docker images
-docker image ls
-
-## List Docker containers (running, all, all in quiet mode)
-docker container ls
-docker container ls --all
-docker container ls -aq
+api-builder init <SERVICE_NAME>
+cd <SERVICE_NAME>
 ```
-### Conclusion 
-Containerization makes [CI/CD](https://www.docker.com/use-cases/cicd) seamless. For example:
-* applications have no system dependencies
-* updates can be pushed to any part of a distributed application
-* resource density can be optimized.
+#### 2. Build an image and run it as container
+Docker can build images automatically by reading the instructions from a Dockerfile. The __Dockerfile__ defines what goes on in the environment inside your container. Access to resources like networking interfaces and disk drives is virtualized inside this environment, which is isolated from the rest of your system, so you need to map ports to the outside world, and be specific about what files you want to “copy in” to that environment. However, after doing that, you can expect that the build of your app defined in this __Dockerfile__ behaves exactly the same wherever it runs.
 
-With Docker, scaling your application is a matter of spinning up new executables, not running heavy VM hosts.
-
-## Build an image and run it as one container
-#### Define a container with Dockerfile
-
-__Dockerfile__ defines what goes on in the environment inside your container. Access to resources like networking interfaces and disk drives is virtualized inside this environment, which is isolated from the rest of your system, so you need to map ports to the outside world, and be specific about what files you want to “copy in” to that environment. However, after doing that, you can expect that the build of your app defined in this __Dockerfile__ behaves exactly the same wherever it runs.
-
-#### 1.Dockerfile Example
+###### 2.1. Dockerfile Example
 ```sh
-# Use an official Mongo database as a parent image
-FROM mongo
-
-# Define environment variable
-ENV MONGO_INITDB_ROOT_USERNAME=apibuilder
-ENV MONGO_INITDB_ROOT_PASSWORD=apibuilder
-ENV MONGO_INITDB_DATABASE=admin
-
-# Copy the current directory file contents into the container at /docker-entrypoint-initdb.d/ it will source any *.sh or *.js files found in that directory [/docker-entrypoint-initdb.d] to do further initialization before starting the service
-COPY initMyDatabase.js /docker-entrypoint-initdb.d/
-
-# Run mongod when the container launches
-CMD ["docker-entrypoint.sh", "mongod"]
+# This line defines which node.js Docker image to leverage
+# Available versions are described at https://hub.docker.com/_/node/
+FROM node:8-alpine
+ 
+# Denotes to copy all files in the project to 'app' folder in the container
+COPY . /app
+ 
+# Sets the default working directory to /app which is where we've copied the project files to.
+WORKDIR /app
+ 
+# Install service dependencies relevant for production builds skipping all development dependencies.
+RUN npm install --production --no-optional
+# Starts the service
+CMD ["node", "."]
 ```
-
-#### 2.Build the container
+__NOTE__: Inside the docker file you can set ENV variables, LABEL, USER etc. Read more on the [offcial documentation](https://docs.docker.com/engine/reference/builder/#usage). 
+###### 2.2. Build the container
 Execute the following command:
 ```sh
 docker build -t <image_name> ./
 ## Execute Docker image
-docker run --name <container_name> -d <image_name>
+docker run --name <container_name> -p <ports> -d <image_name>
+## -p tag will open/match the ports of the vm with the physical machine
 ```
 
-__NOTE:__ To run an actual code example check the content in:
-*  ./project/mongo or ./project/mysql for a personalized DB image
-*  ./project/product-service or ./project/review-service for a personalized API Builder image 
+__That’s it!__ You don’t need NODE or all the dependencies of your app on your system , nor does building or running this image install them on your system. It doesn’t seem like you’ve really set up an environment with Node and your App, but you have one.
 
-__That’s it!__ You don’t need Mongo Database on your system, nor does building or running this image install them on your system. It doesn’t seem like you’ve really set up an environment with Mongo, but you have one.
+## Methods of Logging in Docker
+### The top 5 Methods of Logging in Docker are via:
 
-#### 3.Share your image
-To demonstrate the portability of what we just created, let’s upload our built image and run it somewhere else. After all, you need to know how to push to registries when you want to deploy containers to production.
+* the Application
+* Data Volumes
+* the Docker Logging Driver
+* a Dedicated Logging Container
+* the Sidecar Approach
 
-A registry is a collection of repositories, and a repository is a collection of images—sort of like a GitHub repository, except the code is already built. An account on a registry can create many repositories. The docker CLI uses Docker’s public registry by default.
+Logging via the Application is likely what most developers are familiar with. In this process, the application running inside the container handles its own logging using a logging framework. For instance, a API Builder Logs are using JSON logging utility to format and send logs in the console.
 
-> Note: We use Docker’s public registry here just because it’s free and pre-configured, but there are many public ones to choose from, and you can even set up your own private registry using Docker [Trusted Registry](https://docs.docker.com/datacenter/dtr/2.2/guides/).
-
-##### a. Log in with your Docker ID
-If you don’t have a Docker account, sign up for one at hub.docker.com. Make note of your username.
-
-Log in to the Docker public registry on your local machine.
-```sh
-docker login
-```
-##### b. Tag the image
-
-The notation for associating a local image with a repository on a registry is __username/repository:tag__. The tag is optional, but recommended, since it is the mechanism that registries use to give Docker images a version. Give the repository and tag meaningful names for the context, such as api-builder:part2. This puts the image in the api-builder repository and tag it as part2.
-
-Now, put it all together to tag the image. Run docker tag image with your username, repository, and tag names so that the image uploads to your desired destination. The syntax of the command is:
+To see the logs of your running container execute:
 
 ```sh
-docker tag image username/repository:tag
+docker logs <container_name> --details
 ```
-For example:
-
-```sh
-docker tag apibuilderapp john/api-builder:part2
-```
-
-Run docker image ls to see your newly tagged image.
-
-```sh
-$ docker image ls
-
-REPOSITORY               TAG                 IMAGE ID            CREATED             SIZE
-john/api-builder         part2               d9e555c53008        3 minutes ago       195MB
-python                   2.7-slim            1c7128a655f6        5 days ago          183MB
-...
-```
-##### c. Publish the image
-
-Upload your tagged image to the repository:
-
-```sh
-docker push username/repository:tag
-```
-
-Once complete, the results of this upload are publicly available. If you log in to [Docker Hub](https://hub.docker.com/), you see the new image there, with its pull command.
-
-##### d. Pull and run the image from the remote repository
-
-From now on, you can use docker run and run your app on any machine with this command:
-
-```sh
-docker run -p 8080:80 username/repository:tag
-```
-
-If the image isn’t available locally on the machine, Docker pulls it from the repository.
-
-```sh
-$ docker run -p 8080:80 john/api-builder:part2
-Unable to find image 'john/api-builder' locally
-part2: Pulling from john/api-builder
-10a267c67f42: Already exists
-f68a39a6a5e4: Already exists
-9beaffc0cf19: Already exists
-3c1fe835fb6b: Already exists
-4c9f1fa8fcb8: Already exists
-ee7d8f576a14: Already exists
-fbccdcced46e: Already exists
-Digest: sha256:0601c866aab2adcc6498200efd0f754037e909e5fd42069adeff72d1e2439068
-Status: Downloaded newer image for john/api-builder:part2
- * Running on http://0.0.0.0:80/ (Press CTRL+C to quit)
-```
-No matter where docker run executes, it pulls your image, along with all the dependencies and runs your code. It all travels together in a neat little package, and you don’t need to install anything on the host machine for Docker to run it.
+__NOTE__: For more information on the different aproaches and detailed configuration you can visit the [Docker HUB documentation](https://docs.docker.com/config/containers/logging/).

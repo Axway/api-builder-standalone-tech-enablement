@@ -1,4 +1,4 @@
-# Product Microservice
+# Review Microservice
 
 ## Table of content
 *	[Introduction](#introduction)
@@ -194,7 +194,7 @@ docker pull mongo
 docker run -p 27017:27017 -d --name some-mongo -e MONGO_INITDB_ROOT_USERNAME=root -e MONGO_INITDB_ROOT_PASSWORD=password mongo
 ```
 
-* Set user and passward, and access the database:
+* Set user and password, and access the database:
 ```sh
 docker run -it --rm --link some-mongo:mongo mongo mongo --host mongo -u root -p password --authenticationDatabase admin
 ```
@@ -265,7 +265,7 @@ export DB_USER=root export DB_PASSWORD=password && npm start
 
 Once your project is running, point your browser to http://localhost:8080/console to access the API Builder user interface (UI) console. 
 
-Then you could navigate thru the components. 
+Then you could navigate through the components. 
 1. Navigate to the Connectors tab. A list of the available connectors is displayed.
 1. Now, navigate to the Models tab. Click the Tools icon for the Mongo connector and select Generate endpoints to create the Mongo endpoints.
 1. Navigate to the API Doc & Test tab. A list of the API Endpoints is displayed.
