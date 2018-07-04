@@ -4,7 +4,6 @@
 
 *	[Set up your Docker environment](#set-up-your-docker-environment)
 *	[Build an image and run it as one container](#build-an-image-and-run-it-as-one-container)
-*	[Scale your app to run multiple containers](#scale-your-app-to-run-multiple-containers)
 
 ## Set up your environment
 
@@ -176,77 +175,3 @@ Status: Downloaded newer image for john/api-builder:part2
  * Running on http://0.0.0.0:80/ (Press CTRL+C to quit)
 ```
 No matter where docker run executes, it pulls your image, along with all the dependencies and runs your code. It all travels together in a neat little package, and you don’t need to install anything on the host machine for Docker to run it.
-
-## Scale your app to run multiple containers
-
-#### Prerequisites
-* [Docker](https://docs.docker.com/install/).
-* [Docker Compose](https://docs.docker.com/compose/overview/).
-* [Docker Machine](https://docs.docker.com/machine/overview/).
-* [Kubernetes](https://docs.docker.com/docker-for-mac/kubernetes/).
-
-__NOTE__: Kubernetes is only available in Docker for Mac 17.12 CE and higher, on the Edge channel. Kubernetes support is not included in Docker for Mac Stable releases. To find out more about Stable and Edge channels and how to switch between them, see [General configuration](https://docs.docker.com/docker-for-mac/kubernetes/#general).
-
-In a distributed application, different pieces of the app are called “services.” For example, if you imagine a video sharing site, it probably includes a service for storing application data in a database, a service for video transcoding in the background after a user uploads something, a service for the front-end, and so on.
-
-Services are really just “containers in production.” A service only runs one image, but it codifies the way that image runs—what ports it should use, how many replicas of the container should run so the service has the capacity it needs, and so on. Scaling a service changes the number of container instances running that piece of software, assigning more computing resources to the service in the process.
-
-Luckily it’s very easy to define, run, and scale services with the Docker platform -- just write a __docker-compose.yml__ file.
-```sh
-docker-compose.yml
-```
-```sh
-version: "3"
-services:
-  web:
-    # replace username/repo:tag with your name and image details
-    image: username/repo:tag
-    deploy:
-      replicas: 5
-      resources:
-        limits:
-          cpus: "0.1"
-          memory: 50M
-      restart_policy:
-        condition: on-failure
-    ports:
-      - "8080:80"
-    networks:
-      - webnet
-networks:
-  webnet:
-```
-
-This docker-compose.yml file tells Docker to do the following:
-
-* Pull the image we uploaded in step 2 from the registry.
-
-* Run 5 instances of that image as a service called web, limiting each one to use, at most, 10% of the CPU (across all cores), and 50MB of RAM.
-
-* Immediately restart containers if one fails.
-
-* Map port 8080 on the host to web’s port 80.
-
-* Instruct web’s containers to share port 80 via a load-balanced network called webnet. (Internally, the containers themselves publish to web’s port 80 at an ephemeral port.)
-
-* Define the webnet network with the default settings (which is a load-balanced overlay network).
-
-__NOTE:__ This __.yml__ file is prety simple and it's not exposing all the functionality/complexity that can be added in the configs like connecting to a database,services,clusters and etc. For more details visit the official documentation [Docker Hub Get Started](https://docs.docker.com/get-started/)
-
-#### 1.Run your new load-balanced app and scale it
-You can deploy a stack on Kubernetes with docker stack deploy, the docker-compose.yml file, and the name of the stack.
-```sh
-docker stack deploy --compose-file /path/to/docker-compose.yml apibuilderapp
-docker stack services apibuilderapp
-```
-You can see the service deployed with the kubectl get services command.
-#### 2.Specify a namespace
-By default, the default namespace is used. You can specify a namespace with the --namespace flag.
-```sh
-docker stack deploy --namespace my-app --compose-file /path/to/docker-compose.yml apibuilderapp
-```
-Run ``` kubectl get services -n my-app``` to see only the services deployed in the my-app namespace.
-
-__NOTE__:Note: Deploying the same app in Kubernetes and swarm mode may lead to conflicts with ports and service names.
-
-The mac __Kubernetes__ integration provides the Kubernetes CLI command at __/usr/local/bin/kubectl__. This location may not be in your shell’s PATH variable, so you may need to type the full path of the command or add it to the PATH. For more information about kubectl, see the __kubectl__ [official documentation](https://kubernetes.io/docs/reference/kubectl/overview/). You can test the command by listing the available nodes:
