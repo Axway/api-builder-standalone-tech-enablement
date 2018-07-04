@@ -49,10 +49,38 @@ All the variables in your configuration files taken from `process.env.<VARIABLE_
 
 The following table lists the configuration files, their location, and their example content. The connector configuration is shown to inform you that you will have to provide an additional set of environment variables when using an API Builder service with connectors.
 
-| Configuration File                 | Location                                         | Example                          |
-|:---------------------|:----------------------------------------------------|:---------------------------------|
-| | | |
-| __Connector Configuration__ | `<dir>/conf/mysql.default.js` | `module.exports = {`<br><span style="padding-left:1em"> `connectors: {` </span> <br><span style="padding-left:2em"> `mysql: {` </span> <br><span style="padding-left:3em"> `connector:` </span> <br><span style="padding-left:4em"> `'@axway/api-builder-plugin-dc-mysql',`</span> <br><span style="padding-left:4em">`connectionPooling: true,`</span> <br><span style="padding-left:4em">`connectionLimit: 10,`</span><br><span style="padding-left:4em">`host: process.env.MYSQL_HOST || 'localhost'`</span> <br><span style="padding-left:4em">`port: 3306,`</span> <br><span style="padding-left:4em">`database: 'mysql',`</span> <br><span style="padding-left:4em">`user: process.env.MYSQL_USER,`</span> <br><span style="padding-left:4em">`password: process.env.MYSQL_PASSWORD,`</span> <br><span style="padding-left:4em">`generateModelsFromSchema: true,`</span> <br><span style="padding-left:4em">`modelAutogen: false`</span> <br><span style="padding-left:2em">`}`</span> <br><span style="padding-left:1em">`}`</span> <br>`};`|
+#### Connector Configuration File
+>__Location:__ `<dir>/conf/mysql.default.js`           
+
+**_Example:_**
+```js
+module.exports = {
+  connectors: {
+    mysql: {
+      connector: '@axway/api-builder-plugin-dc-mysql',
+      connectionPooling: true,
+      connectionLimit: 10,
+      host: process.env.MYSQL_HOST || 'localhost',
+      port: 3306,
+ 
+ 
+      # This could be set to mysql since this is already available database by default
+      database: 'mysql',
+ 
+ 
+      user: process.env.MYSQL_USER,
+      password: process.env.MYSQL_PASSWORD,
+ 
+ 
+      // Create models based on your schema that can be used in your API.
+      generateModelsFromSchema: true,
+ 
+      // Whether or not to generate APIs based on the methods in generated models.
+      modelAutogen: false
+    }
+  }
+};
+```
 
 __NOTE:__ You will need to configure your connector with connection details before starting your application or it will fail to start. For additional configuration details, refer to the connector.
 
