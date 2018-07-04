@@ -3,8 +3,9 @@
 ## Table of content
 *	[Introduction](#introduction)
 *	[Documentation and resources](#documentation-and-resources)
-*	[Architecture and Dependencies](#architecture-and-dependencies)
-*	[How to create own service in container with DB](#how-to-create-own-service-in-container-with-db)
+*	[What are data connectors and why we use them?](#what-are-data-connectors-and-why-we-use-them)
+*	[Adding a Data Connector to your Microservice](#adding-a-data-connector-to-your-microservice)
+* [See Data Connectors in Action](see-data-connectors-in-action)
 
 ## Introduction
 > The goal of this section is to show how to create, configure and run an API Builder Microservice within a Data Connector from DB.
@@ -16,7 +17,7 @@
 * [Axway Appcelerator Youtube Channel](https://www.youtube.com/watch?v=lgPFasrGATE) - Youtube channed where you could find Demo series and more interesting videos & tutorials
 * [Appcelerator Blog](https://www.appcelerator.com/blog/) - Axway blog space.
 
-## What are data connectors and why we use them?
+## What are Data Connectors and why we use them?
 
 Connectors are adapters to allow you to read and write data to and from an external data source, such as Oracle, MySQL, and MongoDB. They give your application the ability to utilize existing data sources to create Models for use within your API Builder application, either directly as API, or within flows.
 
@@ -126,7 +127,7 @@ curl -u <apikey> http://localhost:8080/api/endpoints/<your-endpoint>
 
 __NOTE:__ if you haven't any records in the DB yet, the response will be empty array i.e. `[]`
 
-### See Data Connectors in Action
+## See Data Connectors in Action
 
 The API Builder Data Connectors can be seen in action in [api-builder-standalone-tech-enablement](https://github.com/Axway/api-builder-standalone-tech-enablement/tree/master/project)
 
