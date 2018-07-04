@@ -72,13 +72,10 @@ docker run --name <container_name> -p <ports> -d <image_name>
 __That’s it!__ You don’t need NODE or all the dependencies of your app on your system , nor does building or running this image install them on your system. It doesn’t seem like you’ve really set up an environment with Node and your App, but you have one.
 
 ## Methods of Logging in Docker
-### The top 5 Methods of Logging in Docker are via:
+__Microservices__ developed with __API Builder__ stream all their logs to the console/standard out. This allows for much greater flexibility in log processing, for more information see [here](http://12factor.net/logs). 
+As an example of how you can leverage this flexibility see our [documentation](https://techweb.axway.com/confluence/display/RDAPI/API+Builder+-+Export+API+Builder+Logs+into+a+Data+Store#APIBuilder-ExportAPIBuilderLogsintoaDataStore-Docker/Splunk) on integrating with Splunk. 
 
-* the Application
-* Data Volumes
-* the Docker Logging Driver
-* a Dedicated Logging Container
-* the Sidecar Approach
+#### Logging in Docker are via the Application
 
 Logging via the Application is likely what most developers are familiar with. In this process, the application running inside the container handles its own logging using a logging framework. For instance, a API Builder Logs are using JSON logging utility to format and send logs in the console.
 
