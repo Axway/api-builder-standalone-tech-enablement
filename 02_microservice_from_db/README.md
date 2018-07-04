@@ -2,20 +2,12 @@
 
 ## Table of content
 *	[Introduction](#introduction)
-*	[Documentation and resources](#documentation-and-resources)
 *	[What are data connectors and why we use them?](#what-are-data-connectors-and-why-we-use-them)
 *	[Adding a Data Connector to your Microservice](#adding-a-data-connector-to-your-microservice)
 * [See Data Connectors in Action](see-data-connectors-in-action)
 
 ## Introduction
-> The goal of this section is to show how to create, configure and run an API Builder Microservice within a Data Connector from DB.
- 
-## Documentation and resources
-
-* [API Builder Getting Started Guide](https://wiki.appcelerator.org/display/AB4/API+Builder+Getting+Started+Guide) - Provides detailed instructions for installing API Builder and creating an API Builder project.
-* [API Builder Project](https://wiki.appcelerator.org/display/AB4/API+Builder+Project) - Provides detailed information about API Builder projects and services.
-* [Axway Appcelerator Youtube Channel](https://www.youtube.com/watch?v=lgPFasrGATE) - Youtube channed where you could find Demo series and more interesting videos & tutorials
-* [Appcelerator Blog](https://www.appcelerator.com/blog/) - Axway blog space.
+> The goal of this section is to show how to configure and run an API Builder Microservice within a Data Connector from DB.
 
 ## What are Data Connectors and why we use them?
 
@@ -64,14 +56,11 @@ module.exports = {
       host: process.env.MYSQL_HOST || 'localhost',
       port: 3306,
  
- 
-      # This could be set to mysql since this is already available database by default
+      // This could be set to mysql since this is already available database by default
       database: 'mysql',
- 
  
       user: process.env.MYSQL_USER,
       password: process.env.MYSQL_PASSWORD,
- 
  
       // Create models based on your schema that can be used in your API.
       generateModelsFromSchema: true,
