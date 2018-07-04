@@ -34,7 +34,7 @@
 	"nodes": {
 		"doT.1": {
 			"type": "nodehandler://@axway/api-builder-plugin-fn-dot/doT",
-			"name": "Format object",
+			"name": "WhereClause",
 			"method": "formatObj",
 			"parameters": [
 				{
@@ -97,7 +97,7 @@
 			"outputs": {
 				"true": {
 					"routes": [
-						"doT.2"
+						"http.1"
 					],
 					"context": "$.exists"
 				},
@@ -111,7 +111,7 @@
 		},
 		"http.1": {
 			"type": "nodehandler://axway-flow/http",
-			"name": "Set HTTP Response",
+			"name": "Success",
 			"method": "setresponse",
 			"parameters": [
 				{
@@ -122,7 +122,7 @@
 				{
 					"name": "body",
 					"type": "jsonpath",
-					"value": "$.response"
+					"value": "$.queried[0]"
 				}
 			],
 			"outputs": {
@@ -134,7 +134,7 @@
 		},
 		"http.2": {
 			"type": "nodehandler://axway-flow/http",
-			"name": "Set HTTP Response",
+			"name": "Error",
 			"method": "setresponse",
 			"parameters": [
 				{
@@ -147,37 +147,6 @@
 				"next": {
 					"context": "$.response",
 					"routes": []
-				}
-			}
-		},
-		"doT.2": {
-			"type": "nodehandler://@axway/api-builder-plugin-fn-dot/doT",
-			"name": "Format string",
-			"method": "formatStr",
-			"parameters": [
-				{
-					"name": "data",
-					"type": "jsonpath",
-					"value": "$.queried[0]"
-				},
-				{
-					"name": "template",
-					"type": "string",
-					"value": "\"{\\n\\\"id\\\": {{=JSON.stringify(it.id)}},\\n\\\"sku\\\": {{=JSON.stringify(it.sku)}},\\n\\\"name\\\": {{=JSON.stringify(it.name)}},\\n\\\"description\\\": {{=JSON.stringify(it.description)}}\\n}\""
-				}
-			],
-			"outputs": {
-				"next": {
-					"routes": [
-						"http.1"
-					],
-					"context": "$.response"
-				},
-				"error": {
-					"routes": [
-						"http.2"
-					],
-					"context": "$.error"
 				}
 			}
 		}

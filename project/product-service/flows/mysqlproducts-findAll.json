@@ -1,71 +1,115 @@
 {
 	"schemaVersion": "3",
 	"info": {
-	  "name": "mysqlproducts-findAll"
+		"name": "mysqlproducts-findAll"
 	},
 	"parameter": {
-	  "properties": {
-		"params": {
-		  "type": "object",
-		  "description": "The parameters from the endpoint."
+		"properties": {
+			"params": {
+				"type": "object",
+				"description": "The parameters from the endpoint."
+			},
+			"request": {
+				"type": "object",
+				"description": "The HTTP request."
+			},
+			"config": {
+				"type": "object",
+				"description": "The service's configuration"
+			},
+			"env": {
+				"type": "object",
+				"description": "The host OS environment"
+			}
 		},
-		"request": {
-		  "type": "object",
-		  "description": "The HTTP request."
-		},
-		"config": {
-		  "type": "object",
-		  "description": "The service's configuration"
-		},
-		"env": {
-		  "type": "object",
-		  "description": "The host OS environment"
-		}
-	  },
-	  "additionalProperties": false,
-	  "required": [
-		"params",
-		"request",
-		"config",
-		"env"
-	  ]
+		"additionalProperties": false,
+		"required": [
+			"params",
+			"request",
+			"config",
+			"env"
+		]
 	},
 	"start": "model.findAll",
 	"nodes": {
-	  "model.findAll": {
-		"type": "nodehandler://api-builder-flow-invoke/model/mysql/products",
-		"method": "findAll",
-		"name": "Find all products",
-		"parameters": [],
-		"outputs": {
-		  "next": {
-			"context": "$.models",
-			"routes": [
-			  "response.success"
-			]
-		  }
+		"model.findAll": {
+			"type": "nodehandler://api-builder-flow-invoke/model/mysql/products",
+			"method": "findAll",
+			"name": "Find all Products",
+			"parameters": [],
+			"outputs": {
+				"next": {
+					"context": "$.models",
+					"routes": [
+						"condition.1"
+					]
+				}
+			}
+		},
+		"response.success": {
+			"type": "nodehandler://axway-flow/http",
+			"name": "Success",
+			"method": "setresponse",
+			"parameters": [
+				{
+					"name": "status",
+					"value": "200",
+					"type": "number"
+				},
+				{
+					"name": "body",
+					"value": "$.models"
+				}
+			],
+			"outputs": {
+				"next": {
+					"context": "$.response"
+				}
+			}
+		},
+		"condition.1": {
+			"type": "nodehandler://axway-flow/condition",
+			"name": "Exists",
+			"method": "exists",
+			"parameters": [
+				{
+					"name": "source",
+					"type": "jsonpath",
+					"value": "$.models"
+				}
+			],
+			"outputs": {
+				"true": {
+					"routes": [
+						"response.success"
+					],
+					"context": "$.exists"
+				},
+				"false": {
+					"routes": [
+						"http.1"
+					],
+					"context": "$.exists"
+				}
+			}
+		},
+		"http.1": {
+			"type": "nodehandler://axway-flow/http",
+			"name": "Error",
+			"method": "setresponse",
+			"parameters": [
+				{
+					"name": "status",
+					"type": "number",
+					"value": "400"
+				}
+			],
+			"outputs": {
+				"next": {
+					"context": "$.response",
+					"routes": []
+				}
+			}
 		}
-	  },
-	  "response.success": {
-		"type": "nodehandler://axway-flow/http",
-		"name": "Set response",
-		"method": "setresponse",
-		"parameters": [
-		  {
-			"name": "status",
-			"value": "200",
-			"type": "number"
-		  },
-		  {
-			"name": "body",
-			"value": "$.models"
-		  }
-		],
-		"outputs": {
-		  "next": {
-			"context": "$.response"
-		  }
-		}
-	  }
 	}
-  }
+}
