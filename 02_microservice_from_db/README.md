@@ -1,14 +1,14 @@
 # How to make Microservice from DB
 
-## Table of content
+## Table of contents
 *	[Introduction](#introduction)
 *	[Documentation and resources](#documentation-and-resources)
-*	[What are data connectors and why we use them?](#what-are-data-connectors-and-why-we-use-them)
+*	[What are data connectors?](#what-are-data-connectors)
 *	[Adding a Data Connector to your Microservice](#adding-a-data-connector-to-your-microservice)
 * [See Data Connectors in Action](see-data-connectors-in-action)
 
 ## Introduction
-> The goal of this section is to show how to create, configure and run an API Builder Microservice within a Data Connector from DB.
+The goal of this section is to show how to create, configure and run an API Builder Microservice within a Data Connector from DB.
  
 ## Documentation and resources
 
@@ -17,38 +17,33 @@
 * [Axway Appcelerator Youtube Channel](https://www.youtube.com/watch?v=lgPFasrGATE) - Youtube channed where you could find Demo series and more interesting videos & tutorials
 * [Appcelerator Blog](https://www.appcelerator.com/blog/) - Axway blog space.
 
-## What are Data Connectors and why we use them?
+## What are Data Connectors?
 
-Connectors are adapters to allow you to read and write data to and from an external data source, such as Oracle, MySQL, and MongoDB. They give your application the ability to utilize existing data sources to create Models for use within your API Builder application, either directly as API, or within flows.
+Data Connectors allow you to create microservices that can interact with the data in your existing RDBMS/NoSql datastores. They create Models based on the schema of your tables and collections and provide a standardized CRUD interface for interacting with them. This allows you to rapidly develop microservices that leverage your existing data using all the flexibility of orchestrated flows.
 
 ### What data connectors are available?
-The supported connectors for 4.0 are available for download directly from NPM:
+For the API Builder 4.0 GA there are 3 connectors immediately available.
 
-* `@axway/api-builder-plugin-dc-mongo` - Mongo DB
-* `@axway/api-builder-plugin-dc-mysql` - MySql DB
-* `@axway/api-builder-plugin-dc-oracle` - Oracle DB
+* Mongo DB: `@axway/api-builder-plugin-dc-mongo`
+* MySql DB: `@axway/api-builder-plugin-dc-mysql`
+* Oracle DB: `@axway/api-builder-plugin-dc-oracle`
 
-__NOTE:__ Refer to [API Builder Connectors](https://wiki.appcelerator.org/display/AB4/API+Builder+Connectors) for detailed information.
+Additional support for other data connectors will be added based on demand.
+
+__NOTE:__ Refer to [API Builder Connectors](https://docs.axway.com/bundle/API_Builder_4x_allOS_en/page/api_builder_connectors.html) for detailed information.
 
 ## Adding a Data Connector to your Microservice
 
-> This document provides a information on how to run an API Builder service within a connector in container with DB. These steps include:
-
-### How do you install them?
-To install a data connector, navigate to the root directory of your service and use the following command; for example,to install the MySQL data connector:
+Data connectors are API Builder plugins that can be installed into your API Builder project. They are regular NPM modules and are installed using _npm_. For example to install the MySql connector, navigate to the root directory of your project:
 
 ```sh
-npm install @axway/api-builder-plugin-dc-<connector-name>
+npm install @axway/api-builder-plugin-dc-mysql
 ```
 
 ### How do you configure them?
-When you install a connector, it will create a configuration file located in the `<dir>/conf` folder that has the name of your connector. For example, `mysql.default.js`. You will need to edit this file and give it the required connection details such as database host and port, user, password, and database.
+When you install a data connector, it will create a configuration file located in the `<dir>/conf` folder that has the name of your connector. For example, `mysql.default.js`. You will need to edit this file and give it the required connection details such as database host and port, user, password, and database.
 
-The configuration files that can contain environment variables are placed in the `<dir>/conf/mysql.default.js` folder.
-
-All the variables in your configuration files taken from `process.env.<VARIABLE_NAME>` can be provided when running the Docker container.
-
-The following table lists the configuration files, their location, and their example content. The connector configuration is shown to inform you that you will have to provide an additional set of environment variables when using an API Builder service with connectors.
+The following is an example configuration file for MySql. Notice that, as with all configuration files, the data connector configuration can read values from the environment using the _process.env.NAME_ syntax. This will ensure you don't have to store sensitive information on disk.
 
 #### Connector Configuration File
 >__Location:__ `<dir>/conf/mysql.default.js`           
@@ -63,12 +58,7 @@ module.exports = {
       connectionLimit: 10,
       host: process.env.MYSQL_HOST || 'localhost',
       port: 3306,
- 
- 
-      # This could be set to mysql since this is already available database by default
       database: 'mysql',
- 
- 
       user: process.env.MYSQL_USER,
       password: process.env.MYSQL_PASSWORD,
  
@@ -83,21 +73,24 @@ module.exports = {
 };
 ```
 
-__NOTE:__ You will need to configure your connector with connection details before starting your application or it will fail to start. For additional configuration details, refer to the connector.
-
-### API Builder Models
-Your connector tables will be listed uner the Models section of the console. You can now click on the gear icon to the right of the table names and generate flow based apis.
+__NOTE:__ You will need to configure your connector with connection details before starting your application or it will fail to start. For additional configuration details, refer to the data connector's documentation.
 
 Once you've configured your MySQL configuration files located under `<dir>/conf` you can start up your API Builder project and visit the console (normally found under `localhost:8080/console`). Your connector will be listed under on the Connectors tab of the console.
 
 ![Connectors](./images/Connectors-Tab.png)
 
-Your MySQL tables will be listed under the Models tab of the console.
+### API Builder Models
+The data connector will create Models to represent the objects in it's schema. For an RDBMS database this is each table, for a NoSql this is each collection. These Models are visible in the the Models section of the console. 
 
 ![Models](./images/Models-Tab.png)
 
+You can generate a flow based CRUD API for each Model by click on the gear icon to the right of the table names and selecting generate flow based apis.
+
+If the standard CRUD API is not sufficient to your business needs you import your own API definition and implement the business logic in a custom flow with full access to your models.
+
+
 ### How do you use them in your flow?
-To use the connector model in a flow, select the Flow icon for one of the generated endpoints for the connector; for example, for the Find all mysqlPersons endpoint. The API Orchestration page with all loaded connectors, flow-nodes, and so forth is displayed. For additional information on using a connector model in a flow, refer to [Manage Flows](https://wiki.appcelerator.org/display/AB4/Manage+Flows).
+To use the model in a flow, select the Flow icon for one of the generated endpoints for the connector; for example, for the Find all mysqlPersons endpoint. The API Orchestration page with all loaded connectors, flow-nodes, and so forth is displayed. For additional information on using a connector model in a flow, refer to [Manage Flows](https://wiki.appcelerator.org/display/AB4/Manage+Flows).
 
 ![Flow](./images/Flow.png)
 
