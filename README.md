@@ -1,4 +1,4 @@
-<img src="./images/banner.png" height="340" width="750">
+![Banner](/images/banner.png)
 
 # API Builder Standalone Tech Enablement
 
