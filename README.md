@@ -10,29 +10,40 @@ There are two ways of reading the provided documentation for this project:
 
 1) Read the README.md files and follow the navigation links
 
-2) Run `npm i && npm start` in the root of this project and [read as booklet in your browser](http://localhost:4000).
+2) Run `npm i && npm start` in the root of this project and then navigate to the booklet in your browser: [http://localhost:4000](http://localhost:4000)
 
 ## Introduction
 
-The customer has a monolithic application that no longer meets their needs. They are moving to a microservices architecture to avail of the benefits of scalability and autonomy.
+For the purpose of this Tech Enablement we developed a plausible real-world scenario with a potential customer:
 
-The customer has analyzed their monolith's bounded contexts and identified two service to extract, the Product Service and the Review Service. These services are owned by separate departments, using different datasources, and the customer believes that making them into microservices will empower those departments to deliver functionality more rapidly.
-
-They also know that, with microservices, they can quickly deliver new and interesting business value, utilising their existing assets.
+> The customer has a monolithic application that no longer meets their needs. They are moving to a
+> microservices architecture to avail of the benefits of scalability and autonomy.  They heard about [Axway
+> API Builder](https://developer.axway.com/), that it is fast it is to create microservices, that it is free,
+> and wish to try it out.
+> 
+> The customer has analyzed their monolith's bounded contexts and identified two services to extract, the 
+> [Product Service](./project/product-service) and the [Review Service](./project/review-service).  These
+> services are owned by separate departments, using different data sources, and the customer believes that
+> making them into microservices will empower those departments to deliver functionality more rapidly, be
+> easier to maintain, easier to deploy, and scale.
+>
+> The customer also knows that with API Builder microservices, they can quickly deliver new and interesting
+> business value, utilising their existing assets.
 
 The customer:
 
 1. Has an existing product database in MySQL
-1. Has a product review database in Mongo
+1. Has a product review database in MongoDB
 1. Wants to deliver these the Product and Review APIs as microservices
-1. Wants to provide a frontend centric microservice for consuming these services. 
-1. Wants to be able to extend the frontend microservice to include an NLP API without having to re-implement the Product or Review services.
+1. Wants to provide a Backend For Frontend (BFF) microservice for consuming these services. 
+1. Wants to be able to extend the frontend microservice to include an NLP API without having to re-implement the Product or Review services
 
 API Builder will:
-1. provide the tooling for them to rapidly create data centric microservices
-1. allow them to create services in a low/code no-code environment
-1. make integrating with third-party services painless
-1. allow them to deploy their solution where-ever they require, on premise or in the cloud.
+1. Provide the tooling for them to rapidly create data centric microservices
+1. Allow them to create services in a low/code no-code environment
+1. Make integrating with third-party services painless
+1. Allow them to develop their Backend For Frontend (BFF) microservice
+1. Allow them to deploy their solution anywhere, on premise or in the cloud
 
 ## Prerequisites
 
