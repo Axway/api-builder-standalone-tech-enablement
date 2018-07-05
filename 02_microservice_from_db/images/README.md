@@ -2,20 +2,12 @@
 
 ## Table of contents
 *	[Introduction](#introduction)
-*	[Documentation and resources](#documentation-and-resources)
 *	[What are data connectors?](#what-are-data-connectors)
 *	[Adding a Data Connector to your Microservice](#adding-a-data-connector-to-your-microservice)
 * [See Data Connectors in Action](see-data-connectors-in-action)
 
 ## Introduction
-The goal of this section is to show how to create, configure and run an API Builder Microservice within a Data Connector from DB.
- 
-## Documentation and resources
-
-* [API Builder Getting Started Guide](https://wiki.appcelerator.org/display/AB4/API+Builder+Getting+Started+Guide) - Provides detailed instructions for installing API Builder and creating an API Builder project.
-* [API Builder Project](https://wiki.appcelerator.org/display/AB4/API+Builder+Project) - Provides detailed information about API Builder projects and services.
-* [Axway Appcelerator Youtube Channel](https://www.youtube.com/watch?v=lgPFasrGATE) - Youtube channed where you could find Demo series and more interesting videos & tutorials
-* [Appcelerator Blog](https://www.appcelerator.com/blog/) - Axway blog space.
+The goal of this section is to show how to configure and run an API Builder Microservice within a Data Connector from DB.
 
 ## What are Data Connectors?
 
@@ -39,6 +31,24 @@ Data connectors are API Builder plugins that can be installed into your API Buil
 ```sh
 npm install @axway/api-builder-plugin-dc-mysql
 ```
+
+![DC Plugin](./images/install-plugin-dc.png)
+
+Once the API Builder plugins was sucessfully installed, you will see the following information in your terminal:
+
+```sh
+> @axway/api-builder-plugin-dc-mysql@1.1.0 postinstall /Users/nkeranova/Documents/TASKs/RDPP-4802/api-builder-microservice/node_modules/@axway/api-builder-plugin-dc-mysql
+> node scripts/copyconf.js
+
+
+=====================================================================================
+[INFO] @axway/api-builder-plugin-dc-mysql:
+
+mysql.default.js has been copied to your API Builder conf directory. You must configure the file located in /Users/nkeranova/Documents/TASKs/RDPP-4802/api-builder-microservice/conf
+=====================================================================================
+```
+
+![DC Plugin Output](./images/install-plugin-dc-output.png)
 
 ### How do you configure them?
 When you install a data connector, it will create a configuration file located in the `<dir>/conf` folder that has the name of your connector. For example, `mysql.default.js`. You will need to edit this file and give it the required connection details such as database host and port, user, password, and database.

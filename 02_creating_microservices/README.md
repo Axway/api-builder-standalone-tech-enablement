@@ -1,14 +1,13 @@
-# How to make Microservice from DB
+# How to create API Builder Microservice
 
 ## Table of content
 *	[Introduction](#introduction)
 *	[Documentation and resources](#documentation-and-resources)
-*	[What are data connectors and why we use them?](#what-are-data-connectors-and-why-we-use-them)
-*	[Adding a Data Connector to your Microservice](#adding-a-data-connector-to-your-microservice)
-* [See Data Connectors in Action](see-data-connectors-in-action)
+*	[How to create own API Builder Service](#how-to-create-own-api-builder-service)
+*	[See API Builder Services in Action](see-api-builder-service-in-action)
 
 ## Introduction
-> The goal of this section is to show how to create, configure and run an API Builder Microservice.
+> The goal of this section will walk you through the process of how to create and initialize new __API Builder Microservice__ using the **_API Builder CLI_**.
  
 ## Documentation and resources
 
@@ -26,21 +25,24 @@ Tools to be installed in advance:
 * __Docker__ - The installation of Docker depends on the specific operating system, please read the details on the following page Read the official guide for Docker installation.
 Research for the B.I tools and 3rd party data store i.e. Splunk, Elastic etc.
 
-### Step 1: Create your API Builder service
-Install the API Builder Command Line Interface (CLI) globally using npm.
+### How to create own API Builder Service
+> The generation of API Builder services is a simple process with the help of the API Builder CLI tool.
+
+#### Setup
+Install the **API Builder Command Line Interface _(CLI)_** globally using `npm`.
 
 ```sh
 [sudo] npm install -g @axway/api-builder
 ```
 
+#### Create project
 Once API Builder CLI is installed, you can use it to create a new project.  In the following example, the CLI will create and initialize the `./<dir>` new project directory.
 
 ```sh
 api-builder init <dir>
 ```
 
-__NOTE:__ `<dir>` - The directory to initialize.
-
+#### Run the Microservice
 Then, install the project's dependencies and start the API Builder project.
 
 ```sh
@@ -48,17 +50,28 @@ cd ./<dir>
 npm install --no-optional
 npm start
 ```
+![API Builder Init](./images/api-builder-init.png)
 
-Once your project is running, point your browser to http://localhost:8080/console to access the API Builder user interface (UI) console.
+> Once your project is running, point your browser to http://localhost:8080/console to access the API Builder user interface (UI) console.
 
 __NOTE:__ Refer to the [API Builder Getting Started Guide](https://wiki.appcelerator.org/display/AB4/API+Builder+Getting+Started+Guide) for detailed information.
+
+#### CLI commands
+
+| 		Command    		| 			Arguments                              	| 			  Description           |
+|:---------------------|:----------------------------------------------------|:---------------------------------|
+| `[sudo] npm install -g @axway/api-builder` | `@axway/api-builder` - The API Builder Command Line Interface _(CLI)_ package. | Install the **API Builder Command Line Interface _(CLI)_** globally using `npm`. |
+| `api-builder init <dir>` | `<dir>` - The directory to initialize. | Creates and initializes a new API Builder project by creating the project in a directory specified by dir. The command will fail if the directory exists or if the command is run within an API Builder project directory. |
+| `npm install --no-optional` | The `--no-optional` argument will prevent optional dependencies from being installed. | Install the project's dependencies. |
+| `npm start` | Entrypoint of the starting script: `node .` | Run the API Builder Microservice. |
 
 ## See API Builder Services in Action
 
 The API Builder Data Connectors can be seen in action in [api-builder-standalone-tech-enablement](https://github.com/Axway/api-builder-standalone-tech-enablement/tree/master/project)
 
 #### Internal Services (other API Builder Services)
-* **[Product Service](https://github.com/Axway/api-builder-standalone-tech-enablement/tree/master/project/product-service)** - used to collect the Product Details, `@axway/api-builder-plugin-dc-mysql` in use.
-* **[Review Service](https://github.com/Axway/api-builder-standalone-tech-enablement/tree/master/project/review-service)** - used to collect the Reviews for Product,  `@axway/api-builder-plugin-dc-mongo` in use.
+* **[Product Service](https://github.com/Axway/api-builder-standalone-tech-enablement/tree/master/project/product-service)** - used to collect the Product Details.
+* **[Review Service](https://github.com/Axway/api-builder-standalone-tech-enablement/tree/master/project/review-service)** - used to collect the Reviews for Product.
+* **[Product Review Service](https://github.com/Axway/api-builder-standalone-tech-enablement/tree/master/project/product-review-service)** - used for searching a product by SKU and aggregate information about product details, reviews, and the most relevant categories it fits in according to its description.
 
 
