@@ -59,9 +59,11 @@ module.exports = {
       host: process.env.MYSQL_HOST || 'localhost',
       port: 3306,
       database: 'mysql',
+      
+      // This could be set to mysql since this is already available database by default
+      database: 'mysql',
       user: process.env.MYSQL_USER,
       password: process.env.MYSQL_PASSWORD,
- 
  
       // Create models based on your schema that can be used in your API.
       generateModelsFromSchema: true,
