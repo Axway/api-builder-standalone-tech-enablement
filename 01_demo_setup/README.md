@@ -1,6 +1,4 @@
-WIP
-
-# Chapter 2. Demo Setup
+# Demo Setup
 
 ## MySql container with DB
 > This is setup MySql container with DB

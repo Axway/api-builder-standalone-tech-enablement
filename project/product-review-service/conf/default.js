@@ -89,7 +89,8 @@ module.exports = {
 	// Cross-Origin Resource Sharing settings
 	cors: {
 		// List of allowed origins (format: any, space separated string, array or regex)
-		// 'Access-Control-Allow-Origin': '*' or 'http://foo.com http://bar.com' or ['http://foo.com', 'http://bar.com'] or /foo\.com$/,
+		'Access-Control-Allow-Origin': '*' 
+		//or 'http://foo.com http://bar.com' or ['http://foo.com', 'http://bar.com'] or /foo\.com$/,
 
 		// Sets the Access-Control-Allow-Credentials header on API responses. Can be true or false
 		// 'Access-Control-Allow-Credentials': false,

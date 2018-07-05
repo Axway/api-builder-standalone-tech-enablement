@@ -210,7 +210,7 @@
 				{
 					"name": "template",
 					"type": "string",
-					"value": "\"{\\n\\\"sku\\\": {{=JSON.stringify(it.foundProduct.data.sku)}}, \\n\\\"name\\\": {{=JSON.stringify(it.foundProduct.data.name)}},\\n\\\"description\\\": {{=JSON.stringify(it.foundProduct.data.description)}},\\n\\\"reviews\\\": {{=JSON.stringify(it.foundReviews.data)}},\\n\\\"taxonomy\\\": {{=JSON.stringify(it.apiResult.data.taxonomy)}}}\""
+					"value": "\"{\\n\\\"sku\\\": {{=JSON.stringify(it.foundProduct.data.sku)}}, \\n\\\"name\\\": {{=JSON.stringify(it.foundProduct.data.name)}},\\n\\\"description\\\": {{=JSON.stringify(it.foundProduct.data.description)}},\\n\\\"reviews\\\": {{=JSON.stringify(it.foundReviews.data.reviews)}},\\n\\\"taxonomy\\\": {{=JSON.stringify(it.apiResult.data.taxonomy)}}}\""
 				}
 			],
 			"outputs": {

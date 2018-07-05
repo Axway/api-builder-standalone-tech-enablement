@@ -1,0 +1,27 @@
+{
+  "name": "demo-ui",
+  "version": "1.0.0",
+  "description": "Technical Enablement Demo User Interface",
+  "main": "index.js",
+  "scripts": {
+    "dev": "next",
+    "build": "next build",
+    "start": "next start",
+    "demo": "npm i && next build && next start | opn http://localhost:3000/"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@zeit/next-css": "^0.2.0",
+    "axios": "^0.18.0",
+    "milligram": "^1.3.0",
+    "next": "^6.1.1",
+    "opn-cli": "^3.1.0",
+    "react": "^16.4.1",
+    "react-dom": "^16.4.1",
+    "react-markdown": "^3.3.4"
+  },
+  "devDependencies": {
+    "normalize.css": "^8.0.0"
+  }
+}
