@@ -28,7 +28,10 @@ For the purpose of this Tech Enablement we developed a plausible real-world scen
 > easier to maintain, easier to deploy, and scale.
 >
 > The customer also knows that with API Builder microservices, they can quickly deliver new and interesting
-> business value, utilising their existing assets.
+> business value, utilising their existing assets, and will create a new Backend For Frontend (BFF)
+> microservice ([Product Review Service](./project/product-review-service)) that provides new value.  The
+> customer will use [GKE](https://cloud.google.com/kubernetes-engine/) and [helm](https://helm.sh/) to deploy
+> the services.
 
 The customer:
 
