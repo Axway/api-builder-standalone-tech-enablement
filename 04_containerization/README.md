@@ -1,4 +1,4 @@
-# Dockerize an application
+# Containerization
 
 ## Table of content
 
