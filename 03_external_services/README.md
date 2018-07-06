@@ -36,7 +36,7 @@ The API Builder Swagger Flow-Node plugin can be seen in action in [Product Revie
 * **[Parallel Dots API](http://paralleldots.com)** - used to collect Taxonomy data based on Product description.
 
 
-[Read Product Review Service documentation]((../project/product-review-service)) if you want to test it out.
+[Read Product Review Service documentation](../project/product-review-service) if you want to test it out.
 
 
 ### Reading Next
