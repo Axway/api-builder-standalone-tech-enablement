@@ -6,11 +6,15 @@ The goal of this tech enablement is to show how API Builder can be used to simpl
 
 ## Before you start
 
-There are two ways of reading the provided documentation for this project:
+You can read this documentation in an **Demo Web Application** that also contains a Live Demo of the services. How to run it:
 
-1) Read the README.md files and follow the navigation links
+1) Clone the repository
 
-2) Run `npm i && npm start` in the root of this project and then navigate to the booklet in your browser: [http://localhost:4000](http://localhost:4000)
+2) Navigate to `./projects/demo-ui` folder
+
+3) In the root of the folder execute `npm run demo`
+
+> This will install dependencies, build the app, and open your browser to read the docs and play with the demo
 
 ## Introduction
 
