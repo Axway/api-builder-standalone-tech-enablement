@@ -59,7 +59,7 @@ Previously, API Builder had specific configuration files per-environment.  Now, 
 
 [Chapter 01. Demo Setup](../01_demo_setup)
 
-[Chapter 02. Create Microservice from a Database](../02_mircoservice_from_db)
+[Chapter 02. Create Microservice from a Database](../02_microservice_from_db)
 
 [Chapter 03. Consume External Services](../03_external_services)
 

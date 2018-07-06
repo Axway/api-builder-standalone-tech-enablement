@@ -29,11 +29,18 @@ The API Builder Swagger Flow-Node plugin can be seen in action in [Product Revie
 ![Architecture](../images/product-review-service-architecture.png)
 
 #### Internal Services (other API Builder Services)
-* **[Product Service](../product-service)** - used to collect the Product Details
-* **[Review Service](../review-service)** - used to collect the Reviews for Product
+* **[Product Service](../project/product-service)** - used to collect the Product Details
+* **[Review Service](../project/review-service)** - used to collect the Reviews for Product
 
 #### External Services (third-party APIs)
 * **[Parallel Dots API](http://paralleldots.com)** - used to collect Taxonomy data based on Product description.
 
 
 [Read Product Review Service documentation]((../project/product-review-service)) if you want to test it out.
+
+
+### Reading Next
+
+[Chapter 04. Containerization](../04_containerization)
+
+[Chapter 05. Scalable Deployments (with Kubernetes)](../05_kubernetes)

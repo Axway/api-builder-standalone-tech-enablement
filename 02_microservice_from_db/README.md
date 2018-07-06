@@ -4,7 +4,7 @@
 *	[Introduction](#introduction)
 *	[What are data connectors?](#what-are-data-connectors)
 *	[Adding a Data Connector to your Microservice](#adding-a-data-connector-to-your-microservice)
-*	[See Data Connectors in Action](see-data-connectors-in-action)
+*	[See Data Connectors in Action](#see-data-connectors-in-action)
 
 ## Introduction
 The goal of this section is to show how to configure and run an API Builder Microservice within a Data Connector from DB.
@@ -34,7 +34,7 @@ npm install @axway/api-builder-plugin-dc-mysql
 
 ![DC Plugin](./images/install-plugin-dc.png)
 
-Once the API Builder plugins was sucessfully installed, you will see the following information in your terminal:
+Once the API Builder plugin was sucessfully installed, you will see the following information in your terminal:
 
 ```sh
 > @axway/api-builder-plugin-dc-mysql@1.1.0 postinstall /Users/nkeranova/Documents/TASKs/RDPP-4802/api-builder-microservice/node_modules/@axway/api-builder-plugin-dc-mysql
@@ -134,8 +134,15 @@ __NOTE:__ if you haven't any records in the DB yet, the response will be empty a
 
 ## See Data Connectors in Action
 
-The API Builder Data Connectors can be seen in action in [api-builder-standalone-tech-enablement](https://github.com/Axway/api-builder-standalone-tech-enablement/tree/master/project)
+The are two service part of our demo that use data connectors. The can be found in [the `./project` folder of this repository](https://github.com/Axway/api-builder-standalone-tech-enablement/tree/master/project):
 
-#### Internal Services (other API Builder Services)
-* **[Product Service](https://github.com/Axway/api-builder-standalone-tech-enablement/tree/master/project/product-service)** - used to collect the Product Details, `@axway/api-builder-plugin-dc-mysql` in use.
-* **[Review Service](https://github.com/Axway/api-builder-standalone-tech-enablement/tree/master/project/review-service)** - used to collect the Reviews for Product,  `@axway/api-builder-plugin-dc-mongo` in use.
+* **[Product Service](https://github.com/Axway/api-builder-standalone-tech-enablement/tree/master/project/product-service)** - used to access Product database from MySQL database via `@axway/api-builder-plugin-dc-mysql` plugin.
+* **[Review Service](https://github.com/Axway/api-builder-standalone-tech-enablement/tree/master/project/review-service)** - used to access the Reviews database from MongoDB via `@axway/api-builder-plugin-dc-mongo` plugin.
+
+### Reading Next
+
+[Chapter 03. Consume External Services](../03_external_services)
+
+[Chapter 04. Containerization](../04_containerization)
+
+[Chapter 05. Scalable Deployments (with Kubernetes)](../05_kubernetes)

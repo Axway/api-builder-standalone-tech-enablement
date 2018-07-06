@@ -85,3 +85,7 @@ To see the logs of your running container execute:
 docker logs <container_name> --details
 ```
 __NOTE__: For more information on the different aproaches and detailed configuration you can visit the [Docker HUB documentation](https://docs.docker.com/config/containers/logging/).
+
+### Reading Next
+
+[Chapter 05. Scalable Deployments (with Kubernetes)](../05_kubernetes)

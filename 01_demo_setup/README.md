@@ -57,7 +57,7 @@ After the installation of a plugin check the `./conf`folder in your project to f
 
 ### Reading Next
 
-[Chapter 02. Create Microservice from a Database](../02_mircoservice_from_db)
+[Chapter 02. Create Microservice from a Database](../02_microservice_from_db)
 
 [Chapter 03. Consume External Services](../03_external_services)
 
