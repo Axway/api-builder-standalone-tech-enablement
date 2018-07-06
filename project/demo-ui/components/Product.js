@@ -5,7 +5,7 @@ const Product = ({ product, showDetails }) => (
     <td>{product.name}</td>
     <td>{product.sku}</td>
     <td>{product.description}</td>
-    <td><button className="button button-outline" onClick={showDetails.bind(this, product.sku)}>Find Details</button></td>
+    <td><button className="button button-outline" onClick={showDetails.bind(this, product.sku)}>Details</button></td>
   </tr>  
 )
 

@@ -15,11 +15,24 @@ export default class ProductDetails extends React.Component {
     } else {
       return (
         <div>
-        SKU <p style={{ fontWeight: 'bold' }}>{this.props.productDetails.sku}</p>
-        Name <p style={{ fontWeight: 'bold' }}>{this.props.productDetails.name}</p>
-        Description <p style={{ fontWeight: 'bold' }}>{this.props.productDetails.description}</p>
-        <br />
-        <h3>Reviews</h3>
+          <div className="row">
+            <div className="column"><h3>Main</h3></div>
+          </div>
+          <div className="row">
+            <div className="column"><h6><p style={{ paddingLeft: '5px', backgroundColor: '#FFC107', fontWeight: 'bold', color: 'white' }}>Aggregated Data from Product Service (MySQL)</p></h6></div>
+          </div>          
+          <div className="row">
+            <div className="column">SKU <p style={{ fontWeight: 'bold' }}>{this.props.productDetails.sku}</p></div>
+            <div className="column">Name <p style={{ fontWeight: 'bold' }}>{this.props.productDetails.name}</p></div>
+            <div className="column">Description <p style={{ fontWeight: 'bold' }}>{this.props.productDetails.description}</p></div>            
+          </div>        
+        <div className="row">
+          <h3>Reviews</h3>
+        </div>
+        <div className="row">
+          <div className="column"><h6><p style={{ paddingLeft: '5px', backgroundColor: '#CDDC39', fontWeight: 'bold', color: 'white' }}>Aggregated Data from Review Service (MongoDB)</p></h6></div>
+        </div>        
+        <div className="row">
         <table>
           <thead>
             <tr>
@@ -38,8 +51,14 @@ export default class ProductDetails extends React.Component {
             }
           </tbody>
         </table>
-        <br />
-        <h3>Taxonomy</h3>
+        </div>
+        <div className="row">
+          <h3>Taxonomy</h3>
+        </div>
+        <div className="row">
+          <div className="column"><h6><p style={{ paddingLeft: '5px', backgroundColor: '#00BFA5', fontWeight: 'bold', color: 'white' }}>Aggregated Data from Third Party API</p></h6></div>
+        </div>        
+        <div className="row">
         <table>
           <thead>
             <tr>
@@ -58,6 +77,7 @@ export default class ProductDetails extends React.Component {
             }
           </tbody>
         </table>
+        </div>
       </div>
       )
     }
