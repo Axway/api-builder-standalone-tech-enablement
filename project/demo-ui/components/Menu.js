@@ -63,9 +63,9 @@ const Menu = () => (
       <li><Link href="/external-services"><a className="linktext">5.Talk to External Service</a></Link></li>
       <li><Link href="/containerization"><a className="linktext">6.Containerize</a></Link></li>
       <li><Link href="/deployment"><a className="linktext">7.Deploy</a></Link></li>
-      <li><Link href="/projects"><a className="linktext">8.Projects</a></Link></li>
       <div className="clearfix">
         <div className="float-right">
+          <Link href="/projects"><button className="button button-outline button-white">Docs</button></Link>
           <Link href="/demo"><button className="button button-outline button-white">Live Demo</button></Link>
         </div>
       </div>      

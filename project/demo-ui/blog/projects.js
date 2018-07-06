@@ -1,0 +1,1 @@
+module.exports = `![Banner](/static/images/banner.png)`
