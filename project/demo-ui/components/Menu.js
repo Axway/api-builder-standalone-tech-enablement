@@ -33,34 +33,43 @@ const Menu = () => (
           color: white;
           font-weight: bold;
           border: 0.2rem solid white;
-        }  
+        }
+        ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            background-color: #ac1e37;
+        }        
+        li {
+            float: left;
+        }        
+        li a {
+            display: block;
+            color: white;
+            text-align: center;
+            padding: 6px 10px;
+            text-decoration: none;
+        }        
+        li a:hover:not(.active) {
+            background-color: #454e53;
+        }
       `}</style>
-    <section className="container">
-      <a className="linktext">Learn to create> </a>
-      <Link href="/index"><a className="linktext">1.Introduction </a></Link>
-      ><Link href="/what-is-new"><a className="linktext"> 2.What is New? </a></Link>
-      ><Link href="/demo-setup"><a className="linktext"> 3.Demo Setup </a></Link>
-      ><Link href="/microservice"><a className="linktext"> 4.From DB to Microservice </a></Link>
-      ><Link href="/external-services"><a className="linktext"> 5.External Services </a></Link>
-      ><Link href="/containerization"><a className="linktext"> 6.Containerization </a></Link>
-      ><Link href="/deployment"><a className="linktext"> 7.Scalable Deployments  </a></Link>
-    </section>
-    <br/>
-    <section className="container">      
-      <a className="linktext">Try existing> </a>
-      <Link href="/product-service"><a className="linktext"> Product Service  </a></Link>/
-      <Link href="/review-service"><a className="linktext"> Review Service  </a></Link>/
-      <Link href="/product-review-service"><a className="linktext"> Product Review Service  </a></Link>/
-      <Link href="/mysql"><a className="linktext"> Containerize MySQL  </a></Link>/
-      <Link href="/mongo"><a className="linktext"> Containerize MongoDB  </a></Link>
-    </section>
-    <section className="container">
+    <ul>
+      <li><Link href="/index"><a className="linktext">1.Introduction</a></Link></li>
+      <li><Link href="/what-is-new"><a className="linktext">2.What is New?</a></Link></li>
+      <li><Link href="/demo-setup"><a className="linktext">3.Demo Setup</a></Link></li>
+      <li><Link href="/microservice"><a className="linktext">4.Create Microservice</a></Link></li>
+      <li><Link href="/external-services"><a className="linktext">5.Talk to External Service</a></Link></li>
+      <li><Link href="/containerization"><a className="linktext">6.Containerize</a></Link></li>
+      <li><Link href="/deployment"><a className="linktext">7.Deploy</a></Link></li>
+      <li><Link href="/projects"><a className="linktext">8.Projects</a></Link></li>
       <div className="clearfix">
         <div className="float-right">
           <Link href="/demo"><button className="button button-outline button-white">Live Demo</button></Link>
         </div>
-      </div>  
-    </section>    
+      </div>      
+    </ul>
   </nav>
 )
 
