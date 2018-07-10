@@ -64,7 +64,6 @@ module.exports = {
 		// server. IP ranges can also be specified. e.g. [ 'localhost', '192.168.1.0/24', '10.1.1.1' ]
 		// An empty list [] will allow unrestricted access, though this is not recommended due to security concerns.
 		allowedHosts: [
-			'localhost', '::1'
 		]
 	},
 

@@ -2,20 +2,18 @@
 
 ## Headlines
 
-1. Removed dependency to appc and introduced a new CLI (@axway/api-builder)
+1. No dependency on ARS or AppC. 
+1. New CLI - @axway/api-builder
+1. Introduced new plugin architecture leveraging npm modules:
+    * Data connectors are installed as npm modules (plugins)
+    * Service connectors are installed as npm modules (plugins)
+    * Flow-nodes are installed as npm modules (plugins)
+1. New flow nodes:
+    * Added new asynchronous HTTP rest client plugin to the flow
+    * Added new asynchronous Swagger plugin to the flow
+1. Logging to stdout to allow for integration with 3rd party log aggregators.
+1. Revised configuration to have only `default` and `local` sets of configuration files
 
-2. Introduced new plugin architecture leveraging npm modules:
-* Data connectors are installed as npm modules (plugins)
-* Service connectors are installed as npm modules (plugins)
-* Flow-nodes are installed as npm modules (plugins)
-
-3. Custom flow-node plugins with input parameters and autocomplete
-
-* Added new asynchronous HTTP rest client plugin to the flow
-* Added new asynchronous Swagger plugin to the flow
-
-4. Revised logging format to stream to stdout
-5. Revised configuration to have only `default` and `local` sets of configuration files
 
 ### Standalone
 
@@ -23,13 +21,15 @@ API Builder is now standalone and no longer requires `appc`, or the Appcelerator
 
 ### Plugin Architecture
 
-Previously, API Builder needed appc CLI to download connectors from Appcelerator cloud.  Now, API Builder will load all of its components from npm node modules.  A 12-factor app needs to [explicitly declare and isolate dependencies](https://12factor.net/dependencies).  The node modules are **plugins** for API Builder, and can extend functionality, such as adding data connectors, or flow-nodes to the flow editor.  Later, we will add plugins for flow-nodes that can connect out to additional services, such as SalesForce.
+Previously, API Builder needed appc CLI to download connectors from Appcelerator cloud.  Now, API Builder will load all of its components from npm node modules.  A 12-factor app needs to [explicitly declare and isolate dependencies](https://12factor.net/dependencies).  The node modules are **plugins** for API Builder, and can extend functionality, such as adding data connectors, or flow-nodes to the flow editor. 
 
-Also note that we are porting legacy data connectors to plugins on an as-needed basis.  To date, we have:
+The API Builder 3.x data connectors are not compatibile with the new plugin architecture. API Builder 4 Standalone GA'ed with support for 3 data connectors:
 
 * @axway/api-builder-plugin-dc-mongo
 * @axway/api-builder-plugin-dc-mysql
 * @axway/api-builder-plugin-dc-oracle
+
+This list will be expanded on an as-needed basis.
 
 ### Custom flow-node plugins
 
@@ -37,7 +37,7 @@ The ability to create custom robust, reusable, and pluggable flow-nodes is an im
 
 #### HTTP REST client flow-node
 
-API Builder now has a new flow-node that can connect out to external services asynchronously via HTTP.
+API Builder now has a new flow-node that can connect to external services asynchronously via HTTP.
 
 ![REST flow-node](./images/rest-client.png)
 
