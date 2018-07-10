@@ -19,6 +19,12 @@
 
 API Builder is now standalone and no longer requires `appc`, or the Appcelerator cloud.  API Builder is a **free** NodeJS / ExpressJS application to help companies rapidly build microservices using reusable components, and then build these services into containers to deploy into any container platform.  API Builder is not a container itself.
 
+### DevOps
+
+API Builder is now standalone and is not opinionated about how or where your microservices are deployed. API Builder helps you rapidly develop microservices that you can then integrate into your standard DevOps build system and deploy to the environment of your choosing.
+
+![DevOps](../images/architecture.png)
+
 ### Plugin Architecture
 
 Previously, API Builder needed appc CLI to download connectors from Appcelerator cloud.  Now, API Builder will load all of its components from npm node modules.  A 12-factor app needs to [explicitly declare and isolate dependencies](https://12factor.net/dependencies).  The node modules are **plugins** for API Builder, and can extend functionality, such as adding data connectors, or flow-nodes to the flow editor. 
