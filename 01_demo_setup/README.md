@@ -11,6 +11,33 @@ The goal of this tech enablement is to show how API Builder can be used to simpl
 
 * The customer also knows that with API Builder microservices, they can quickly deliver new and interesting business value, utilising their existing assets, and will create a new Backend For Frontend (BFF) microservice ([Product Review Service](../project/product-review-service)) that provides new value.  The customer will use [GKE](https://cloud.google.com/kubernetes-engine/) and [helm](https://helm.sh/) to deploy the services.
 
+The customer:
+
+1. Has an existing product database in MySQL
+
+1. Has a product review database in MongoDB
+
+1. Wants to deliver these the Product and Review APIs as microservices
+
+1. Wants to provide a Backend For Frontend (BFF) microservice for consuming these services. 
+
+1. Wants to be able to extend the frontend microservice to include an NLP API without having to re-implement the Product or Review services
+
+
+
+API Builder will:
+
+1. Provide the tooling for them to rapidly create data centric microservices
+
+1. Allow them to create services in a low/code no-code environment
+
+1. Make integrating with third-party services painless
+
+1. Allow them to develop their Backend For Frontend (BFF) microservice
+
+1. Allow them to deploy their solution anywhere, on premise or in the cloud
+
+
 ## The Demo Project
 
 There is a completed suite of sample projects in the [project](../project/) folder.
