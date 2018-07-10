@@ -2,7 +2,7 @@
 
 # This line defines which node.js Docker image to leverage
 # Available versions are described at https://hub.docker.com/_/node/
-FROM node:8-alpine
+FROM node:10-alpine
 
 # Denotes to copy all files in the service to 'app' folder in the container
 COPY . /app
