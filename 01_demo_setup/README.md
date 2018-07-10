@@ -42,6 +42,8 @@ API Builder will:
 
 There is a completed suite of sample projects in the [project](../project/) folder.
 
+![Project](./images/api-builder-topology.svg)
+
 ### Datastores
 
 For simplicilty this demo has preconfigured containers for the datastores, in the real world the microservices would be connecting to your enterprise database. This demo contains two datastore containers:
