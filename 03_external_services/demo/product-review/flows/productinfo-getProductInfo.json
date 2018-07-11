@@ -30,7 +30,7 @@
 			"env"
 		]
 	},
-	"start": "doT.2",
+	"start": "products-service.1",
 	"nodes": {
 		"http.1": {
 			"type": "nodehandler://axway-flow/http",
@@ -179,7 +179,7 @@
 				"404": {
 					"context": "$.error",
 					"routes": [
-						"http.3"
+						"setcontext.1"
 					]
 				},
 				"500": {
@@ -192,7 +192,7 @@
 		},
 		"http.5": {
 			"type": "nodehandler://axway-flow/http",
-			"name": "Database Error",
+			"name": "Error",
 			"method": "setresponse",
 			"parameters": [
 				{
@@ -202,8 +202,8 @@
 				},
 				{
 					"name": "body",
-					"type": "string",
-					"value": "\"Check Service Databases\""
+					"type": "jsonpath",
+					"value": "$.error.message"
 				}
 			],
 			"outputs": {
@@ -213,32 +213,23 @@
 				}
 			}
 		},
-		"doT.2": {
-			"type": "nodehandler://@axway/api-builder-plugin-fn-dot/doT",
-			"name": "Format string",
-			"method": "formatStr",
+		"setcontext.1": {
+			"type": "nodehandler://axway-flow/setcontext",
+			"name": "No Reviews",
+			"method": "setcontext",
 			"parameters": [
 				{
-					"name": "data",
-					"type": "jsonpath",
-					"value": "$.env"
-				},
-				{
-					"name": "template",
-					"type": "string",
-					"value": "\"{{console.log(JSON.stringify(it));}}\""
+					"name": "value",
+					"type": "array",
+					"value": "[]"
 				}
 			],
 			"outputs": {
 				"next": {
+					"context": "$.foundReviews",
 					"routes": [
-						"products-service.1"
-					],
-					"context": "$.value"
-				},
-				"error": {
-					"routes": [],
-					"context": "$.error"
+						"doT.1"
+					]
 				}
 			}
 		}
