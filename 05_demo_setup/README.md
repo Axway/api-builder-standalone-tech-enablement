@@ -2,7 +2,7 @@
 
 ## The Demo Project
 
-There is a completed suite of API Builder projects in the [project](../project/) folder. These address the business case described in [Chapter 01. Monolith to Microservices](./01_demo_scenario).
+There is a completed suite of API Builder projects in the [project](../project/) folder. These address the business case described in [Chapter 01. Monolith to Microservices](../01_demo_scenario).
 
 ![Project](./images/api-builder-topology.svg)
 
