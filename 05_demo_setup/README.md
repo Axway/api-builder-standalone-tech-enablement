@@ -171,7 +171,7 @@ $ curl -s  -u IO/lU6QSMfze2W3cOsUMC0iGztPLNwL+: http://172.18.0.6:8080/api/v1/pr
 }
 ```
 
-### Frontend
+### UI Frontend
 
 The project also includes an example UI application that invokes the _Product Review Service_ APIs, the [project/demo-ui](../project/demo-ui). To launch:
 
@@ -181,10 +181,10 @@ npm run demo
 
 ![demo-ui](./images/demo-ui.png)
 
-Fill in the URL for the API - http://localhost:8082/api/v1 and the API Key for the _Products Review Service_ *IO/lU6QSMfze2W3cOsUMC0iGztPLNwL+*. Clicking _Load Products_ will call the _/api/v1/products_ endpoint, and then drilling down on the details will call the _/api/v1/productinfo/:sku_ endpoint.
+Fill in the URL for the API - http://172.18.0.6:8080/api/v1/ and the API Key for the _Products Review Service_ *IO/lU6QSMfze2W3cOsUMC0iGztPLNwL+*. Clicking _Load Products_ will call the _/api/v1/products_ endpoint, and then drilling down on the details will call the _/api/v1/productinfo/:sku_ endpoint.
 
 ![demo-ui-data](./images/demo-ui-data.png)
 
 ### Reading Next
 
-[Chapter 06. Scalable Deployments (with Kubernetes)](../05_kubernetes)
+[Chapter 06. Scalable Deployments (with Kubernetes)](../06_kubernetes)
