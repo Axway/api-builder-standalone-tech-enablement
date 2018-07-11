@@ -1,6 +1,8 @@
 # Monolith to Microservices
 
-The goal of this tech enablement is to show how API Builder can be used to simplify and accelerate a customer's move to a microservices based architecture.
+The goal of this tech enablement is to show how API Builder can be used to simplify and accelerate a customer's move from a monolith to a microservices based architecture. There are many approaches to achieving a successful transition to microservices. The example we give here is often referred to as the 'ice-cream scoop' strategy, identify and removing services from your monolith like scoops from a tub of ice-cream.
+
+![icrecream scoop strategy](./images/icecream.png)
 
 
 ## The Business Case
@@ -36,6 +38,16 @@ API Builder will:
 1. Allow them to develop their Backend For Frontend (BFF) microservice
 
 1. Allow them to deploy their solution anywhere, on premise or in the cloud
+
+[Chapter 02. Create Microservice from a Database](./02_microservice_from_db) we will use API Builder dataconnectors to rapidly create the services from the existing databases. 
+
+[Chapter 03. Consume External Services](./03_external_services) we'll see how to aggregate the services into a single microservice API to serve you frontend needs.
+
+[Chapter 04. Containerization](./04_containerization) will show how to prepare your services containerization and easily build docker containers.
+
+[Chapter 05. Demo Setup](./05_demo_setup) will show how build and run the demo services locally.
+
+[Chapter 06. Scalable Deployments (with Kubernetes)](./06_kubernetes) will show how easy it is to take these containers to a container orchestration platform like Google's Kubernetes Engine (GKE) and how Helm can assist.
 
 ### Reading Next
 
