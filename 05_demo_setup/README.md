@@ -2,7 +2,7 @@
 
 ## The Demo Project
 
-There is a completed suite of sample projects in the [project](../project/) folder.
+There is a completed suite of API Builder projects in the [project](../project/) folder. These address the business case described in [Chapter 01. Monolith to Microservices](./01_demo_scenario).
 
 ![Project](./images/api-builder-topology.svg)
 
@@ -15,29 +15,9 @@ For simplicilty this demo has preconfigured containers for the datastores, in th
 * MongoDB ([/project/mongo](../project/mongo))
     The database is named _admin_ and contains a single collection called _review_. This data is owned by the _Review Service_.
 
-Building the database containers:
-
-```bash
-docker build -t axway/api-builder-v4-demo-mysql project/mysql
-docker build -t axway/api-builder-v4-demo-mongo project/mongo
-```
-
-Running the database containers (for debug purposes it can be useful to not run these as daemons):
-```bash
-docker run -it --name mysql axway/api-builder-v4-demo-mysql
-docker run -it --name mongo axway/api-builder-v4-demo-mongo
-```
-
 The default credentials for the databases are:
 * MySql: apibuilder/apibuilder (or root/password)
 * MongoDB: apibuilder/apibuilder
-
-To get the IP address of a running container:
-
-```bash
-docker inspect --format '{{ .NetworkSettings.IPAddress }}' mysql
-docker inspect --format '{{ .NetworkSettings.IPAddress }}' mongo
-```
 
 ### Microservices
 
@@ -53,12 +33,6 @@ These are implemented using orchestrated flows as discussed in [Chapter 02. Crea
 
 The configuration is environmentalized as discussed in [Chapter 04. Containerization](../04_containerization), and it require the database details to be set.
 
-To run the _Product Service_ and connect to the containerized MySql database:
-
-```bash
-npm install
-DB_HOST=172.17.0.2 DB_USER=apibuilder DB_PASSWORD=apibuilder node .
-```
 
 #### [Review Service](../project/review-service)
 
@@ -66,14 +40,10 @@ This microservice owns the review data in the Mongo _admin_ database. It provide
 
 * Find By SKU (*GET /api/endpoints/review/:sku*)
 
-To run the _Review Service_ and connect to the containerized Mongo database:
+These are implemented using orchestrated flows as discussed in [Chapter 02. Create Microservice from a Database](../02_microservice_from_db).
 
-```bash
-npm install
-PORT=8081 DB_HOST=172.17.0.3 DB_USER=apibuilder DB_PASSWORD=apibuilder node .
-```
+The configuration is environmentalized as discussed in [Chapter 04. Containerization](../04_containerization), and it require the database details to be set.
 
-> If running _Product Service_ and _Review Service_ on the same host they can also take a _PORT_ environment variable to configure what port they run on.
 
 #### [Product Review Service](../project/product-review-service)
 
@@ -95,19 +65,111 @@ Also as this service is aggeragting data from the other microservices it require
 | PRODUCT_PORT | The port _Product Service_ is listening on | 8080 |
 | PRODUCT_APIKEY | The API key of the _Product Service_ | jEeLFb2xjLQNxKBJBf89tEl+aL8+nj1X |
 | REVIEW_HOST | The host running the _Review Service_ | localhost |
-| REVIEW_PORT | The port _Review Service_ is listening on | 8081 |
+| REVIEW_PORT | The port _Review Service_ is listening on | 8080 |
 | REVIEW_APIKEY | The API key of the _Product Service_ | CI5Uaei7o3AqI/J85trGCkYEjY/R7Q0v |
 
-As a single (very long command) this is:
+
+## Building the containers
+
+All the services have been prepared for containerization and have standard Dockerfiles.
 
 ```bash
-PORT=8082 PD_APIKEY=your_pd_key \
-PRODUCT_HOST=localhost PRODUCT_PORT=8080 PRODUCT_APIKEY=jEeLFb2xjLQNxKBJBf89tEl+aL8+nj1X \
-REVIEW_HOST=localhost REVIEW_PORT=8081 REVIEW_APIKEY=CI5Uaei7o3AqI/J85trGCkYEjY/R7Q0v \
-node .
+docker build -t axway/api-builder-v4-demo-mysql project/mysql
+docker build -t axway/api-builder-v4-demo-mongo project/mongo
+docker build -t axway/api-builder-v4-demo-product project/product-service
+docker build -t axway/api-builder-v4-demo-review project/review-service
+docker build -t axway/api-builder-v4-demo-product-review project/product-review-service
 ```
 
-At this point you can connect to the API Builder Console for the _Product Review Service_ [http://localhost:8082/console](http://localhost:8082/console) and test the APIs.
+## Running the demo
+
+For convenience we will use _docker-compose_ to start up the containers locally. 
+
+> Instructions on installing _docker-compose_ can be found at [https://docs.docker.com/compose/install/](https://docs.docker.com/compose/install/)
+
+> The container build is a *production* build and will not have the API Builder Console. When in development you probably would want to run the services as local applications rather than in containers.
+
+```bash
+docker-compose -f 05_demo_setup/docker-compose.yaml up
+```
+
+### Testing the services
+
+Get the IP addresses of the containers:
+```bash
+docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' 05_demo_setup_review_1
+docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' 05_demo_setup_product_1
+docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' 05_demo_setup_product-review_1
+```
+
+#### Review
+```bash
+$ curl -u CI5Uaei7o3AqI/J85trGCkYEjY/R7Q0v: http://172.18.0.4:8080/api/endpoints/review/SKU1
+"{\"id\": \"5b46249ba5b76d836bfb929d\",\"sku\": \"SKU1\",\"reviews\": [{\"review\":\"Best taste ever!!!\",\"user\":\"John\"},{\"review\":\"Had better meals!!!\",\"user\":\"Jack\"},{\"review\":\"Too spicy!!!\",\"user\":\"Jane\"}]}"
+```
+
+#### Product
+```bash
+$ curl -s -u jEeLFb2xjLQNxKBJBf89tEl+aL8+nj1X: http://172.18.0.5:8080/api/endpoints/products | jq
+[
+  {
+    "id": 1,
+    "sku": "SKU1",
+    "name": "Spicy World Peppercorn",
+    "description": "If we had to select just one spice to flavor our food, pepper, the master spice ,would be a wise choice."
+  },
+  {
+    "id": 2,
+    "sku": "SKU2",
+    "name": "VAHDAM",
+    "description": "Green Tea Leaves. The Himalayan region is blessed with one-of-a-kind soil type and combined with its presence near the Tropic of Cancer and the climatic conditions are ideal for the cultivation of tea."
+  },
+  {
+    "id": 3,
+    "sku": "SKU3",
+    "name": "Rani Garam Masala",
+    "description": "Traditionally from Northern Indian, garam masala is a staple spice in Indian cookery. Garam, when translated means â€œwarmâ€ best describes the properties of the blend. "
+  }
+]
+```
+
+#### Product Review
+```bash
+$ curl -s  -u IO/lU6QSMfze2W3cOsUMC0iGztPLNwL+: http://172.18.0.6:8080/api/v1/productinfo/SKU1 | jq
+{
+  "sku": "SKU1",
+  "name": "Spicy World Peppercorn",
+  "description": "If we had to select just one spice to flavor our food, pepper, the master spice ,would be a wise choice.",
+  "reviews": [
+    {
+      "review": "Best taste ever!!!",
+      "user": "John"
+    },
+    {
+      "review": "Had better meals!!!",
+      "user": "Jack"
+    },
+    {
+      "review": "Too spicy!!!",
+      "user": "Jane"
+    }
+  ],
+  "taxonomy": [
+    {
+      "confidence_score": 0.98999,
+      "tag": "food and drink/food"
+    },
+    {
+      "confidence_score": 0.973018,
+      "tag": "shopping/gifts"
+    },
+    {
+      "confidence_score": 0.972578,
+      "tag": "style and fashion/accessories"
+    }
+  ]
+}
+```
 
 ### Frontend
 

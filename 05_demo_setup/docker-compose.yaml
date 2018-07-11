@@ -1,0 +1,53 @@
+version: '3'
+services:
+  mongo:
+    image: "axway/api-builder-v4-demo-mongo"
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=apibuilder
+      - MONGO_INITDB_ROOT_PASSWORD=apibuilder
+      - MONGO_INITDB_DATABASE=admin
+
+  mysql:
+    image: "axway/api-builder-v4-demo-mysql"
+    environment:
+      - MYSQL_DATABASE=productdb
+      - MYSQL_ROOT_PASSWORD=password
+      - MYSQL_USER=apibuilder
+      - MYSQL_PASSWORD=apibuilder
+
+  product:
+    image: "axway/api-builder-v4-demo-product"
+    restart: always
+    depends_on:
+      - "mysql"
+    environment:
+      - DB_HOST=mysql
+      - DB_PORT=3306
+      - DB_USER=root
+      - DB_PASSWORD=password
+
+  review:
+    image: "axway/api-builder-v4-demo-review"
+    restart: always
+    depends_on:
+      - mongo
+    environment:
+      - DB_HOST=mongo
+      - DB_PORT=27017
+      - DB_USER=apibuilder
+      - DB_PASSWORD=apibuilder
+
+  product-review:
+    image: "axway/api-builder-v4-demo-product-review"
+    restart: always
+    depends_on:
+      - product
+      - review
+    environment:
+      - PRODUCT_HOST=product
+      - PRODUCT_PORT=8080
+      - PRODUCT_APIKEY=jEeLFb2xjLQNxKBJBf89tEl+aL8+nj1X
+      - REVIEW_HOST=review
+      - REVIEW_PORT=8080
+      - REVIEW_APIKEY=CI5Uaei7o3AqI/J85trGCkYEjY/R7Q0v
+      - PD_APIKEY=oSIpJX3A4Mta3fC1kB2us6uyERXmFdgy06q3SzZLA58
