@@ -1,0 +1,143 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "1.0",
+    "title": "ProductInfo",
+    "description": "Service for getting the aggregated info about a product like details, reviews, taxonomy"
+  },
+  "host": "localhost:8080",
+  "basePath": "/v1",
+  "schemes": [
+    "http"
+  ],
+  "paths": {
+    "/products": {
+      "get": {
+        "responses": {
+          "200": {
+            "description": "The find all succeeded, and the results are available.",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "number",
+                    "description": "product id"
+                  },
+                  "sku": {
+                    "type": "string",
+                    "description": "product sku"
+                  },
+                  "name": {
+                    "type": "string",
+                    "description": "product name"
+                  },
+                  "description": {
+                    "type": "string",
+                    "description": "product description"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "This request requires user authentication, as configured by the server."
+          },
+          "404": {
+            "description": "No results were found."
+          },
+          "500": {
+            "description": "Something went wrong during the request; check out the logs on your server."
+          }
+        },
+        "description": "Find All Products",
+        "operationId": "Find All Products",
+        "consumes": [],
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "mysql/products"
+        ],
+        "x-flow": "productinfo-getProducts"
+      }
+    },
+    "/productinfo/{sku}": {
+      "get": {
+        "operationId": "getProductInfo",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "sku",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "description": "Product name"
+                },
+                "sku": {
+                  "type": "string",
+                  "description": "Product Unique Identifier"
+                },
+                "description": {
+                  "type": "string",
+                  "description": "Product description"
+                },
+                "reviews": {
+                  "type": "array",
+                  "description": "Product reviews",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "": {}
+                    }
+                  }
+                },
+                "taxonomy": {
+                  "type": "array",
+                  "description": "Product categorization based on the description. Contains the three most relevant categories.",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "": {}
+                    }
+                  }
+                }
+              }
+            },
+            "examples": {
+              "application/json": {
+                "name": "eu sunt Lorem dolor esse",
+                "sku": "labore esse mollit ut reprehenderit",
+                "description": "occaecat voluptate u",
+                "tags": [
+                  "voluptate laborum nulla quis in"
+                ],
+                "reviews": [
+                  {},
+                  {},
+                  {},
+                  {}
+                ]
+              }
+            }
+          }
+        },
+        "x-flow": "productinfo-getProductInfo"
+      }
+    }
+  },
+  "definitions": {}
+}

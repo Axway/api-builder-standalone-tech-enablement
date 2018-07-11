@@ -1,0 +1,246 @@
+{
+	"schemaVersion": "3",
+	"info": {
+		"name": "productinfo - get /productinfo/{sku}"
+	},
+	"parameter": {
+		"properties": {
+			"params": {
+				"type": "object",
+				"description": "The parameters from the endpoint."
+			},
+			"request": {
+				"type": "object",
+				"description": "The HTTP request."
+			},
+			"config": {
+				"type": "object",
+				"description": "The service's configuration"
+			},
+			"env": {
+				"type": "object",
+				"description": "The host OS environment"
+			}
+		},
+		"additionalProperties": false,
+		"required": [
+			"params",
+			"request",
+			"config",
+			"env"
+		]
+	},
+	"start": "doT.2",
+	"nodes": {
+		"http.1": {
+			"type": "nodehandler://axway-flow/http",
+			"name": "Done",
+			"method": "setresponse",
+			"parameters": [
+				{
+					"name": "status",
+					"type": "number",
+					"value": "200"
+				},
+				{
+					"name": "body",
+					"type": "jsonpath",
+					"value": "$.productInfo"
+				}
+			],
+			"outputs": {
+				"next": {
+					"context": "$.response",
+					"routes": []
+				}
+			}
+		},
+		"products-service.1": {
+			"type": "nodehandler://@axway/api-builder-plugin-fn-swagger/products-service",
+			"name": "Find Product By SKU",
+			"method": "FindBySKU",
+			"parameters": [
+				{
+					"name": "sku",
+					"type": "jsonpath",
+					"value": "$.params.sku"
+				}
+			],
+			"outputs": {
+				"200": {
+					"routes": [
+						"review-service.1"
+					],
+					"context": "$.foundProduct"
+				},
+				"400": {
+					"routes": [
+						"http.5"
+					],
+					"context": "$.error"
+				},
+				"401": {
+					"routes": [
+						"http.5"
+					],
+					"context": "$.error"
+				},
+				"404": {
+					"routes": [
+						"http.3"
+					],
+					"context": "$.error"
+				},
+				"500": {
+					"routes": [
+						"http.5"
+					],
+					"context": "$.error"
+				}
+			}
+		},
+		"http.3": {
+			"type": "nodehandler://axway-flow/http",
+			"name": "Product Not Found",
+			"method": "setresponse",
+			"parameters": [
+				{
+					"name": "status",
+					"type": "number",
+					"value": "404"
+				}
+			],
+			"outputs": {
+				"next": {
+					"context": "$.response",
+					"routes": []
+				}
+			}
+		},
+		"doT.1": {
+			"type": "nodehandler://@axway/api-builder-plugin-fn-dot/doT",
+			"name": "Create Product Info",
+			"method": "formatObj",
+			"parameters": [
+				{
+					"name": "data",
+					"type": "jsonpath",
+					"value": "$"
+				},
+				{
+					"name": "template",
+					"type": "string",
+					"value": "\"{\\n\\\"sku\\\": {{=JSON.stringify(it.foundProduct.data.sku)}}, \\n\\\"name\\\": {{=JSON.stringify(it.foundProduct.data.name)}},\\n\\\"description\\\": {{=JSON.stringify(it.foundProduct.data.description)}},\\n\\\"reviews\\\": {{=JSON.stringify(it.foundReviews.data.reviews)}}\\n}\""
+				}
+			],
+			"outputs": {
+				"next": {
+					"routes": [
+						"http.1"
+					],
+					"context": "$.productInfo"
+				},
+				"error": {
+					"routes": [],
+					"context": "$.error"
+				}
+			}
+		},
+		"review-service.1": {
+			"type": "nodehandler://@axway/api-builder-plugin-fn-swagger/review-service",
+			"name": "FindReviewsByProductSKU",
+			"method": "FindReviewsByProductSKU",
+			"parameters": [
+				{
+					"name": "sku",
+					"type": "jsonpath",
+					"value": "$.params.sku"
+				}
+			],
+			"outputs": {
+				"200": {
+					"context": "$.foundReviews",
+					"routes": [
+						"doT.1"
+					]
+				},
+				"400": {
+					"context": "$.error",
+					"routes": [
+						"http.5"
+					]
+				},
+				"401": {
+					"context": "$.error",
+					"routes": [
+						"http.5"
+					]
+				},
+				"404": {
+					"context": "$.error",
+					"routes": [
+						"http.3"
+					]
+				},
+				"500": {
+					"context": "$.error",
+					"routes": [
+						"http.5"
+					]
+				}
+			}
+		},
+		"http.5": {
+			"type": "nodehandler://axway-flow/http",
+			"name": "Database Error",
+			"method": "setresponse",
+			"parameters": [
+				{
+					"name": "status",
+					"type": "number",
+					"value": "400"
+				},
+				{
+					"name": "body",
+					"type": "string",
+					"value": "\"Check Service Databases\""
+				}
+			],
+			"outputs": {
+				"next": {
+					"context": "$.response",
+					"routes": []
+				}
+			}
+		},
+		"doT.2": {
+			"type": "nodehandler://@axway/api-builder-plugin-fn-dot/doT",
+			"name": "Format string",
+			"method": "formatStr",
+			"parameters": [
+				{
+					"name": "data",
+					"type": "jsonpath",
+					"value": "$.env"
+				},
+				{
+					"name": "template",
+					"type": "string",
+					"value": "\"{{console.log(JSON.stringify(it));}}\""
+				}
+			],
+			"outputs": {
+				"next": {
+					"routes": [
+						"products-service.1"
+					],
+					"context": "$.value"
+				},
+				"error": {
+					"routes": [],
+					"context": "$.error"
+				}
+			}
+		}
+	}
+}

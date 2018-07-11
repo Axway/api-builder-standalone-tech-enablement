@@ -1,0 +1,109 @@
+{
+	"schemaVersion": "3",
+	"info": {
+		"name": "productinfo - get /products"
+	},
+	"parameter": {
+		"properties": {
+			"params": {
+				"type": "object",
+				"description": "The parameters from the endpoint."
+			},
+			"request": {
+				"type": "object",
+				"description": "The HTTP request."
+			},
+			"config": {
+				"type": "object",
+				"description": "The service's configuration"
+			},
+			"env": {
+				"type": "object",
+				"description": "The host OS environment"
+			}
+		},
+		"additionalProperties": false,
+		"required": [
+			"params",
+			"request",
+			"config",
+			"env"
+		]
+	},
+	"start": "products-service.1",
+	"nodes": {
+		"products-service.1": {
+			"type": "nodehandler://@axway/api-builder-plugin-fn-swagger/products-service",
+			"name": "Find All mysql/product",
+			"method": "Find All mysql/product",
+			"parameters": [],
+			"outputs": {
+				"200": {
+					"routes": [
+						"http.1"
+					],
+					"context": "$.response"
+				},
+				"401": {
+					"routes": [
+						"http.2"
+					],
+					"context": "$.error"
+				},
+				"404": {
+					"routes": [
+						"http.2"
+					],
+					"context": "$.error"
+				},
+				"500": {
+					"routes": [
+						"http.2"
+					],
+					"context": "$.error"
+				}
+			}
+		},
+		"http.1": {
+			"type": "nodehandler://axway-flow/http",
+			"name": "Success",
+			"method": "setresponse",
+			"parameters": [
+				{
+					"name": "status",
+					"type": "number",
+					"value": "200"
+				},
+				{
+					"name": "body",
+					"type": "jsonpath",
+					"value": "$.response.data"
+				}
+			],
+			"outputs": {
+				"next": {
+					"context": "$.response",
+					"routes": []
+				}
+			}
+		},
+		"http.2": {
+			"type": "nodehandler://axway-flow/http",
+			"name": "Error",
+			"method": "setresponse",
+			"parameters": [
+				{
+					"name": "status",
+					"type": "number",
+					"value": "400"
+				}
+			],
+			"outputs": {
+				"next": {
+					"context": "$.response",
+					"routes": []
+				}
+			}
+		}
+	}
+}

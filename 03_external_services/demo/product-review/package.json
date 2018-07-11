@@ -1,0 +1,30 @@
+{
+	"name": "product-review-service",
+	"description": "Search and aggregate information  - product details, reviews, taxonomy - about product based on the product SKU",
+	"main": "app.js",
+	"version": "1.0.0",
+	"license": "",
+	"keywords": [
+		"api-builder",
+		"micro-service",
+		"middleware",
+		"orm",
+		"service"
+	],
+	"engines": {
+		"node": ">= 8.9"
+	},
+	"repository": {},
+	"private": true,
+	"dependencies": {
+		"@axway/api-builder-runtime": "^4.0.0",
+		"@axway/api-builder-plugin-fn-dot": "^1.0.0",
+		"@axway/api-builder-plugin-fn-swagger": "^1.0.0"
+	},
+	"devDependencies": {
+		"@axway/api-builder-admin": "^1.0.0"
+	},
+	"scripts": {
+		"start": "node ."
+	}
+}
