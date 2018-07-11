@@ -6,7 +6,7 @@ The goal of this tech enablement session is to give an overview of API Builder 4
 
 [Chapter 00. What's New](./00_whats_new)
 
-[Chapter 01. Demo Setup](./01_demo_setup)
+[Chapter 01. Monolith to Microservices](./01_demo_scenario)
 
 [Chapter 02. Create Microservice from a Database](./02_microservice_from_db)
 
@@ -14,7 +14,9 @@ The goal of this tech enablement session is to give an overview of API Builder 4
 
 [Chapter 04. Containerization](./04_containerization)
 
-[Chapter 05. Scalable Deployments (with Kubernetes)](./05_kubernetes)
+[Chapter 05. Demo Setup](./05_demo_setup)
+
+[Chapter 06. Scalable Deployments (with Kubernetes)](./06_kubernetes)
 
 
 ### Solution Prerequisites

@@ -43,4 +43,4 @@ productReview:
   replicaCount: 2
   image: gcr.io/rd-api-builder/axway/api-builder-v4-demo-product-review
   paralleldots:
-    apikey: pd-apikey
+    apikey: oSIpJX3A4Mta3fC1kB2us6uyERXmFdgy06q3SzZLA58

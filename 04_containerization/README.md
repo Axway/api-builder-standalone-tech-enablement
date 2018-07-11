@@ -91,4 +91,6 @@ __NOTE__: For more information on the different aproaches and detailed configura
 
 ### Reading Next
 
-[Chapter 05. Scalable Deployments (with Kubernetes)](../05_kubernetes)
+[Chapter 05. Demo Setup](./05_demo_setup)
+
+[Chapter 06. Scalable Deployments (with Kubernetes)](./06_kubernetes)

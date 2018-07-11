@@ -141,8 +141,10 @@ The are two service part of our demo that use data connectors. The can be found 
 
 ### Reading Next
 
-[Chapter 03. Consume External Services](../03_external_services)
+[Chapter 03. Consume External Services](./03_external_services)
 
-[Chapter 04. Containerization](../04_containerization)
+[Chapter 04. Containerization](./04_containerization)
 
-[Chapter 05. Scalable Deployments (with Kubernetes)](../05_kubernetes)
+[Chapter 05. Demo Setup](./05_demo_setup)
+
+[Chapter 06. Scalable Deployments (with Kubernetes)](./06_kubernetes)

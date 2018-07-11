@@ -41,6 +41,8 @@ The API Builder Swagger Flow-Node plugin can be seen in action in [Product Revie
 
 ### Reading Next
 
-[Chapter 04. Containerization](../04_containerization)
+[Chapter 04. Containerization](./04_containerization)
 
-[Chapter 05. Scalable Deployments (with Kubernetes)](../05_kubernetes)
+[Chapter 05. Demo Setup](./05_demo_setup)
+
+[Chapter 06. Scalable Deployments (with Kubernetes)](./06_kubernetes)
