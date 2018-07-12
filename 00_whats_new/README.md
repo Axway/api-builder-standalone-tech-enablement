@@ -2,8 +2,8 @@
 
 ## Headlines
 
-1. No dependency on ARS or AppC. 
 1. New CLI - @axway/api-builder
+1. No dependency on ARS or AppC.
 1. Introduced new plugin architecture leveraging npm modules:
     * Data connectors are installed as npm modules (plugins)
     * Service connectors are installed as npm modules (plugins)
@@ -27,9 +27,9 @@ API Builder is now standalone and is not opinionated about how or where your mic
 
 ### Plugin Architecture
 
-Previously, API Builder needed appc CLI to download connectors from Appcelerator cloud.  Now, API Builder will load all of its components from npm node modules.  A 12-factor app needs to [explicitly declare and isolate dependencies](https://12factor.net/dependencies).  The node modules are **plugins** for API Builder, and can extend functionality, such as adding data connectors, or flow-nodes to the flow editor. 
+Previously, API Builder needed appc CLI to download connectors from Appcelerator cloud.  Now, API Builder will load all of its components from npm node modules.  A 12-factor app needs to [explicitly declare and isolate dependencies](https://12factor.net/dependencies).  The node modules are **plugins** for API Builder, and can extend functionality, such as adding data connectors, or flow-nodes to the flow editor.
 
-The API Builder 3.x data connectors are not compatibile with the new plugin architecture. API Builder 4 Standalone GA'ed with support for 3 data connectors:
+The API Builder 3.x data connectors are not compatible with the new plugin architecture. API Builder 4 Standalone GA'ed with support for 3 data connectors:
 
 * @axway/api-builder-plugin-dc-mongo
 * @axway/api-builder-plugin-dc-mysql
