@@ -141,7 +141,9 @@
 					"context": "$.productInfo"
 				},
 				"error": {
-					"routes": [],
+					"routes": [
+						"http.5"
+					],
 					"context": "$.error"
 				}
 			}
