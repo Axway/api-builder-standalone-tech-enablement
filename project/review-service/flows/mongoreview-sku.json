@@ -152,18 +152,18 @@
 		},
 		"doT.2": {
 			"type": "nodehandler://@axway/api-builder-plugin-fn-dot/doT",
-			"name": "Format string",
-			"method": "formatStr",
+			"name": "Format object",
+			"method": "formatObj",
 			"parameters": [
+				{
+					"name": "template",
+					"type": "string",
+					"value": "\"{ \\\"id\\\": {{=JSON.stringify(it.id)}}, \\\"sku\\\": {{=JSON.stringify(it.sku)}}, \\\"reviews\\\": {{=JSON.stringify(it.reviews)}} }\""
+				},
 				{
 					"name": "data",
 					"type": "jsonpath",
 					"value": "$.queried[0]"
-				},
-				{
-					"name": "template",
-					"type": "string",
-					"value": "\"{\\n\\\"id\\\": {{=JSON.stringify(it.id)}},\\n\\\"sku\\\": {{=JSON.stringify(it.sku)}},\\n\\\"reviews\\\": {{=JSON.stringify(it.reviews)}}\\n}\""
 				}
 			],
 			"outputs": {
