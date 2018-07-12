@@ -9,8 +9,8 @@
     * Service connectors are installed as npm modules (plugins)
     * Flow-nodes are installed as npm modules (plugins)
 1. New flow nodes:
-    * Added new asynchronous HTTP rest client plugin to the flow
-    * Added new asynchronous Swagger plugin to the flow
+    * Added new asynchronous HTTP rest client plugin
+    * Added new plugin that generates asynchronous flow-nodes from Swagger definitions
 1. Logging to stdout to allow for integration with 3rd party log aggregators.
 1. Revised configuration to have only `default` and `local` sets of configuration files
 
@@ -47,11 +47,11 @@ API Builder now has a new flow-node that can connect to external services asynch
 
 ![REST flow-node](./images/rest-client.png)
 
-#### Swagger flow-node
+#### Swagger plugin
 
-API Builder now has a new flow-node that can load Swagger 2.0 documents as flow-nodes and make them available to the flow editor.  This greatly simplifies orchestrating east-west communication to sibling services in a service mesh.
+API Builder now has a new plugin that can load Swagger 2.0 documents as flow-nodes and make them available to the flow editor.  This greatly simplifies orchestrating east-west communication to sibling services in a service mesh.
 
-![Swagger flow-node](./images/swagger-flow-node.png)
+![Swagger plugin](./images/swagger-flow-node.png)
 
 ### Logging
 

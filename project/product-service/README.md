@@ -8,7 +8,7 @@
 
 ## Introduction
 > This service contains information from internal services - Product API and publicly available API.
- 
+
 ## Prerequisites
 Prior to setting up a project with a connector, refer to:
 
@@ -23,10 +23,10 @@ Prior to setting up a project with a connector, refer to:
 ### External
 * MySql DB - the API used for configure and run an API Builder Service within a MySql container with DB.
 
-## How to run the product-service 
+## How to run the product-service
 
 ### Get and run the service
-* Clone the repository 
+* Clone the repository
 ```sh
 git clone https://github.com/Axway/api-builder-standalone-tech-enablement.git
 ```
@@ -72,7 +72,7 @@ docker run -p 3306:3306 --name <mysql-container-name> -e MYSQL_ROOT_PASSWORD=<yo
 ```
 
 ### API Builder Environment Variables
-The `roduct-service/conf/mysql.default.js` contains different environment variables. This is a list of the common variables that you will need to set to use this service.
+The `product-service/conf/mysql.default.js` contains different environment variables. This is a list of the common variables that you will need to set to use this service.
 
 | Name                 | Description                                         | Default                          |
 |:---------------------|:----------------------------------------------------|:---------------------------------|
@@ -106,7 +106,7 @@ The `roduct-service/conf/mysql.default.js` contains different environment variab
 DB_USER=root DB_PASSWORD=password npm start
 ```
 
-> Once your project is running, point your browser to http://localhost:8080/console to access the API Builder user interface (UI) console. 
+> Once your project is running, point your browser to http://localhost:8080/console to access the API Builder user interface (UI) console.
 
 
 ### Testing the service
