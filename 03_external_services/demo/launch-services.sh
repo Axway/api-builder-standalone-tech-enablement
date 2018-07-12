@@ -5,8 +5,12 @@ trap ctrl_c INT
 
 function ctrl_c() {
     echo "Cleanup"
-    docker-compose down
+    docker-compose -f docker-compose-services.yaml down
+    docker-compose -f docker-compose-db.yaml down
 }
 
-docker-compose up -d
-docker-compose logs -f
+docker-compose -f docker-compose-db.yaml up -d
+sleep 60
+docker-compose -f docker-compose-services.yaml up -d
+docker-compose -f docker-compose-services.yaml logs -f
+

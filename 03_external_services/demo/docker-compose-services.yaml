@@ -1,0 +1,19 @@
+version: '3'
+services:
+  product:
+    image: "axway/api-builder-v4-demo-product"
+    restart: always
+    environment:
+      - DB_HOST=mysql
+      - DB_PORT=3306
+      - DB_USER=root
+      - DB_PASSWORD=password
+
+  review:
+    image: "axway/api-builder-v4-demo-review"
+    restart: always
+    environment:
+      - DB_HOST=mongo
+      - DB_PORT=27017
+      - DB_USER=apibuilder
+      - DB_PASSWORD=apibuilder
