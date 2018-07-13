@@ -228,7 +228,7 @@
 			],
 			"outputs": {
 				"next": {
-					"context": "$.foundReviews",
+					"context": "$.foundReviews.data.reviews",
 					"routes": [
 						"doT.1"
 					]
