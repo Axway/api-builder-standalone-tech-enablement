@@ -8,7 +8,9 @@ The goal of this tech enablement session is to give an overview of API Builder 4
 
 [Chapter 01. Monolith to Microservices](./01_demo_scenario)
 
-[Chapter 02. Create Microservice from a Database](./02_microservice_from_db)
+Chapter 02. Create Microservice from a Database
+* [Create Microservice from a MySql Database](./02_microservice_from_mysql)
+* [Create Microservice from a Mongo Database](./02_microservice_from_mongo)
 
 [Chapter 03. Consume External Services](./03_external_services)
 

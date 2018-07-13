@@ -39,7 +39,7 @@ API Builder will:
 
 1. Allow them to deploy their solution anywhere, on premise or in the cloud
 
-[Chapter 02. Create Microservice from a Database](../02_microservice_from_db) we will use API Builder dataconnectors to rapidly create the services from the existing databases. 
+[Chapter 02. Create Microservice from a Database](../02_microservice_from_mongo) we will use API Builder dataconnectors to rapidly create the services from the existing databases. 
 
 [Chapter 03. Consume External Services](../03_external_services) we'll see how to aggregate the services into a single microservice API to serve you frontend needs.
 
@@ -51,7 +51,9 @@ API Builder will:
 
 ### Reading Next
 
-[Chapter 02. Create Microservice from a Database](../02_microservice_from_db)
+Chapter 02. Create Microservice from a Database
+* [Create Microservice from a MySql Database](../02_microservice_from_mysql)
+* [Create Microservice from a Mongo Database](../02_microservice_from_mongo)
 
 [Chapter 03. Consume External Services](../03_external_services)
 

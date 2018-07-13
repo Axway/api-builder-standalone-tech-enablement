@@ -63,14 +63,16 @@ Previously, API Builder had specific configuration files per-environment.  Now, 
 
 ### Reading Next
 
-[Chapter 01. Monolith to Microservices](./01_demo_scenario)
+[Chapter 01. Monolith to Microservices](../01_demo_scenario)
 
-[Chapter 02. Create Microservice from a Database](./02_microservice_from_db)
+Chapter 02. Create Microservice from a Database
+* [Create Microservice from a MySql Database](../02_microservice_from_mysql)
+* [Create Microservice from a Mongo Database](../02_microservice_from_mongo)
 
-[Chapter 03. Consume External Services](./03_external_services)
+[Chapter 03. Consume External Services](../03_external_services)
 
-[Chapter 04. Containerization](./04_containerization)
+[Chapter 04. Containerization](../04_containerization)
 
-[Chapter 05. Demo Setup](./05_demo_setup)
+[Chapter 05. Demo Setup](../05_demo_setup)
 
-[Chapter 06. Scalable Deployments (with Kubernetes)](./06_kubernetes)
+[Chapter 06. Scalable Deployments (with Kubernetes)](../06_kubernetes)
