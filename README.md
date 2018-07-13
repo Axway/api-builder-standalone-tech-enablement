@@ -18,7 +18,7 @@ The goal of this tech enablement session is to give an overview of API Builder 4
 
 [Chapter 06. Scalable Deployments (with Kubernetes)](./06_kubernetes)
 
-[Slides from Demo](./API Builder Tech Enablement Demo.pptx)
+[Slides from Demo](./API%20Builder%20Tech%20Enablement%20Demo.pptx)
 
 ### Solution Prerequisites
 
