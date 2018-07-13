@@ -90,16 +90,16 @@ For convenience we will use _docker-compose_ to start up the containers locally.
 > The container build is a *production* build and will not have the API Builder Console. When in development you probably would want to run the services as local applications rather than in containers.
 
 ```bash
-docker-compose -f 05_demo_setup/docker-compose.yaml up
+docker-compose -f demo/docker-compose.yaml up
 ```
 
 ### Testing the services
 
 Get the IP addresses of the containers:
 ```bash
-docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' 05_demo_setup_review_1
-docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' 05_demo_setup_product_1
-docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' 05_demo_setup_product-review_1
+docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' demo_review_1
+docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' demo_product_1
+docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' demo_product-review_1
 ```
 
 #### Review

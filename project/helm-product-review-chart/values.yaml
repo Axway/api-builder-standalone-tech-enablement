@@ -25,8 +25,8 @@ review:
   replicaCount: 2
   image: gcr.io/rd-api-builder/axway/api-builder-v4-demo-review
   db:
-    user: root
-    password: password
+    user: apibuilder
+    password: apibuilder
 
 # Product-Service Configuration
 product:
@@ -34,8 +34,8 @@ product:
   replicaCount: 2
   image: gcr.io/rd-api-builder/axway/api-builder-v4-demo-product
   db:
-    user: root
-    password: password
+    user: apibuilder
+    password: apibuilder
 
 # Product-Review-Service Configuration
 productReview:
