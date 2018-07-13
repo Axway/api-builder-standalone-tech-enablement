@@ -39,6 +39,8 @@ services:
 
   product-review:
     image: "axway/api-builder-v4-demo-product-review"
+    ports:
+      - "8080:8080"
     restart: always
     depends_on:
       - product
